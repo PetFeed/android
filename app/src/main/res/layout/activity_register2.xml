@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.Register2Activity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_register"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbarSize" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/nanum_square_round_extra_bold"
+        android:textColor="@color/black2"
+        android:textSize="24sp"
+        tools:text="회원가입" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black1_20"
+        android:textSize="12sp"
+        tools:text="자신의 반려동물을 인증해주세요." />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:orientation="vertical"
+        android:paddingEnd="64dp"
+        android:paddingStart="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_square_round_extra_bold"
+            android:text="반려동물 이름"
+            android:textColor="@color/black2"
+            android:textSize="14sp" />
+
+        <EditText
+            android:hint="이름 입력"
+            android:id="@+id/edit_register2_petname"
+            style="@style/input_box_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:inputType="text" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        android:paddingEnd="64dp"
+        android:paddingStart="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_square_round_extra_bold"
+            android:text="등록번호"
+            android:textColor="@color/black2"
+            android:textSize="14sp" />
+
+        <EditText
+            android:hint="등록번호 입력"
+            android:id="@+id/edit_register2_number"
+            style="@style/input_box_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:inputType="number"
+            android:maxLength="15" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/button_register2_done"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottomButtonSize"
+        android:background="@color/brown1"
+        android:fontFamily="@font/nanum_square_round_extra_bold"
+        android:text="다음"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+</LinearLayout>
