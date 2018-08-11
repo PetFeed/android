@@ -7,7 +7,7 @@
     tools:context=".activity.Register1Activity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_register"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarSize" />
 
@@ -16,9 +16,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:fontFamily="@font/nanum_square_round_extra_bold"
+        android:text="회원가입"
         android:textColor="@color/black2"
-        android:textSize="24sp"
-        tools:text="회원가입" />
+        android:textSize="24sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
             android:textSize="14sp" />
 
         <EditText
-            android:id="@+id/edit_register1_id"
+            android:id="@+id/edit_id"
             style="@style/input_box_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
             android:textSize="14sp" />
 
         <EditText
-            android:id="@+id/edit_register1_password"
+            android:id="@+id/edit_password"
             style="@style/input_box_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,12 +89,12 @@
             android:textSize="14sp" />
 
         <EditText
-            android:hint="비밀번호 재 입력"
-            android:id="@+id/edit_register1_repassword"
+            android:id="@+id/edit_repassword"
             style="@style/input_box_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:hint="비밀번호 재 입력"
             android:inputType="textPassword" />
     </LinearLayout>
 
@@ -104,7 +104,7 @@
         android:layout_weight="1" />
 
     <Button
-        android:id="@+id/button_register1_next"
+        android:id="@+id/button_next"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottomButtonSize"
         android:background="@color/brown1"

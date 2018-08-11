@@ -7,7 +7,7 @@
     tools:context=".activity.Register2Activity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_register"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbarSize" />
 
@@ -18,7 +18,7 @@
         android:fontFamily="@font/nanum_square_round_extra_bold"
         android:textColor="@color/black2"
         android:textSize="24sp"
-        tools:text="회원가입" />
+        android:text="반려동물 등록인증" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
 
         <EditText
             android:hint="이름 입력"
-            android:id="@+id/edit_register2_petname"
+            android:id="@+id/edit_petname"
             style="@style/input_box_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
 
         <EditText
             android:hint="등록번호 입력"
-            android:id="@+id/edit_register2_number"
+            android:id="@+id/edit_number"
             style="@style/input_box_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,12 +88,12 @@
         android:layout_weight="1" />
 
     <Button
-        android:id="@+id/button_register2_done"
+        android:id="@+id/button_done"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottomButtonSize"
         android:background="@color/brown1"
         android:fontFamily="@font/nanum_square_round_extra_bold"
-        android:text="다음"
+        android:text="완료"
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 </LinearLayout>

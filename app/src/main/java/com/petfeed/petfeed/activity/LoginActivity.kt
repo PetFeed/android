@@ -18,8 +18,9 @@ class LoginActivity : AppCompatActivity() {
 
         button_login.onClick {
             startActivity<MainActivity>()
+            finish()
         }
-        container_login_register.onClick {
+        container_register.onClick {
             startActivity<Register1Activity>()
         }
     }
