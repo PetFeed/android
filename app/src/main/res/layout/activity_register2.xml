@@ -9,16 +9,17 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbarSize" />
+        android:layout_height="@dimen/toolbarSize"
+        android:paddingTop="8dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:fontFamily="@font/nanum_square_round_extra_bold"
+        android:text="반려동물 등록인증"
         android:textColor="@color/black2"
-        android:textSize="24sp"
-        android:text="반려동물 등록인증" />
+        android:textSize="24sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -46,12 +47,12 @@
             android:textSize="14sp" />
 
         <EditText
-            android:hint="이름 입력"
             android:id="@+id/edit_petname"
             style="@style/input_box_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:hint="이름 입력"
             android:inputType="text" />
     </LinearLayout>
 
@@ -72,12 +73,12 @@
             android:textSize="14sp" />
 
         <EditText
-            android:hint="등록번호 입력"
             android:id="@+id/edit_number"
             style="@style/input_box_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:hint="등록번호 입력"
             android:inputType="number"
             android:maxLength="15" />
     </LinearLayout>
