@@ -31,14 +31,14 @@
                 android:paddingTop="20dp"
                 tools:listitem="@layout/item_board" />
 
-            <com.petfeed.petfeed.View.BackdropTopView
+            <com.petfeed.petfeed.view.BackdropTopView
                 android:id="@+id/top_view"
                 android:layout_width="match_parent"
                 android:layout_height="16dp"
                 android:layout_alignTop="@id/board_recycler_view"
                 android:paddingBottom="4dp"
                 app:innerColor="@android:color/transparent"
-                app:outerColor="@color/colorPrimaryDark"
+                app:outerColor="@color/brown1"
                 app:radius="16dp" />
 
             <View
@@ -48,8 +48,7 @@
                 android:layout_alignTop="@id/top_view"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:alpha="0.3"
-                android:background="@drawable/box_primary_solid_radius4dp" />
+                android:alpha="0.3"/>
         </RelativeLayout>
     </FrameLayout>
 

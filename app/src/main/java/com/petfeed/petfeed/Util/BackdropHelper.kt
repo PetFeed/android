@@ -1,4 +1,4 @@
-package com.petfeed.petfeed.Util
+package com.petfeed.petfeed.util
 
 import android.animation.Animator
 import android.animation.ValueAnimator
@@ -9,7 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.RelativeLayout
 import com.petfeed.petfeed.R
-import com.petfeed.petfeed.View.BackdropTopView
+import com.petfeed.petfeed.view.BackdropTopView
 import org.jetbrains.anko.displayMetrics
 
 class BackdropHelper(val mContext: Context, val topView: BackdropTopView, val contentView: View, val dummyView: View) {
@@ -61,7 +61,7 @@ class BackdropHelper(val mContext: Context, val topView: BackdropTopView, val co
             }
             topView.run {
                 layoutParams = topViewParmas
-                outerColor = ratioARGB(ContextCompat.getColor(mContext, R.color.colorPrimaryDark), 1 - ratio)
+                outerColor = ratioARGB(ContextCompat.getColor(mContext, R.color.brown1), 1 - ratio)
                 innerColor = ratioARGB(Color.parseColor("#4d442d26"), ratio)
                 isInnerSolid = value != 0
                 radius = (16 * mContext.displayMetrics.density) - ratio * (4 * mContext.displayMetrics.density)

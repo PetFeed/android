@@ -1,4 +1,4 @@
-package com.petfeed.petfeed.View
+package com.petfeed.petfeed.view
 
 import android.content.Context
 import android.content.res.TypedArray

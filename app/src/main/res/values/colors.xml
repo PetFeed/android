@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#442d26</color>
-    <color name="colorPrimaryDark">#442d26</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="textBlack">#202020</color>
-    <color name="colorWhiteGray">#d4d4d4</color>
+    <color name="black1">#202020</color>
+    <color name="black1_20">#33202020</color>
+    <color name="black1_30">#4c202020</color>
+    <color name="black2">#373737</color>
+    <color name="brown1">#442d26</color>
+    <color name="brown2">#412b24</color>
+    <color name="grey1">#d0d0d0</color>
+    <color name="grey2">#979797</color>
+    <color name="white1">#f7f7f7</color>
+    <color name="white2">#f4f4f4</color>
 </resources>

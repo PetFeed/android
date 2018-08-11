@@ -1,4 +1,4 @@
-package com.petfeed.petfeed.Fragment
+package com.petfeed.petfeed.fragment
 
 
 import android.os.Bundle

@@ -1,4 +1,4 @@
-package com.petfeed.petfeed.Util
+package com.petfeed.petfeed.util
 
 import android.graphics.Typeface
 import android.text.TextPaint

@@ -7,7 +7,7 @@ import android.view.ViewTreeObserver
 import com.github.nitrico.lastadapter.LastAdapter
 import com.petfeed.petfeed.BR
 import com.petfeed.petfeed.R
-import com.petfeed.petfeed.Util.BackdropHelper
+import com.petfeed.petfeed.util.BackdropHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 

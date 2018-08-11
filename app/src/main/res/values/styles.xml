@@ -1,11 +1,23 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/brown1</item>
+        <item name="colorPrimaryDark">@color/white2</item>
+        <item name="colorAccent">@color/brown1</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
+    <style name="input_box_style">
+        <item name="android:background">@drawable/input_box_radius4dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:textColor">@color/black1</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/nanum_square_round_bold</item>
+        <item name="android:textColorHint">@color/black1_30</item>
+    </style>
 </resources>
