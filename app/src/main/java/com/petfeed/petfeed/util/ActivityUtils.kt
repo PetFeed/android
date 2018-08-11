@@ -8,7 +8,7 @@ import android.view.Window
 import android.view.WindowManager
 
 object ActivityUtils {
-    fun statusBarSetting(window: Window, context: Context? = null, colorId: Int = 0, iconWhite: Boolean = false) {
+    fun statusBarSetting(window: Window, context: Context? = null, colorId: Int = 0, iconWhite: Boolean = false, color: Int? = null) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             window.run {
                 decorView.systemUiVisibility =
@@ -21,6 +21,8 @@ object ActivityUtils {
                 context?.let {
                     if (colorId != 0)
                         statusBarColor = ContextCompat.getColor(it, colorId)
+                    if (color != null)
+                        statusBarColor = color
                 }
             }
         }

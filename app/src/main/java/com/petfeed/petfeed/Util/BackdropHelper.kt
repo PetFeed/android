@@ -12,21 +12,30 @@ import com.petfeed.petfeed.R
 import com.petfeed.petfeed.view.BackdropTopView
 import org.jetbrains.anko.displayMetrics
 
-class BackdropHelper(val mContext: Context, val topView: BackdropTopView, val contentView: View, val dummyView: View) {
+class BackdropHelper(val mContext: Context, val topView: BackdropTopView, val contentView: View) {
+
     val topViewHeight = topView.height
     val contentViewHeight = contentView.height
+
+    val contentParams = contentView.layoutParams as RelativeLayout.LayoutParams
+    val topViewParmas = topView.layoutParams as RelativeLayout.LayoutParams
+
+    var isScroll = false
     val animator: ValueAnimator = ValueAnimator.ofInt().apply {
         duration = 300
         addUpdateListener {
             mMargin = it.animatedValue as Int
         }
     }
-    val contentParams = contentView.layoutParams as RelativeLayout.LayoutParams
-    val topViewParmas = topView.layoutParams as RelativeLayout.LayoutParams
+    var mMargin = 0
+        set(value) {
+            onMarginChange(value)
+            field = value
+        }
+    var onMarginChangeListener: (margin: Int, ratio: Float) -> Unit = { _, _ -> }
 
     init {
         setScrollListener()
-
         animator.addListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(p0: Animator?) {
             }
@@ -44,31 +53,28 @@ class BackdropHelper(val mContext: Context, val topView: BackdropTopView, val co
         })
     }
 
-    var isScroll = false
-    var mMargin = 0
-        set(value) {
-            val ratio = value.toFloat() / (contentViewHeight - topViewHeight)
-            val horizontalMargin = ratio * (16 * mContext.displayMetrics.density)
+    private fun onMarginChange(margin: Int) {
+        val ratio = margin.toFloat() / (contentViewHeight - topViewHeight)
+        val horizontalMargin = ratio * (16 * mContext.displayMetrics.density)
 
-            contentParams.setMargins(horizontalMargin.toInt(), value, horizontalMargin.toInt(), 0)
-            contentView.run {
-                layoutParams = contentParams
-                alpha = 1 - ratio
-            }
-            topViewParmas.run {
-                setMargins(horizontalMargin.toInt(), 0, horizontalMargin.toInt(), 0)
-                height = if (value != 0) contentParams.height else topViewHeight
-            }
-            topView.run {
-                layoutParams = topViewParmas
-                outerColor = ratioARGB(ContextCompat.getColor(mContext, R.color.brown1), 1 - ratio)
-                innerColor = ratioARGB(Color.parseColor("#4d442d26"), ratio)
-                isInnerSolid = value != 0
-                radius = (16 * mContext.displayMetrics.density) - ratio * (4 * mContext.displayMetrics.density)
-            }
-            dummyView.alpha = 0.3f * (1 - ratio)
-            field = value
+        contentParams.setMargins(horizontalMargin.toInt(), margin, horizontalMargin.toInt(), 0)
+        contentView.run {
+            layoutParams = contentParams
+            alpha = 1 - ratio
         }
+        topViewParmas.run {
+            setMargins(horizontalMargin.toInt(), 0, horizontalMargin.toInt(), 0)
+            height = if (margin != 0) contentParams.height else topViewHeight
+        }
+        topView.run {
+            layoutParams = topViewParmas
+            outerColor = ratioARGB(ContextCompat.getColor(mContext, R.color.brown1), 1 - ratio)
+            innerColor = ratioARGB(Color.parseColor("#4d442d26"), ratio)
+            isInnerSolid = margin != 0
+            radius = (16 * mContext.displayMetrics.density) - ratio * (4 * mContext.displayMetrics.density)
+        }
+        onMarginChangeListener.invoke(margin, ratio)
+    }
 
     private fun setScrollListener() {
         contentView.setOnTouchListener { _, e ->
@@ -100,7 +106,6 @@ class BackdropHelper(val mContext: Context, val topView: BackdropTopView, val co
             }
             true
         }
-
         topView.setOnTouchListener { _, e ->
             when (e.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -124,11 +129,13 @@ class BackdropHelper(val mContext: Context, val topView: BackdropTopView, val co
         animator.start()
     }
 
-    fun ratioARGB(color: Int, ratio: Float): Int {
-        val a = Color.alpha(color) * ratio
-        val r = Color.red(color) * ratio
-        val g = Color.green(color) * ratio
-        val b = Color.blue(color) * ratio
-        return Color.argb(a.toInt(), r.toInt(), g.toInt(), b.toInt())
+    companion object {
+        fun ratioARGB(color: Int, ratio: Float): Int {
+            val a = Color.alpha(color) * ratio
+            val r = Color.red(color) * ratio
+            val g = Color.green(color) * ratio
+            val b = Color.blue(color) * ratio
+            return Color.argb(a.toInt(), r.toInt(), g.toInt(), b.toInt())
+        }
     }
 }

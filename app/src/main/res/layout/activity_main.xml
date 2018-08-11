@@ -11,7 +11,8 @@
         android:id="@+id/content_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="52dp">
+        android:layout_marginBottom="52dp"
+        android:background="@color/brown1">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"
@@ -23,10 +24,10 @@
             android:layout_height="match_parent">
 
             <android.support.v7.widget.RecyclerView
-
                 android:id="@+id/board_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@android:color/white"
                 android:clipToPadding="false"
                 android:paddingTop="20dp"
                 tools:listitem="@layout/item_board" />
@@ -48,7 +49,8 @@
                 android:layout_alignTop="@id/top_view"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:alpha="0.3"/>
+                android:alpha="0.3"
+                android:background="@drawable/dummy" />
         </RelativeLayout>
     </FrameLayout>
 
@@ -73,9 +75,11 @@
                 android:layout_weight="1" />
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_search" />
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:padding="14dp"
+                android:src="@drawable/ic_search"
+                android:tint="@color/brown1" />
 
             <Space
                 android:layout_width="0dp"
@@ -83,9 +87,11 @@
                 android:layout_weight="2" />
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_search" />
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:padding="14dp"
+                android:src="@drawable/ic_notifications"
+                android:tint="@color/brown1" />
 
             <Space
                 android:layout_width="0dp"
@@ -93,10 +99,10 @@
                 android:layout_weight="2" />
 
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:padding="2dp"
-                android:src="@drawable/ic_search" />
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_tabbar_write" />
 
             <Space
                 android:layout_width="0dp"
@@ -104,9 +110,11 @@
                 android:layout_weight="2" />
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_search" />
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:padding="14dp"
+                android:src="@drawable/ic_person"
+                android:tint="@color/brown1" />
 
             <Space
                 android:layout_width="0dp"
@@ -114,8 +122,9 @@
                 android:layout_weight="2" />
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:padding="14dp"
                 android:src="@drawable/ic_search" />
 
             <Space

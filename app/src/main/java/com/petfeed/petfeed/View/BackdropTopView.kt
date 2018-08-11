@@ -30,6 +30,10 @@ class BackdropTopView : View {
         isAntiAlias = true
         xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
     }
+    private val outerBackgroundPaint = Paint().apply {
+        isAntiAlias = true
+        color = Color.WHITE
+    }
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
@@ -43,8 +47,23 @@ class BackdropTopView : View {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+        drawOuterBackground(canvas)
         drawOuters(canvas)
         drawInners(canvas)
+    }
+
+    private fun drawOuterBackground(canvas: Canvas?) {
+        val leftRect = RectF(0f, 0f, radius, radius)
+        val rightRect = RectF((width - radius), 0f, width.toFloat(), radius)
+        val path = Path().apply {
+            addArc(leftRect, 180f, 90f)
+            lineTo(0f, 0f)
+            lineTo(0f, radius)
+            addArc(rightRect, 270f, 90f)
+            lineTo(width.toFloat(), 0f)
+            lineTo(width.toFloat() - radius, 0f)
+        }
+        canvas?.drawPath(path, outerBackgroundPaint)
     }
 
     private fun drawOuters(canvas: Canvas?) {
@@ -56,7 +75,7 @@ class BackdropTopView : View {
             lineTo(0f, radius)
             addArc(rightRect, 270f, 90f)
             lineTo(width.toFloat(), 0f)
-            lineTo(width.toFloat()-radius,0f)
+            lineTo(width.toFloat() - radius, 0f)
         }
         canvas?.drawPath(path, outerPaint)
     }
