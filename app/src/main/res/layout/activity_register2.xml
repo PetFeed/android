@@ -26,9 +26,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:text="자신의 반려동물을 인증해주세요."
         android:textColor="@color/black1_20"
-        android:textSize="12sp"
-        tools:text="자신의 반려동물을 인증해주세요." />
+        android:textSize="12sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
