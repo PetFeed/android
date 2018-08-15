@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/brown1</item>
@@ -17,5 +17,11 @@
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/nanum_square_round_bold</item>
         <item name="android:textColorHint">@color/black1_30</item>
+    </style>
+
+    <style name="title_style">
+        <item name="android:fontFamily">@font/nanum_square_round_extra_bold</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/black1</item>
     </style>
 </resources>

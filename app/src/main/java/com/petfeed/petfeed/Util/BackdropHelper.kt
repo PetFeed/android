@@ -4,22 +4,17 @@ import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
-import android.support.v4.content.ContextCompat
 import android.view.MotionEvent
-import android.view.View
+import android.view.ViewGroup
 import android.widget.RelativeLayout
-import com.petfeed.petfeed.R
-import com.petfeed.petfeed.view.BackdropTopView
+import com.petfeed.petfeed.view.RoundedRecyclerView
 import org.jetbrains.anko.displayMetrics
 
-class BackdropHelper(val mContext: Context, val topView: BackdropTopView, val contentView: View) {
+class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView) {
 
-    val topViewHeight = topView.height
     val contentViewHeight = contentView.height
-
     val contentParams = contentView.layoutParams as RelativeLayout.LayoutParams
-    val topViewParmas = topView.layoutParams as RelativeLayout.LayoutParams
-
+    val topHeight = contentView.topHeight
     var isScroll = false
     val animator: ValueAnimator = ValueAnimator.ofInt().apply {
         duration = 300
@@ -54,30 +49,33 @@ class BackdropHelper(val mContext: Context, val topView: BackdropTopView, val co
     }
 
     private fun onMarginChange(margin: Int) {
-        val ratio = margin.toFloat() / (contentViewHeight - topViewHeight)
-        val horizontalMargin = ratio * (16 * mContext.displayMetrics.density)
+        val ratio = margin.toFloat() / (contentViewHeight - topHeight - contentView.paddingBottom)
+        val horizontalMargin = ratio * makeDP(mContext, 16f)
 
         contentParams.setMargins(horizontalMargin.toInt(), margin, horizontalMargin.toInt(), 0)
         contentView.run {
             layoutParams = contentParams
-            alpha = 1 - ratio
-        }
-        topViewParmas.run {
-            setMargins(horizontalMargin.toInt(), 0, horizontalMargin.toInt(), 0)
-            height = if (margin != 0) contentParams.height else topViewHeight
-        }
-        topView.run {
-            layoutParams = topViewParmas
-            outerColor = ratioARGB(ContextCompat.getColor(mContext, R.color.brown1), 1 - ratio)
+            childAlpha = 1 - ratio
+            backColor = ratioARGB(Color.WHITE, 1 - ratio)
             innerColor = ratioARGB(Color.parseColor("#4d442d26"), ratio)
-            isInnerSolid = margin != 0
-            radius = (16 * mContext.displayMetrics.density) - ratio * (4 * mContext.displayMetrics.density)
+            radius = makeDP(mContext, 16f) - ratio * makeDP(mContext, 4f)
+            descendantFocusability =
+                    if (ratio == 0f) ViewGroup.FOCUS_AFTER_DESCENDANTS
+                    else ViewGroup.FOCUS_BLOCK_DESCENDANTS
+            requestFocus()
         }
         onMarginChangeListener.invoke(margin, ratio)
     }
 
     private fun setScrollListener() {
         contentView.setOnTouchListener { _, e ->
+            if (e.action == MotionEvent.ACTION_DOWN) {
+                isScroll =
+                        if (contentView.height == contentViewHeight)
+                            e.y <= topHeight * 1.5
+                        else
+                            contentView.height <= (contentViewHeight - topHeight - contentView.paddingBottom).toInt()
+            }
             if (!isScroll)
                 return@setOnTouchListener false
             val currentTopMargin = contentParams.topMargin + e.y.toInt()
@@ -99,28 +97,18 @@ class BackdropHelper(val mContext: Context, val topView: BackdropTopView, val co
                 MotionEvent.ACTION_MOVE -> {
                     mMargin = when {
                         currentTopMargin < 0 -> 0
-                        currentTopMargin > contentViewHeight - topViewHeight -> contentViewHeight - topViewHeight
+                        currentTopMargin > (contentViewHeight - topHeight - contentView.paddingBottom) -> (contentViewHeight - topHeight - contentView.paddingBottom).toInt()
                         else -> currentTopMargin
                     }
                 }
+
             }
             true
-        }
-        topView.setOnTouchListener { _, e ->
-            when (e.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    isScroll = true
-                }
-                MotionEvent.ACTION_UP -> {
-                    isScroll = false
-                }
-            }
-            false
         }
     }
 
     fun down() {
-        animator.setIntValues(mMargin, contentViewHeight - topViewHeight)
+        animator.setIntValues(mMargin, (contentViewHeight - topHeight - contentView.paddingBottom).toInt())
         animator.start()
     }
 
@@ -130,6 +118,8 @@ class BackdropHelper(val mContext: Context, val topView: BackdropTopView, val co
     }
 
     companion object {
+        fun makeDP(context: Context, dp: Float): Float = context.displayMetrics.density * dp
+
         fun ratioARGB(color: Int, ratio: Float): Int {
             val a = Color.alpha(color) * ratio
             val r = Color.red(color) * ratio

@@ -2,9 +2,9 @@ package com.petfeed.petfeed.activity
 
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import com.github.nitrico.lastadapter.LastAdapter
 import com.petfeed.petfeed.BR
@@ -14,12 +14,12 @@ import com.petfeed.petfeed.util.ActivityUtils
 import com.petfeed.petfeed.util.BackdropHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     var boards = ArrayList<Any>().apply {
-        add("asdf")
         add("asdf")
         add("asdf")
         add("asdf")
@@ -32,43 +32,40 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         ActivityUtils.statusBarSetting(window, this, R.color.brown1, true)
         setContentView(R.layout.activity_main)
-
-
-        LastAdapter(boards, BR.item)
-                .map<String>(R.layout.item_board)
-                .into(board_recycler_view)
-
-        board_recycler_view.layoutManager = LinearLayoutManager(this)
-
-
-
-        board_recycler_view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                board_recycler_view.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                setBackDropHelper()
-            }
-        })
+        setRecyclerView()
         view_pager.adapter = MyPagerAdapter(supportFragmentManager)
     }
 
+    fun setRecyclerView() {
+        board_recycler_view.run {
+            LastAdapter(boards, BR.item)
+                    .map<String>(R.layout.item_board)
+                    .into(this)
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    this@run.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    setBackDropHelper()
+                }
+            })
+        }
+    }
+
     fun setBackDropHelper() {
-        backdropHelper = BackdropHelper(this@MainActivity, top_view, board_recycler_view)
+        backdropHelper = BackdropHelper(this@MainActivity, board_recycler_view)
         val brown = ContextCompat.getColor(this, R.color.brown1)
+        val white = ContextCompat.getColor(this, R.color.white2)
+
         backdropHelper.onMarginChangeListener = { _, ratio ->
-            val color = BackdropHelper.ratioARGB(brown, 1 - ratio)
             dummy_view.alpha = 0.3f * (1 - ratio)
+
             ActivityUtils.statusBarSetting(window,
                     this,
                     iconWhite = ratio < 0.5f,
-                    color = color)
+                    color = ColorUtils.blendARGB(brown, white, ratio))
+
             view_pager.alpha = ratio
-            content_container.backgroundColor = color
-            board_recycler_view.run {
-                descendantFocusability =
-                        if (ratio == 0f) ViewGroup.FOCUS_AFTER_DESCENDANTS
-                        else ViewGroup.FOCUS_BLOCK_DESCENDANTS
-                requestFocus()
-            }
+            content_container.backgroundColor = BackdropHelper.ratioARGB(brown, 1 - ratio)
         }
     }
 }
