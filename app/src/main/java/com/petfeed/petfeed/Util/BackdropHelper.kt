@@ -5,6 +5,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import com.petfeed.petfeed.view.RoundedRecyclerView
@@ -15,6 +16,7 @@ class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView
     val contentViewHeight = contentView.height
     val contentParams = contentView.layoutParams as RelativeLayout.LayoutParams
     val topHeight = contentView.topHeight
+
     var isScroll = false
     val animator: ValueAnimator = ValueAnimator.ofInt().apply {
         duration = 300
@@ -30,7 +32,6 @@ class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView
     var onMarginChangeListener: (margin: Int, ratio: Float) -> Unit = { _, _ -> }
 
     init {
-        setScrollListener()
         animator.addListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(p0: Animator?) {
             }
@@ -67,45 +68,45 @@ class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView
         onMarginChangeListener.invoke(margin, ratio)
     }
 
-    private fun setScrollListener() {
-        contentView.setOnTouchListener { _, e ->
-            if (e.action == MotionEvent.ACTION_DOWN) {
-                isScroll =
-                        if (contentView.height == contentViewHeight)
-                            e.y <= topHeight * 1.5
-                        else
-                            contentView.height <= (contentViewHeight - topHeight - contentView.paddingBottom).toInt()
-            }
-            if (!isScroll)
-                return@setOnTouchListener false
-            val currentTopMargin = contentParams.topMargin + e.y.toInt()
-            when (e.action) {
-                MotionEvent.ACTION_UP -> {
-                    isScroll = false
-                    if (currentTopMargin < contentViewHeight / 2)
-                        up()
-                    else {
-                        down()
-                    }
-                    if (currentTopMargin > mMargin + contentViewHeight / 200) {
-                        down()
-                    }
-                    if (currentTopMargin < mMargin - contentViewHeight / 200) {
-                        up()
-                    }
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    mMargin = when {
-                        currentTopMargin < 0 -> 0
-                        currentTopMargin > (contentViewHeight - topHeight - contentView.paddingBottom) -> (contentViewHeight - topHeight - contentView.paddingBottom).toInt()
-                        else -> currentTopMargin
-                    }
+    val onTouch: (View, MotionEvent) -> Boolean =
+            onTouch@{ _, e ->
+                if (e.action == MotionEvent.ACTION_DOWN) {
+                    isScroll =
+                            if (contentView.height == contentViewHeight)
+                                e.y <= topHeight * 1.5
+                            else
+                                contentView.height <= (contentViewHeight - topHeight - contentView.paddingBottom).toInt()
                 }
 
+                if (!isScroll)
+                    return@onTouch false
+
+                val currentTopMargin = contentParams.topMargin + e.y.toInt()
+                when (e.action) {
+                    MotionEvent.ACTION_UP -> {
+                        isScroll = false
+                        if (currentTopMargin < contentViewHeight / 2)
+                            up()
+                        else {
+                            down()
+                        }
+                        if (currentTopMargin > mMargin + contentViewHeight / 200) {
+                            down()
+                        }
+                        if (currentTopMargin < mMargin - contentViewHeight / 200) {
+                            up()
+                        }
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        mMargin = when {
+                            currentTopMargin < 0 -> 0
+                            currentTopMargin > (contentViewHeight - topHeight - contentView.paddingBottom) -> (contentViewHeight - topHeight - contentView.paddingBottom).toInt()
+                            else -> currentTopMargin
+                        }
+                    }
+                }
+                true
             }
-            true
-        }
-    }
 
     fun down() {
         animator.setIntValues(mMargin, (contentViewHeight - topHeight - contentView.paddingBottom).toInt())
