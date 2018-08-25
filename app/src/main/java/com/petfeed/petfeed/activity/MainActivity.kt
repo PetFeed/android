@@ -14,6 +14,7 @@ import com.petfeed.petfeed.R
 import com.petfeed.petfeed.util.ActivityUtils
 import com.petfeed.petfeed.util.BackdropHelper
 import com.petfeed.petfeed.util.BottomBarClickHelper
+import com.petfeed.petfeed.util.KeyboardHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.support.v4.onPageChangeListener
@@ -31,10 +32,12 @@ class MainActivity : AppCompatActivity() {
     val bottomItems = ArrayList<View>() // view
     lateinit var backdropHelper: BackdropHelper
     lateinit var bottomBarClickHelper: BottomBarClickHelper
+    lateinit var keyboardHelper: KeyboardHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ActivityUtils.statusBarSetting(window, this, R.color.brown1, true)
         setContentView(R.layout.activity_main)
+
         setViewPager()
         setRecyclerView()
     }
@@ -71,7 +74,6 @@ class MainActivity : AppCompatActivity() {
                     setBottomBarClickHelper()
                     this@run.setOnTouchListener { v, event ->
                         backdropHelper.onTouch(v, event) or bottomBarClickHelper.onTouch(v, event)
-
                     }
                 }
             })
@@ -97,7 +99,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setBackDropHelper() {
-        backdropHelper = BackdropHelper(this@MainActivity, board_recycler_view)
+        keyboardHelper = KeyboardHelper(this@MainActivity)
+
+        backdropHelper = BackdropHelper(this@MainActivity, board_recycler_view, keyboardHelper)
         val brown = ContextCompat.getColor(this, R.color.brown1)
         val white = ContextCompat.getColor(this, R.color.white2)
 

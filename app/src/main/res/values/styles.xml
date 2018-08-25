@@ -8,7 +8,7 @@
     </style>
 
     <style name="input_box_style">
-        <item name="android:background">@drawable/input_box_radius4dp</item>
+        <item name="android:background">@drawable/white1_soild_brown1_stroke_radius4dp</item>
         <item name="android:paddingStart">12dp</item>
         <item name="android:paddingTop">16dp</item>
         <item name="android:paddingBottom">16dp</item>

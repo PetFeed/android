@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/root"
     android:orientation="vertical"
     tools:context="com.petfeed.petfeed.activity.MainActivity">
 
@@ -44,7 +45,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:alpha="0.3"
-                android:background="@drawable/dummy" />
+                android:background="@drawable/brown1_solid_radius_10dp" />
         </RelativeLayout>
     </FrameLayout>
 

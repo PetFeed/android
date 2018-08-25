@@ -59,7 +59,7 @@
             android:id="@+id/button_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/login_button"
+            android:background="@drawable/brown1_solid_radius_4dp"
             android:fontFamily="@font/nanum_square_round_extra_bold"
             android:text="로그인"
             android:textColor="@android:color/white"
