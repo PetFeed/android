@@ -36,7 +36,7 @@
             android:paddingTop="14dp">
 
             <TextView
-                android:id="@+id/tagName"
+                android:id="@+id/tag_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nanum_square_round_extra_bold"
@@ -59,7 +59,7 @@
                     android:textSize="6sp" />
 
                 <TextView
-                    android:id="@+id/userName"
+                    android:id="@+id/user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nanum_square_round_extra_bold"

@@ -37,8 +37,8 @@ class TrendView : FrameLayout {
         v.run {
             addView(this)
             imageView = findViewById(R.id.image)
-            userNameTextView = findViewById(R.id.userName)
-            tagNameTextView = findViewById(R.id.tagName)
+            userNameTextView = findViewById(R.id.user_name)
+            tagNameTextView = findViewById(R.id.tag_name)
 
         }
     }

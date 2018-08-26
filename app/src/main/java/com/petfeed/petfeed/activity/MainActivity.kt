@@ -2,6 +2,7 @@ package com.petfeed.petfeed.activity
 
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager

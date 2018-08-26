@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.petfeed.petfeed.model.Notification" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@{item.checked? @color/brown1_10 : @android:color/transparent}"
+        android:orientation="horizontal"
+        android:paddingBottom="16dp"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp"
+        android:paddingTop="16dp">
+
+        <com.petfeed.petfeed.view.CircleImageView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_launcher_background" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_square_round_regular"
+                android:text="돌돌이님이 회원님을 팔로우 합니다."
+                android:textColor="@color/black1"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/nanum_square_round_regular"
+                android:text="12분 전"
+                android:textColor="@{item.checked? @color/brown1 : @color/black1_30}"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>
