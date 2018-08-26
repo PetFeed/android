@@ -1,24 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical"
     tools:context=".fragment.SearchFragment">
 
     <com.loopeer.shadow.ShadowView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:cornerRadius="4dp"
+        app:shadowColor="#19000000"
+        app:shadowDx="4"
+        app:shadowDy="4"
+        app:shadowMarginBottom="8dp"
+        app:shadowMarginRight="8dp"
+        app:shadowRadius="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:background="@drawable/white_solid_radius4dp"
             android:orientation="horizontal">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/ic_camera" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="사람, 해시태그, 또는 사진을 검색해보세요."
+                android:textColor="@color/black1"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/ic_search"
+                android:tint="@color/brown1" />
         </LinearLayout>
     </com.loopeer.shadow.ShadowView>
 
@@ -33,18 +69,83 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
+                    style="@style/BigTitle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="트렌드 해시태그" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <com.petfeed.petfeed.view.TrendView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            app:img="@drawable/ic_launcher_background"
+                            app:tag="골든 리트리버"
+                            app:user="인절미" />
+
+                        <com.petfeed.petfeed.view.TrendView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            app:img="@drawable/ic_launcher_background"
+                            app:tag="골든 리트리버"
+                            app:user="인절미" />
+
+                        <com.petfeed.petfeed.view.TrendView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:img="@drawable/ic_launcher_background"
+                            app:tag="골든 리트리버"
+                            app:user="인절미" />
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <com.petfeed.petfeed.view.TrendRankView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:count="4"
+                    app:rank="1"
+                    app:title="시베리안 허스키" />
+
+                <com.petfeed.petfeed.view.TrendRankView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:count="4"
+                    app:rank="2"
+                    app:title="시베리안 허스키" />
+
+                <com.petfeed.petfeed.view.TrendRankView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:count="4"
+                    app:rank="3"
+                    app:title="시베리안 허스키" />
             </LinearLayout>
 
             <TextView
-                style="@style/title_style"
+                style="@style/BigTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
                 android:text="실시간 인기 피드" />
 
             <android.support.v7.widget.RecyclerView

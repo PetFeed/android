@@ -11,4 +11,22 @@
         <attr name="border_width" format="dimension" />
         <attr name="border_color" format="color" />
     </declare-styleable>
+    <declare-styleable name="RoundLayout">
+        <attr name="radius" format="dimension" />
+        <attr name="topLeftRadius" format="dimension" />
+        <attr name="topRightRadius" format="dimension" />
+        <attr name="bottomRightRadius" format="dimension" />
+        <attr name="bottomLeftRadius" format="dimension" />
+        <attr name="outerColor" format="color" />
+    </declare-styleable>
+    <declare-styleable name="TrendView">
+        <attr name="img" format="reference|integer" />
+        <attr name="tag" format="string" />
+        <attr name="user" format="string" />
+    </declare-styleable>
+    <declare-styleable name="TrendRankView">
+        <attr name="rank" format="string" />
+        <attr name="title" format="string" />
+        <attr name="count" format="string" />
+    </declare-styleable>
 </resources>
