@@ -144,7 +144,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:background="@drawable/white1_solid_gray3_stroke_rounded"
+                android:background="@drawable/white1_solid_grey3_stroke_rounded"
                 android:fontFamily="@font/nanum_square_round_regular"
                 android:hint="댓글을 입력해보세요."
                 android:paddingBottom="12dp"

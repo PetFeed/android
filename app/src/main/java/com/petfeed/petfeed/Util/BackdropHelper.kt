@@ -4,13 +4,13 @@ import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import com.petfeed.petfeed.view.RoundedRecyclerView
-import org.jetbrains.anko.displayMetrics
+import com.petfeed.petfeed.util.UIUtils.makeDP
+import com.petfeed.petfeed.util.UIUtils.ratioARGB
 
 class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView, val keyboardHelper: KeyboardHelper) {
 
@@ -129,17 +129,5 @@ class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView
     fun up() {
         animator.setIntValues(mMargin, 0)
         animator.start()
-    }
-
-    companion object {
-        fun makeDP(context: Context, dp: Float): Float = context.displayMetrics.density * dp
-
-        fun ratioARGB(color: Int, ratio: Float): Int {
-            val a = Color.alpha(color) * ratio
-            val r = Color.red(color) * ratio
-            val g = Color.green(color) * ratio
-            val b = Color.blue(color) * ratio
-            return Color.argb(a.toInt(), r.toInt(), g.toInt(), b.toInt())
-        }
     }
 }

@@ -2,7 +2,6 @@ package com.petfeed.petfeed.activity
 
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -10,14 +9,12 @@ import android.view.View
 import android.view.ViewTreeObserver
 import com.github.nitrico.lastadapter.LastAdapter
 import com.petfeed.petfeed.BR
-import com.petfeed.petfeed.MyPagerAdapter
+import com.petfeed.petfeed.adapter.MyPagerAdapter
 import com.petfeed.petfeed.R
-import com.petfeed.petfeed.util.ActivityUtils
-import com.petfeed.petfeed.util.BackdropHelper
-import com.petfeed.petfeed.util.BottomBarClickHelper
-import com.petfeed.petfeed.util.KeyboardHelper
+import com.petfeed.petfeed.util.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.support.v4.onPageChangeListener
 
 class MainActivity : AppCompatActivity() {
@@ -89,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                         view_pager.currentItem = i
                         backdropHelper.down()
                     }
-                    2 -> Unit //TODO:// 그그그 가운데 글올리는거
+                    2 -> startActivity<WriteActivity>()
                     else -> {
                         view_pager.currentItem = i - 1
                         backdropHelper.down()
@@ -115,7 +112,7 @@ class MainActivity : AppCompatActivity() {
                     color = ColorUtils.blendARGB(brown, white, ratio))
 
             view_pager.alpha = ratio
-            content_container.backgroundColor = BackdropHelper.ratioARGB(brown, 1 - ratio)
+            content_container.backgroundColor = UIUtils.ratioARGB(brown, 1 - ratio)
         }
     }
 }

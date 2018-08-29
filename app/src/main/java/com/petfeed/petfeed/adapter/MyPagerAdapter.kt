@@ -1,4 +1,4 @@
-package com.petfeed.petfeed
+package com.petfeed.petfeed.adapter
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
