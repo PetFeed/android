@@ -9,8 +9,8 @@ import android.view.View
 import android.view.ViewTreeObserver
 import com.github.nitrico.lastadapter.LastAdapter
 import com.petfeed.petfeed.BR
-import com.petfeed.petfeed.adapter.MyPagerAdapter
 import com.petfeed.petfeed.R
+import com.petfeed.petfeed.adapter.MyPagerAdapter
 import com.petfeed.petfeed.util.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.backgroundColor
@@ -86,7 +86,10 @@ class MainActivity : AppCompatActivity() {
                         view_pager.currentItem = i
                         backdropHelper.down()
                     }
-                    2 -> startActivity<WriteActivity>()
+                    2 -> {
+                        startActivity<WriteActivity>()
+                        overridePendingTransition(R.anim.slide_in_up, android.R.anim.fade_out)
+                    }
                     else -> {
                         view_pager.currentItem = i - 1
                         backdropHelper.down()

@@ -6,9 +6,9 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
+import android.support.media.ExifInterface
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -20,9 +20,8 @@ import com.github.nitrico.lastadapter.LastAdapter
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.databinding.ItemWriteCardBinding
 import com.petfeed.petfeed.util.ActivityUtils
+import com.petfeed.petfeed.util.ImageUtils
 import com.petfeed.petfeed.util.UIUtils
-import com.petfeed.petfeed.util.UIUtils.exifOrientationToDegrees
-import com.petfeed.petfeed.util.UIUtils.getRealPathFromUri
 import kotlinx.android.synthetic.main.activity_write.*
 import org.jetbrains.anko.imageBitmap
 import org.jetbrains.anko.imageResource
@@ -89,7 +88,7 @@ class WriteActivity : AppCompatActivity() {
     }
 
     fun makePicture(uri: Uri) {
-        val imagePath = getRealPathFromUri(this, uri)
+        val imagePath = ImageUtils.getRealPathFromUri(this, uri)
         Log.e("asdf", "${imagePath}")
         var exif: ExifInterface? = null
         try {
@@ -100,10 +99,10 @@ class WriteActivity : AppCompatActivity() {
 
         val exifOrientation = exif?.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
                 ?: 0
-        val exifDegree = exifOrientationToDegrees(exifOrientation)
+        val exifDegree = ImageUtils.exifOrientationToDegrees(exifOrientation)
 
         val bitmap = BitmapFactory.decodeFile(imagePath)
-        imageArray.add(UIUtils.rotate(bitmap, exifDegree.toFloat()))
+        imageArray.add(ImageUtils.rotate(bitmap, exifDegree.toFloat()))
         image_recycler_view.adapter!!.notifyDataSetChanged()
     }
 
@@ -112,7 +111,7 @@ class WriteActivity : AppCompatActivity() {
                 || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
-                    PERMISSION_CODE);
+                    PERMISSION_CODE)
 
         } else {
             getPictureOnGallery()
@@ -140,5 +139,10 @@ class WriteActivity : AppCompatActivity() {
             android.R.id.home -> finish()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(android.R.anim.fade_in, R.anim.slide_out_down)
     }
 }
