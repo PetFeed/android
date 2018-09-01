@@ -31,7 +31,6 @@ class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView
             field = value
         }
     var onMarginChangeListener: (margin: Int, ratio: Float) -> Unit = { _, _ -> }
-    var isKeyboardUp = false
 
     private val statusBarSize = makeDP(mContext, 24f) // statusBarSize
     private val swipeMinHeight = makeDP(mContext, 12f) // 짧고 빠른 스와이프 기준 //TODO:// 이거 값 확인해서 바꾸기

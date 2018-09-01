@@ -1,12 +1,10 @@
 package com.petfeed.petfeed.util
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.Matrix
-import android.media.ExifInterface
-import android.net.Uri
-import android.provider.MediaStore
+import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
+import android.support.v4.content.ContextCompat
 import org.jetbrains.anko.displayMetrics
 
 object UIUtils {
@@ -19,4 +17,10 @@ object UIUtils {
         val b = Color.blue(color) * ratio
         return Color.argb(a.toInt(), r.toInt(), g.toInt(), b.toInt())
     }
+
+    fun getIcon(context: Context, rid: Int, color: Int = 0, colorId: Int = 0): Drawable =
+            ContextCompat.getDrawable(context, rid)!!.apply {
+                val realColor = if (colorId != 0) ContextCompat.getColor(context, colorId) else color
+                setColorFilter(realColor, PorterDuff.Mode.SRC_ATOP)
+            }
 }

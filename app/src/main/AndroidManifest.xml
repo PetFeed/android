@@ -23,7 +23,7 @@
         <activity android:name=".activity.Register1Activity" />
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.Register2Activity" />
-        <activity android:name=".activity.WriteActivity"></activity>
+        <activity android:name=".activity.WriteActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -34,6 +34,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_path" />
         </provider>
+
+        <activity android:name=".activity.GalleryActivity"></activity>
     </application>
 
 </manifest>
