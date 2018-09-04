@@ -4,76 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@android:color/transparent"
     android:orientation="vertical"
     tools:context=".fragment.SearchFragment">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        app:elevation="0dp">
-
-        <com.loopeer.shadow.ShadowView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            app:cornerRadius="4dp"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:shadowColor="#19000000"
-            app:shadowDx="4"
-            app:shadowDy="4"
-            app:shadowMarginBottom="8dp"
-            app:shadowMarginRight="8dp"
-            app:shadowRadius="8dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:background="@drawable/white_solid_radius4dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginStart="12dp"
-                    android:src="@drawable/ic_camera" />
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:hint="사람, 해시태그, 또는 사진을 검색해보세요."
-                    android:textColor="@color/black1"
-                    android:textSize="12sp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginStart="12dp"
-                    android:src="@drawable/ic_search"
-                    android:tint="@color/brown1" />
-            </LinearLayout>
-        </com.loopeer.shadow.ShadowView>
-    </android.support.design.widget.AppBarLayout>
-
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="100dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -165,4 +107,63 @@
                 tools:listitem="@layout/item_board" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
+
+        <com.loopeer.shadow.ShadowView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:backgroundColor="@android:color/transparent"
+            app:cornerRadius="4dp"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:shadowColor="#19000000"
+            app:shadowDx="4"
+            app:shadowDy="4"
+            app:shadowMarginBottom="8dp"
+            app:shadowMarginRight="8dp"
+            app:shadowRadius="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/white_solid_radius4dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_search" />
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="사람, 해시태그, 또는 사진을 검색해보세요."
+                    android:textAlignment="center"
+                    android:textColor="@color/black1"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_camera"
+                    android:tint="@color/brown1" />
+            </LinearLayout>
+        </com.loopeer.shadow.ShadowView>
+    </android.support.design.widget.AppBarLayout>
 </android.support.design.widget.CoordinatorLayout>
