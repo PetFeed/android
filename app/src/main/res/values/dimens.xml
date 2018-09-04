@@ -2,4 +2,5 @@
 <resources>
     <dimen name="toolbarSize">72dp</dimen>
     <dimen name="bottomButtonSize">52dp</dimen>
+    <dimen name="normalHorizontalMargin">24dp</dimen>
 </resources>

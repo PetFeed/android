@@ -12,6 +12,17 @@
         <item name="actionMenuTextColor">@android:color/white</item>
     </style>
 
+    <style name="RegisterInput">
+        <item name="colorControlNormal">@color/brown1</item>
+        <item name="colorControlActivated">@color/brown1</item>
+        <item name="colorControlHighlight">@color/brown1</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:fontFamily">@font/nanum_square_round_bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black1</item>
+        <item name="android:textColorHint">@color/black1_30</item>
+    </style>
+
     <style name="input_box_style">
         <item name="android:background">@drawable/white1_soild_brown1_stroke_radius4dp</item>
         <item name="android:paddingStart">12dp</item>

@@ -27,7 +27,7 @@ class Register1Activity : AppCompatActivity() {
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(false)
-            setHomeAsUpIndicator(R.drawable.ic_back)
+            setHomeAsUpIndicator(R.drawable.ic_close)
         }
     }
 

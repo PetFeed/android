@@ -5,6 +5,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import com.github.nitrico.lastadapter.LastAdapter
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         setViewPager()
         setRecyclerView()
+        view_pager.requestFocus()
     }
 
     fun setViewPager() {
@@ -101,7 +103,6 @@ class MainActivity : AppCompatActivity() {
 
     fun setBackDropHelper() {
         keyboardHelper = KeyboardHelper(this@MainActivity)
-
         backdropHelper = BackdropHelper(this@MainActivity, board_recycler_view, keyboardHelper)
         val brown = ContextCompat.getColor(this, R.color.brown1)
         val white = ContextCompat.getColor(this, R.color.white2)

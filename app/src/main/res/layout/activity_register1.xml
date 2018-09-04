@@ -9,13 +9,13 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbarSize"
-        android:paddingTop="8dp" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/normalHorizontalMargin"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/nanum_square_round_extra_bold"
         android:text="회원가입"
         android:textColor="@color/black2"
@@ -27,7 +27,7 @@
         android:layout_marginTop="24dp"
         android:orientation="vertical"
         android:paddingEnd="64dp"
-        android:paddingStart="16dp">
+        android:paddingStart="@dimen/normalHorizontalMargin">
 
         <TextView
             android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
 
         <EditText
             android:id="@+id/edit_id"
-            style="@style/input_box_style"
+            style="@style/RegisterInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -53,7 +53,7 @@
         android:layout_marginTop="24dp"
         android:orientation="vertical"
         android:paddingEnd="64dp"
-        android:paddingStart="16dp">
+        android:paddingStart="@dimen/normalHorizontalMargin">
 
         <TextView
             android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
 
         <EditText
             android:id="@+id/edit_password"
-            style="@style/input_box_style"
+            style="@style/RegisterInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -79,7 +79,7 @@
         android:layout_marginTop="24dp"
         android:orientation="vertical"
         android:paddingEnd="64dp"
-        android:paddingStart="16dp">
+        android:paddingStart="@dimen/normalHorizontalMargin">
 
         <TextView
             android:layout_width="wrap_content"
@@ -91,7 +91,7 @@
 
         <EditText
             android:id="@+id/edit_repassword"
-            style="@style/input_box_style"
+            style="@style/RegisterInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"

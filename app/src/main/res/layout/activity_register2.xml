@@ -9,13 +9,13 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbarSize"
-        android:paddingTop="8dp" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/normalHorizontalMargin"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/nanum_square_round_extra_bold"
         android:text="반려동물 등록인증"
         android:textColor="@color/black2"
@@ -24,7 +24,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/normalHorizontalMargin"
         android:layout_marginTop="8dp"
         android:text="자신의 반려동물을 인증해주세요."
         android:textColor="@color/black1_20"
@@ -36,7 +36,7 @@
         android:layout_marginTop="32dp"
         android:orientation="vertical"
         android:paddingEnd="64dp"
-        android:paddingStart="16dp">
+        android:paddingStart="@dimen/normalHorizontalMargin">
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
 
         <EditText
             android:id="@+id/edit_petname"
-            style="@style/input_box_style"
+            style="@style/RegisterInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -62,7 +62,7 @@
         android:layout_marginTop="24dp"
         android:orientation="vertical"
         android:paddingEnd="64dp"
-        android:paddingStart="16dp">
+        android:paddingStart="@dimen/normalHorizontalMargin">
 
         <TextView
             android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
 
         <EditText
             android:id="@+id/edit_number"
-            style="@style/input_box_style"
+            style="@style/RegisterInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
