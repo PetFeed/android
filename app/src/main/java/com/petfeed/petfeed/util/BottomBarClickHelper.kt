@@ -1,6 +1,5 @@
 package com.petfeed.petfeed.util
 
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 
@@ -36,7 +35,7 @@ class BottomBarClickHelper(val items: Array<View>) {
                     MotionEvent.ACTION_MOVE -> {
                         if (currentItem == -1)
                             return@onTouch false
-                        if (!checkIsIn(x, y, currentItem)){
+                        if (!checkIsIn(x, y, currentItem)) {
                             currentItem = -1
                             return@onTouch true
                         }

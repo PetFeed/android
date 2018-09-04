@@ -25,6 +25,7 @@ class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView
             mMargin = it.animatedValue as Int
         }
     }
+
     var mMargin = 0
         set(value) {
             onMarginChange(value)

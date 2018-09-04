@@ -25,6 +25,7 @@ class CircleImageView : ImageView {
     private val mBorderRect = RectF()
 
     private val mShaderMatrix = Matrix()
+
     private val mBitmapPaint = Paint()
     private val mBorderPaint = Paint()
 
