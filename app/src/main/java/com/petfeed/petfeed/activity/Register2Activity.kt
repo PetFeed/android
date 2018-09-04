@@ -2,6 +2,7 @@ package com.petfeed.petfeed.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
 import android.view.MenuItem
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.util.ActivityUtils
@@ -18,8 +19,7 @@ class Register2Activity : AppCompatActivity() {
         setToolbar()
 
         button_done.onClick {
-            startActivity<MainActivity>()
-            finishAffinity()
+            startMain()
         }
     }
 
@@ -32,10 +32,21 @@ class Register2Activity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.register2, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> finish()
+            R.id.skip -> startMain()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun startMain() {
+        startActivity<MainActivity>()
+        finishAffinity()
     }
 }
