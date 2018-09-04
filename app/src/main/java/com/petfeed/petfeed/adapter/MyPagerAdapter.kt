@@ -12,8 +12,8 @@ class MyPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     override fun getItem(position: Int): Fragment = when (position) {
         0 -> SearchFragment.newInstance()
         1 -> NotificationFragment.newInstance()
-        2 -> ProfileFragment.newInstance()
-        3 -> MarketFragment.newInstance()
+        2 -> MarketFragment.newInstance()
+        3 -> ProfileFragment.newInstance()
         else -> SearchFragment.newInstance()
     }
 

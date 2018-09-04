@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp">
+
+        <ImageView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/brown1_solid_radius"
+            android:padding="9dp"
+            android:src="@drawable/ic_subscribe"
+            android:tint="@android:color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:lineSpacingExtra="3dp"
+            android:text="회원님이 까미님의 피드에 댓글을 남겼습니다 :
+“우리 다게는 언제쯤 할 수 있으련지 ㅜ“"
+            android:textColor="@color/black1"
+            android:textSize="12sp" />
+    </LinearLayout>
+</layout>
