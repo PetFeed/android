@@ -100,7 +100,7 @@
                 android:text="실시간 인기 피드" />
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/board_recycler_view"
+                android:id="@+id/boardRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"

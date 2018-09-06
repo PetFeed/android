@@ -47,7 +47,7 @@ class GalleryActivity : AppCompatActivity() {
 
     private fun setRecyclerView() {
         items.addAll(ImageUtils.getPathOfAllImages(this))
-        gallery_recycler_view.run {
+        galleyRecyclerView.run {
             layoutManager = GridLayoutManager(this@GalleryActivity, 3)
             adapter = LastAdapter(items, BR.item)
                     .map<String, ItemGalleryBinding>(R.layout.item_gallery) {

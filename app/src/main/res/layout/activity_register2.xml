@@ -47,7 +47,7 @@
             android:textSize="14sp" />
 
         <EditText
-            android:id="@+id/edit_petname"
+            android:id="@+id/petNameEditText"
             style="@style/RegisterInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
             android:textSize="14sp" />
 
         <EditText
-            android:id="@+id/edit_number"
+            android:id="@+id/numberEditText"
             style="@style/RegisterInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
         android:layout_weight="1" />
 
     <Button
-        android:id="@+id/button_done"
+        android:id="@+id/doneButton"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottomButtonSize"
         android:background="@color/brown1"

@@ -36,7 +36,7 @@ class SearchFragment : Fragment() {
     }
 
     fun setRecyclerView() {
-        board_recycler_view.run {
+        boardRecyclerView.run {
             LastAdapter(boards, BR.item)
                     .map<String>(R.layout.item_board)
                     .into(this)

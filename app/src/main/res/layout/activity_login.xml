@@ -20,7 +20,7 @@
         tools:ignore="ContentDescription" />
 
     <EditText
-        android:id="@+id/edit_id"
+        android:id="@+id/idEditText"
         style="@style/input_box_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
         android:inputType="text" />
 
     <EditText
-        android:id="@+id/edit_password"
+        android:id="@+id/pwEditText"
         style="@style/input_box_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
         app:shadowRadius="8dp">
 
         <Button
-            android:id="@+id/button_login"
+            android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/brown1_solid_radius_4dp"
@@ -74,7 +74,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/text_find_id"
+            android:id="@+id/findIdTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nanum_square_round_extra_bold"
@@ -84,7 +84,7 @@
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/text_find_password"
+            android:id="@+id/findPwTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nanum_square_round_extra_bold"
@@ -116,7 +116,7 @@
         android:background="@color/brown1" />
 
     <LinearLayout
-        android:id="@+id/container_register"
+        android:id="@+id/containerRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

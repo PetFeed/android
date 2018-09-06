@@ -5,7 +5,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import com.github.nitrico.lastadapter.LastAdapter
@@ -39,30 +38,30 @@ class MainActivity : AppCompatActivity() {
 
         setViewPager()
         setRecyclerView()
-        view_pager.requestFocus()
+        viewPager.requestFocus()
     }
 
     fun setViewPager() {
         bottomItems.run {
-            add(bottom_tab_item1)
-            add(bottom_tab_item2)
-            add(bottom_tab_item3)
-            add(bottom_tab_item4)
-            add(bottom_tab_item5)
+            add(bottomTabItem1)
+            add(bottomTabItem2)
+            add(bottomTabItem3)
+            add(bottomTabItem4)
+            add(bottomTabItem5)
         }
-        view_pager.adapter = MyPagerAdapter(supportFragmentManager)
-        view_pager.onPageChangeListener {
+        viewPager.adapter = MyPagerAdapter(supportFragmentManager)
+        viewPager.onPageChangeListener {
             onPageSelected {
                 bottomItems.filterIndexed { i, _ -> i != 2 }.forEachIndexed { i, v ->
                     v.alpha = if (i == it) 1.0f else 0.3f
                 }
             }
         }
-        view_pager.currentItem = 0
+        viewPager.currentItem = 0
     }
 
     fun setRecyclerView() {
-        board_recycler_view.run {
+        boardRecyclerView.run {
             LastAdapter(boards, BR.item)
                     .map<String>(R.layout.item_board)
                     .into(this)
@@ -85,7 +84,7 @@ class MainActivity : AppCompatActivity() {
             onClickItem = { v, i ->
                 when (i) {
                     in 0..1 -> {
-                        view_pager.currentItem = i
+                        viewPager.currentItem = i
                         backdropHelper.down()
                     }
                     2 -> {
@@ -93,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                         overridePendingTransition(R.anim.slide_in_up, android.R.anim.fade_out)
                     }
                     else -> {
-                        view_pager.currentItem = i - 1
+                        viewPager.currentItem = i - 1
                         backdropHelper.down()
                     }
                 }
@@ -103,20 +102,20 @@ class MainActivity : AppCompatActivity() {
 
     fun setBackDropHelper() {
         keyboardHelper = KeyboardHelper(this@MainActivity)
-        backdropHelper = BackdropHelper(this@MainActivity, board_recycler_view, keyboardHelper)
+        backdropHelper = BackdropHelper(this@MainActivity, boardRecyclerView, keyboardHelper)
         val brown = ContextCompat.getColor(this, R.color.brown1)
         val white = ContextCompat.getColor(this, R.color.white2)
 
         backdropHelper.onMarginChangeListener = { _, ratio ->
-            dummy_view.alpha = 0.3f * (1 - ratio)
+            dummyView.alpha = 0.3f * (1 - ratio)
 
             ActivityUtils.statusBarSetting(window,
                     this,
                     iconWhite = ratio < 0.5f,
                     color = ColorUtils.blendARGB(brown, white, ratio))
 
-            view_pager.alpha = ratio
-            content_container.backgroundColor = UIUtils.ratioARGB(brown, 1 - ratio)
+            viewPager.alpha = ratio
+            contentContainer.backgroundColor = UIUtils.ratioARGB(brown, 1 - ratio)
         }
     }
 }

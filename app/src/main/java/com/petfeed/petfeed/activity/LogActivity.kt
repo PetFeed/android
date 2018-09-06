@@ -45,8 +45,8 @@ class LogActivity : AppCompatActivity() {
                         it.itemView.backgroundColor = ContextCompat.getColor(this@LogActivity, R.color.brown1_10)
                     }
                 }
-                .into(log_recycler_view)
-        log_recycler_view.layoutManager = LinearLayoutManager(this@LogActivity)
+                .into(logRecyclerView)
+        logRecyclerView.layoutManager = LinearLayoutManager(this@LogActivity)
     }
 
     private fun setToolbar() {

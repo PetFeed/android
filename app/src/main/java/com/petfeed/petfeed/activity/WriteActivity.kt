@@ -35,14 +35,14 @@ class WriteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_write)
         setToolbar()
         setRecyclerView()
-        write_button.onClick {
+        writeButton.onClick {
             finish()
         }
     }
 
     private fun setRecyclerView() {
         imageArray.add(0)
-        image_recycler_view.run {
+        imageRecyclerView.run {
             layoutManager = LinearLayoutManager(this@WriteActivity, LinearLayoutManager.HORIZONTAL, false)
             LastAdapter(imageArray, BR.item)
                     .map<Int, ItemWriteAddBinding>(R.layout.item_write_add) {
@@ -106,7 +106,7 @@ class WriteActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == GALLERY_CODE) {
             imageArray.addAll(data!!.getStringArrayExtra("paths"))
-            image_recycler_view.adapter!!.notifyDataSetChanged()
+            imageRecyclerView.adapter!!.notifyDataSetChanged()
         }
     }
 

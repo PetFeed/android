@@ -16,11 +16,11 @@ class LoginActivity : AppCompatActivity() {
         ActivityUtils.statusBarSetting(window, this, R.color.white2)
         setContentView(R.layout.activity_login)
 
-        button_login.onClick {
+        loginButton.onClick {
             startActivity<MainActivity>()
             finish()
         }
-        container_register.onClick {
+        containerRegister.onClick {
             startActivity<Register1Activity>()
         }
     }

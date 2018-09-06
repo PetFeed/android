@@ -46,11 +46,11 @@ class NotificationFragment : Fragment() {
         items.add("이전 알림")
         items.addAll(oldNotificationList)
 
-        notification_recycler_view.layoutManager = LinearLayoutManager(context)
+        notificationRecyclerView.layoutManager = LinearLayoutManager(context)
         LastAdapter(items, BR.item)
                 .map<String>(R.layout.item_notification_title)
                 .map<Notification>(R.layout.item_notification_content)
-                .into(notification_recycler_view)
+                .into(notificationRecyclerView)
     }
 
     companion object {

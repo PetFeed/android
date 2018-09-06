@@ -18,7 +18,7 @@ class Register2Activity : AppCompatActivity() {
         setContentView(R.layout.activity_register2)
         setToolbar()
 
-        button_done.onClick {
+        doneButton.onClick {
             startMain()
         }
     }

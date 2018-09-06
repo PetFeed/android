@@ -18,7 +18,7 @@
             android:layout_marginEnd="8dp">
 
             <TextView
-                android:id="@+id/write_button"
+                android:id="@+id/writeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -88,7 +88,7 @@
         android:textSize="12sp" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/image_recycler_view"
+        android:id="@+id/imageRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginBottom="16dp"

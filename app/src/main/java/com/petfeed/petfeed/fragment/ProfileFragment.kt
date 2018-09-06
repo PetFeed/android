@@ -37,14 +37,14 @@ class ProfileFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setRecyclerView()
-        log_button.onClick {
+        logButton.onClick {
             startActivity<LogActivity>()
         }
     }
 
 
     fun setRecyclerView() {
-        board_recycler_view.run {
+        boardRecyclerView.run {
             LastAdapter(boards, BR.item)
                     .map<String>(R.layout.item_board)
                     .into(this)

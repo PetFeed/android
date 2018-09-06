@@ -38,7 +38,7 @@
             android:textSize="14sp" />
 
         <EditText
-            android:id="@+id/edit_id"
+            android:id="@+id/idEditText"
             style="@style/RegisterInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
             android:textSize="14sp" />
 
         <EditText
-            android:id="@+id/edit_password"
+            android:id="@+id/pwEditText"
             style="@style/RegisterInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
             android:textSize="14sp" />
 
         <EditText
-            android:id="@+id/edit_repassword"
+            android:id="@+id/repwEditText"
             style="@style/RegisterInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
         android:layout_weight="1" />
 
     <Button
-        android:id="@+id/button_next"
+        android:id="@+id/nextButton"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottomButtonSize"
         android:background="@color/brown1"
