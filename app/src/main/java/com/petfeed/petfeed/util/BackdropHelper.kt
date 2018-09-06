@@ -9,6 +9,7 @@ import android.widget.RelativeLayout
 import com.petfeed.petfeed.util.UIUtils.makeDP
 import com.petfeed.petfeed.util.UIUtils.ratioARGB
 import com.petfeed.petfeed.view.RoundedRecyclerView
+import kotlin.math.absoluteValue
 
 class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView, val keyboardHelper: KeyboardHelper) {
 
@@ -36,17 +37,20 @@ class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView
     private val swipeMinHeight = makeDP(mContext, 12f) // 짧고 빠른 스와이프 기준 //TODO:// 이거 값 확인해서 바꾸기
     private val maxMarginSize = contentViewHeight - topHeight - contentView.paddingBottom
 
+    val dp16 = makeDP(mContext, 16f)
+    val dp4 = makeDP(mContext, 4f)
+    var lastMargin = dp16
     private fun onMarginChange(margin: Int) {
         val ratio = margin.toFloat() / maxMarginSize
-        val horizontalMargin = ratio * makeDP(mContext, 16f)
+        val horizontalMargin: Int = if ((lastMargin - ratio * dp16).toInt().absoluteValue >= dp4) (ratio * dp16).toInt() else lastMargin.toInt()
 
-        contentParams.setMargins(horizontalMargin.toInt(), margin, horizontalMargin.toInt(), 0)
+        contentParams.setMargins(horizontalMargin, margin, horizontalMargin, 0)
         contentView.run {
             layoutParams = contentParams
             childAlpha = 1 - ratio
             backColor = ratioARGB(Color.WHITE, 1 - ratio)
             innerColor = ratioARGB(Color.parseColor("#4d442d26"), ratio)
-            radius = makeDP(mContext, 16f) - ratio * makeDP(mContext, 4f)
+            radius = dp16 - ratio * dp4
             descendantFocusability =
                     if (ratio == 0f) ViewGroup.FOCUS_AFTER_DESCENDANTS
                     else ViewGroup.FOCUS_BLOCK_DESCENDANTS
@@ -116,5 +120,6 @@ class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView
             endValue = 0
             start()
         }
+        animator.start()
     }
 }
