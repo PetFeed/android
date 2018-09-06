@@ -1,16 +1,14 @@
 package com.petfeed.petfeed.util
 
-import android.animation.Animator
-import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
-import com.petfeed.petfeed.view.RoundedRecyclerView
 import com.petfeed.petfeed.util.UIUtils.makeDP
 import com.petfeed.petfeed.util.UIUtils.ratioARGB
+import com.petfeed.petfeed.view.RoundedRecyclerView
 
 class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView, val keyboardHelper: KeyboardHelper) {
 
@@ -19,11 +17,12 @@ class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView
     val topHeight = contentView.topHeight
 
     var isScroll = false
-    val animator: ValueAnimator = ValueAnimator.ofInt().apply {
+
+    val animator: CustomAnimator = CustomAnimator().apply {
         duration = 300
-        addUpdateListener {
-            mMargin = it.animatedValue as Int
-        }
+        onAnimationUpdate = { mMargin = it }
+        onAnimationEnd = { isScroll = false }
+        onAnimationCancel = { isScroll = false }
     }
 
     var mMargin = 0
@@ -36,24 +35,6 @@ class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView
     private val statusBarSize = makeDP(mContext, 24f) // statusBarSize
     private val swipeMinHeight = makeDP(mContext, 12f) // 짧고 빠른 스와이프 기준 //TODO:// 이거 값 확인해서 바꾸기
     private val maxMarginSize = contentViewHeight - topHeight - contentView.paddingBottom
-
-    init {
-        animator.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(p0: Animator?) {
-            }
-
-            override fun onAnimationEnd(p0: Animator?) {
-                isScroll = false
-            }
-
-            override fun onAnimationCancel(p0: Animator?) {
-                isScroll = false
-            }
-
-            override fun onAnimationStart(p0: Animator?) {
-            }
-        })
-    }
 
     private fun onMarginChange(margin: Int) {
         val ratio = margin.toFloat() / maxMarginSize
@@ -122,12 +103,18 @@ class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView
             }
 
     fun down() {
-        animator.setIntValues(mMargin, maxMarginSize.toInt())
-        animator.start()
+        animator.run {
+            startValue = mMargin
+            endValue = maxMarginSize.toInt()
+            start()
+        }
     }
 
     fun up() {
-        animator.setIntValues(mMargin, 0)
-        animator.start()
+        animator.run {
+            startValue = mMargin
+            endValue = 0
+            start()
+        }
     }
 }
