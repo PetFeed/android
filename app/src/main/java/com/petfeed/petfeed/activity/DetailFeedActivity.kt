@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import com.github.nitrico.lastadapter.LastAdapter
 import com.petfeed.petfeed.BR
 import com.petfeed.petfeed.R
+import com.petfeed.petfeed.util.ActivityUtils
 import kotlinx.android.synthetic.main.activity_detail_feed.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
@@ -27,6 +28,7 @@ class DetailFeedActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ActivityUtils.statusBarSetting(window, this, R.color.white1, false)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_feed)
 
