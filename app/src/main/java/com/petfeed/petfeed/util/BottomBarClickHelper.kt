@@ -1,5 +1,6 @@
 package com.petfeed.petfeed.util
 
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 

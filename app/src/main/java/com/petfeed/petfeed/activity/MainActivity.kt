@@ -5,12 +5,15 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewTreeObserver
 import com.github.nitrico.lastadapter.LastAdapter
 import com.petfeed.petfeed.BR
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.adapter.MyPagerAdapter
+import com.petfeed.petfeed.databinding.ItemBoardBinding
 import com.petfeed.petfeed.util.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.backgroundColor
@@ -37,8 +40,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setViewPager()
-        setRecyclerView()
         viewPager.requestFocus()
+        boardRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                boardRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                setRecyclerView()
+            }
+        })
     }
 
     fun setViewPager() {
@@ -61,21 +69,50 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setRecyclerView() {
+        val statusBarSize = UIUtils.makeDP(this, 24f)
         boardRecyclerView.run {
-            LastAdapter(boards, BR.item)
-                    .map<String>(R.layout.item_board)
-                    .into(this)
             layoutManager = LinearLayoutManager(this@MainActivity)
-            viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    this@run.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    setBackDropHelper()
-                    setBottomBarClickHelper()
-                    this@run.setOnTouchListener { v, event ->
-                        backdropHelper.onTouch(v, event) or bottomBarClickHelper.onTouch(v, event)
+            LastAdapter(boards, BR.item)
+                    .map<String, ItemBoardBinding>(R.layout.item_board) {
+
+                        var pressStartTime: Long = 0
+                        var isValid = false
+                        onCreate {
+                            it.itemView.setOnTouchListener itemClick@{ v, e ->
+                                val y = e.rawY
+                                when (e.action) {
+                                    MotionEvent.ACTION_DOWN -> {
+                                        Log.e("Asdfasdf", "${(this@run).y}  ${y}")
+                                        if (y < bottomTabBar.y && y > topHeight + statusBarSize) {
+                                            isValid = true
+                                            pressStartTime = System.currentTimeMillis()
+                                        }
+                                    }
+                                    MotionEvent.ACTION_MOVE -> {
+                                        if (isValid) {
+                                            if (y >= bottomTabBar.y || y <= topHeight + statusBarSize) {
+                                                isValid = false
+                                            }
+                                        }
+                                    }
+                                    MotionEvent.ACTION_UP -> {
+                                        val duration = pressStartTime - System.currentTimeMillis()
+                                        if (duration < 200) {
+                                            startActivity<DetailFeedActivity>()
+                                        }
+
+                                    }
+                                }
+                                isValid
+                            }
+                        }
                     }
-                }
-            })
+                    .into(this)
+            setBackDropHelper()
+            setBottomBarClickHelper()
+            this@run.setOnTouchListener { v, event ->
+                backdropHelper.onTouch(v, event) or bottomBarClickHelper.onTouch(v, event)
+            }
         }
     }
 

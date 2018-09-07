@@ -36,7 +36,8 @@
         </provider>
 
         <activity android:name=".activity.GalleryActivity" />
-        <activity android:name=".activity.LogActivity"></activity>
+        <activity android:name=".activity.LogActivity" />
+        <activity android:name=".activity.DetailFeedActivity"></activity>
     </application>
 
 </manifest>
