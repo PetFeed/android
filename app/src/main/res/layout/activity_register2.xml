@@ -54,6 +54,12 @@
             android:layout_marginTop="12dp"
             android:hint="이름 입력"
             android:inputType="text" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/brown1" />
     </LinearLayout>
 
     <LinearLayout
@@ -81,6 +87,12 @@
             android:hint="등록번호 입력"
             android:inputType="number"
             android:maxLength="15" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/brown1" />
     </LinearLayout>
 
     <View

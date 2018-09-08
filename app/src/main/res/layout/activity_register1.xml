@@ -45,6 +45,12 @@
             android:layout_marginTop="12dp"
             android:hint="아이디 입력"
             android:inputType="text" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/brown1" />
     </LinearLayout>
 
     <LinearLayout
@@ -71,6 +77,12 @@
             android:layout_marginTop="12dp"
             android:hint="비밀번호 입력"
             android:inputType="textPassword" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/brown1" />
     </LinearLayout>
 
     <LinearLayout
@@ -97,6 +109,12 @@
             android:layout_marginTop="12dp"
             android:hint="비밀번호 재 입력"
             android:inputType="textPassword" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/brown1" />
     </LinearLayout>
 
     <View
