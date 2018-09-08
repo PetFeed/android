@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -127,32 +128,48 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="12dp">
 
             <com.petfeed.petfeed.view.CircleImageView
+                android:id="@+id/profileImage"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_launcher_background" />
+                android:layout_marginTop="4dp"
+                android:src="@drawable/ic_launcher_background"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:layout_width="match_parent"
+                android:id="@+id/commitEditText"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:background="@drawable/white1_solid_grey3_stroke_rounded"
                 android:fontFamily="@font/nanum_square_round_regular"
                 android:hint="댓글을 입력해보세요."
                 android:paddingBottom="12dp"
-                android:paddingEnd="16dp"
+                android:paddingEnd="64dp"
                 android:paddingStart="16dp"
                 android:paddingTop="12dp"
-                android:textSize="12sp" />
-        </LinearLayout>
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/profileImage" />
+
+            <ImageView
+                android:id="@+id/luvButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="14dp"
+                android:alpha="0.3"
+                android:src="@drawable/ic_luv"
+                app:layout_constraintBottom_toBottomOf="@id/commitEditText"
+                app:layout_constraintEnd_toEndOf="@id/commitEditText"
+                app:layout_constraintTop_toTopOf="@id/commitEditText" />
+        </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 </layout>

@@ -75,22 +75,23 @@ class MainActivity : AppCompatActivity() {
             LastAdapter(boards, BR.item)
                     .map<String, ItemBoardBinding>(R.layout.item_board) {
 
+                        // 아이탬 클릭
                         var pressStartTime: Long = 0
                         var isValid = false
+
                         onCreate {
                             it.itemView.setOnTouchListener itemClick@{ v, e ->
                                 val y = e.rawY
                                 when (e.action) {
                                     MotionEvent.ACTION_DOWN -> {
-                                        Log.e("Asdfasdf", "${(this@run).y}  ${y}")
-                                        if (y < bottomTabBar.y && y > topHeight + statusBarSize) {
+                                        if (y < bottomTabBar.y && y > (topHeight * 3 + statusBarSize)) {
                                             isValid = true
                                             pressStartTime = System.currentTimeMillis()
                                         }
                                     }
                                     MotionEvent.ACTION_MOVE -> {
                                         if (isValid) {
-                                            if (y >= bottomTabBar.y || y <= topHeight + statusBarSize) {
+                                            if (y >= bottomTabBar.y || y <= topHeight * 3 + statusBarSize) {
                                                 isValid = false
                                             }
                                         }
@@ -155,4 +156,6 @@ class MainActivity : AppCompatActivity() {
             contentContainer.backgroundColor = UIUtils.ratioARGB(brown, 1 - ratio)
         }
     }
+
+
 }

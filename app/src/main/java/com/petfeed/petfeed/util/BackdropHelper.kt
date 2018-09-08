@@ -70,7 +70,7 @@ class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView
                     }
                     isScroll =
                             if (contentView.height == contentViewHeight)
-                                e.y <= topHeight * 1.5
+                                e.y <= topHeight * 3
                             else
                                 contentView.height <= (maxMarginSize).toInt()
                 }
