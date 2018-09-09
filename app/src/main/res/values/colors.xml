@@ -7,11 +7,9 @@
     <color name="brown1">#442d26</color>
     <color name="brown1_10">#19442d26</color>
     <color name="brown2">#412b24</color>
-    <color name="grey1">#d0d0d0</color>
-    <color name="grey2">#979797</color>
-    <color name="grey3">#d4d4d4</color>
+    <color name="grey1">#979797</color>
+    <color name="grey2">#d4d4d4</color>
     <color name="white1">#f7f7f7</color>
     <color name="white2">#f4f4f4</color>
-
-    <!--TODO:// 제플린 모든 색깔 정리 적용 -->
+    <color name="white3">#fff9f5</color>
 </resources>

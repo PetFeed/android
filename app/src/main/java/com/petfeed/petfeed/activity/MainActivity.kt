@@ -5,8 +5,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewTreeObserver
 import com.github.nitrico.lastadapter.LastAdapter
@@ -17,6 +15,7 @@ import com.petfeed.petfeed.databinding.ItemBoardBinding
 import com.petfeed.petfeed.util.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.support.v4.onPageChangeListener
 
@@ -34,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var backdropHelper: BackdropHelper
     lateinit var bottomBarClickHelper: BottomBarClickHelper
     lateinit var keyboardHelper: KeyboardHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ActivityUtils.statusBarSetting(window, this, R.color.brown1, true)
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun setViewPager() {
+    private fun setViewPager() {
         bottomItems.run {
             add(bottomTabItem1)
             add(bottomTabItem2)
@@ -68,56 +68,33 @@ class MainActivity : AppCompatActivity() {
         viewPager.currentItem = 0
     }
 
-    fun setRecyclerView() {
+    private fun setRecyclerView() {
         val statusBarSize = UIUtils.makeDP(this, 24f)
         boardRecyclerView.run {
             layoutManager = LinearLayoutManager(this@MainActivity)
             LastAdapter(boards, BR.item)
                     .map<String, ItemBoardBinding>(R.layout.item_board) {
 
-                        // 아이탬 클릭
-                        var pressStartTime: Long = 0
-                        var isValid = false
-
                         onCreate {
-                            it.itemView.setOnTouchListener itemClick@{ v, e ->
-                                val y = e.rawY
-                                when (e.action) {
-                                    MotionEvent.ACTION_DOWN -> {
-                                        if (y < bottomTabBar.y && y > (topHeight * 3 + statusBarSize)) {
-                                            isValid = true
-                                            pressStartTime = System.currentTimeMillis()
-                                        }
-                                    }
-                                    MotionEvent.ACTION_MOVE -> {
-                                        if (isValid) {
-                                            if (y >= bottomTabBar.y || y <= topHeight * 3 + statusBarSize) {
-                                                isValid = false
-                                            }
-                                        }
-                                    }
-                                    MotionEvent.ACTION_UP -> {
-                                        val duration = pressStartTime - System.currentTimeMillis()
-                                        if (duration < 200) {
-                                            startActivity<DetailFeedActivity>()
-                                        }
-
-                                    }
-                                }
-                                isValid
+                            it.itemView.onClick {
+                                startActivity<DetailFeedActivity>()
                             }
                         }
                     }
                     .into(this)
             setBackDropHelper()
             setBottomBarClickHelper()
-            this@run.setOnTouchListener { v, event ->
-                backdropHelper.onTouch(v, event) or bottomBarClickHelper.onTouch(v, event)
+            this@run.setOnTouchListener { _, event ->
+                backdropHelper.onTouch(event) or bottomBarClickHelper.onTouch(event)
+            }
+            this@run.onInterceptTouchEvent = { event ->
+                val y = event.rawY
+                y > bottomTabBar.y || y < (topHeight * 3 + statusBarSize)
             }
         }
     }
 
-    fun setBottomBarClickHelper() { // bottomBarItem onClicks
+    private fun setBottomBarClickHelper() { // bottomBarItem onClicks
         bottomBarClickHelper = BottomBarClickHelper(bottomItems.toTypedArray()).apply {
             onClickItem = { v, i ->
                 when (i) {
@@ -138,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun setBackDropHelper() {
+    private fun setBackDropHelper() {
         keyboardHelper = KeyboardHelper(this@MainActivity)
         backdropHelper = BackdropHelper(this@MainActivity, boardRecyclerView, keyboardHelper)
         val brown = ContextCompat.getColor(this, R.color.brown1)

@@ -68,15 +68,13 @@
         </LinearLayout>
 
         <TextView
+            style="@style/FeedContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:lineSpacingExtra="3dp"
-            android:text="그냥 찍어도 화보처럼 나오는 우리 까미 이쁘게 봐주세요 ^_^"
-            android:textColor="@color/black1"
-            android:textSize="12sp" />
+            android:text="그냥 찍어도 화보처럼 나오는 우리 까미 이쁘게 봐주세요 ^_^" />
 
         <ImageView
             android:layout_width="match_parent"

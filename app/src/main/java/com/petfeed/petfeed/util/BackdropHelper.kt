@@ -3,7 +3,6 @@ package com.petfeed.petfeed.util
 import android.content.Context
 import android.graphics.Color
 import android.view.MotionEvent
-import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import com.petfeed.petfeed.util.UIUtils.makeDP
@@ -61,8 +60,8 @@ class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView
 
     var degreeY = 0 // 차이
     var lastY = 0 // 바뀌기 전Y
-    val onTouch: (View, MotionEvent) -> Boolean =
-            onTouch@{ _, e ->
+    val onTouch: (MotionEvent) -> Boolean =
+            onTouch@{ e ->
                 if (e.action == MotionEvent.ACTION_DOWN) {
                     if (keyboardHelper.isKeyboardVisible()) {
                         keyboardHelper.hideKeyboard()

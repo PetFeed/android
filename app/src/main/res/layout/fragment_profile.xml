@@ -118,12 +118,10 @@
                 android:orientation="vertical">
 
                 <TextView
+                    style="@style/BigTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/nanum_square_round_extra_bold"
-                    android:text="다게"
-                    android:textColor="@color/black1"
-                    android:textSize="24sp" />
+                    android:text="다게" />
 
                 <TextView
                     android:layout_width="match_parent"

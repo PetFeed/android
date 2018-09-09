@@ -1,6 +1,5 @@
 package com.petfeed.petfeed.util
 
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 
@@ -19,8 +18,8 @@ class BottomBarClickHelper(val items: Array<View>) {
         }
     }
 
-    val onTouch: (View, MotionEvent) -> Boolean =
-            onTouch@{ v, e ->
+    val onTouch: (MotionEvent) -> Boolean =
+            onTouch@{ e ->
                 val x = e.rawX
                 val y = e.rawY
                 when (e.action) {

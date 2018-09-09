@@ -5,6 +5,7 @@ import android.content.res.TypedArray
 import android.graphics.*
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import com.petfeed.petfeed.R
 import org.jetbrains.anko.childrenSequence
@@ -42,6 +43,8 @@ class RoundedRecyclerView : RecyclerView {
             invalidate()
         }
     var childAlpha = 1f
+
+    var onInterceptTouchEvent: ((MotionEvent) -> Boolean)? = null
 
     constructor(context: Context?) : super(context!!)
     constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs) {
@@ -116,5 +119,16 @@ class RoundedRecyclerView : RecyclerView {
 
     override fun performClick(): Boolean {
         return super.performClick()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        return super.dispatchTouchEvent(ev)
+    }
+
+    override fun onInterceptTouchEvent(e: MotionEvent?): Boolean {
+        if (onInterceptTouchEvent != null) {
+            return onInterceptTouchEvent?.invoke(e!!)!! || super.onInterceptTouchEvent(e)
+        }
+        return super.onInterceptTouchEvent(e)
     }
 }

@@ -70,7 +70,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:background="@color/grey2" />
+        android:background="@color/grey1" />
 
     <EditText
         android:layout_width="match_parent"
@@ -84,7 +84,7 @@
         android:paddingEnd="16dp"
         android:paddingStart="16dp"
         android:textColor="@color/black1"
-        android:textColorHint="@color/grey2"
+        android:textColorHint="@color/grey1"
         android:textSize="12sp" />
 
     <android.support.v7.widget.RecyclerView

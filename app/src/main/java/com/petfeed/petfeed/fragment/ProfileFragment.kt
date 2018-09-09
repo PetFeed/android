@@ -11,6 +11,7 @@ import com.github.nitrico.lastadapter.LastAdapter
 import com.petfeed.petfeed.BR
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.activity.LogActivity
+import com.petfeed.petfeed.activity.SettingActivity
 import kotlinx.android.synthetic.main.fragment_profile.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.startActivity
@@ -40,10 +41,13 @@ class ProfileFragment : Fragment() {
         logButton.onClick {
             startActivity<LogActivity>()
         }
+        settingButton.onClick {
+            startActivity<SettingActivity>()
+        }
     }
 
 
-    fun setRecyclerView() {
+    private fun setRecyclerView() {
         boardRecyclerView.run {
             LastAdapter(boards, BR.item)
                     .map<String>(R.layout.item_board)
