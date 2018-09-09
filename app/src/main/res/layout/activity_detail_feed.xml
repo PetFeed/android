@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical"
     tools:context=".activity.DetailFeedActivity">
 
     <LinearLayout
+        android:id="@+id/topContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -29,7 +31,7 @@
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_launcher_background" />
+            android:src="@drawable/pic_5" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -71,7 +73,10 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/topContainer"
+        android:layout_marginBottom="52dp"
+        android:background="@android:color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -94,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher_background" />
+                android:src="@drawable/pic_7" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -144,44 +149,51 @@
                 android:id="@+id/commentRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@android:color/white"
+                android:clipToPadding="true"
+                android:paddingBottom="12dp" />
 
-            <com.loopeer.shadow.ShadowView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:shadowColor="#26000000"
-                app:shadowDy="-1"
-                app:shadowMarginTop="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:orientation="horizontal"
-                    android:paddingBottom="8dp"
-                    android:paddingEnd="16dp"
-                    android:paddingStart="16dp"
-                    android:paddingTop="8dp">
-
-                    <com.petfeed.petfeed.view.CircleImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="8dp"
-                        android:src="@drawable/ic_launcher_background" />
-
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/white1_solid_grey3_stroke_rounded"
-                        android:fontFamily="@font/nanum_square_round_regular"
-                        android:hint="댓글을 입력해보세요."
-                        android:paddingEnd="12dp"
-                        android:paddingStart="12dp"
-                        android:textColor="@color/black1"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </com.loopeer.shadow.ShadowView>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-</LinearLayout>
+
+    <com.loopeer.shadow.ShadowView
+        android:id="@+id/bottomContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:shadowColor="#26000000"
+        app:shadowDy="-1"
+        app:shadowMarginTop="4dp"
+        app:shadowRadius="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp">
+
+            <com.petfeed.petfeed.view.CircleImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_launcher_background" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/white1_solid_grey3_stroke_rounded"
+                android:fontFamily="@font/nanum_square_round_regular"
+                android:hint="댓글을 입력해보세요."
+                android:paddingEnd="12dp"
+                android:paddingStart="12dp"
+                android:textColor="@color/black1"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </com.loopeer.shadow.ShadowView>
+</RelativeLayout>

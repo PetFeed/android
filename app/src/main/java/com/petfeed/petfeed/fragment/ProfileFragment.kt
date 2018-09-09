@@ -50,7 +50,7 @@ class ProfileFragment : Fragment() {
     private fun setRecyclerView() {
         boardRecyclerView.run {
             LastAdapter(boards, BR.item)
-                    .map<String>(R.layout.item_board)
+                    .map<String>(R.layout.item_profile_board)
                     .into(this)
             layoutManager = LinearLayoutManager(context)
         }

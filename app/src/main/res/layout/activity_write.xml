@@ -52,7 +52,7 @@
         <com.petfeed.petfeed.view.CircleImageView
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:src="@drawable/ic_launcher_background" />
+            android:src="@drawable/pic_7" />
 
         <TextView
             android:layout_width="wrap_content"
