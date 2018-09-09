@@ -6,33 +6,17 @@ import android.view.MenuItem
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.util.ActivityUtils
 import kotlinx.android.synthetic.main.activity_setting.*
-import org.jetbrains.anko.sdk25.coroutines.onClick
-import org.jetbrains.anko.startActivity
 
-class SettingActivity : AppCompatActivity() {
+class PersonalSettingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         ActivityUtils.statusBarSetting(window, this, R.color.white2, false)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_setting)
+        setContentView(R.layout.activity_personal_setting)
 
-        personalButton.onClick {
-            startActivity<PersonalSettingActivity>()
-        }
-        accountButton.onClick {
-            startActivity<AccountSettingActivity>()
-        }
-        languageButton.onClick {
-            startActivity<LanguageSettingActivity>()
-        }
-        serviceButton.onClick {
-            startActivity<ServiceSettingActivity>()
-        }
-        infoButton.onClick {
-            startActivity<InfoSettingActivity>()
-        }
         setToolbar()
     }
+
 
     private fun setToolbar() {
         setSupportActionBar(toolbar)

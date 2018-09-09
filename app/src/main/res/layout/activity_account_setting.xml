@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.AccountSettingActivity">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/normalHorizontalMargin"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/nanum_square_round_extra_bold"
+        android:text="계정 설정"
+        android:textColor="@color/black2"
+        android:textSize="24sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        android:paddingEnd="64dp"
+        android:paddingStart="@dimen/normalHorizontalMargin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_square_round_extra_bold"
+            android:text="이메일 변경"
+            android:textColor="@color/black2"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="27dp"
+            android:fontFamily="@font/nanum_square_round_bold"
+            android:text="example@petfeed.app"
+            android:textColor="@color/black1"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/brown1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        android:paddingEnd="64dp"
+        android:paddingStart="@dimen/normalHorizontalMargin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_square_round_extra_bold"
+            android:text="새 비밀번호 변경"
+            android:textColor="@color/black2"
+            android:textSize="14sp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="27dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/nanum_square_round_bold"
+            android:hint="새 비밀번호 입력"
+            android:inputType="textPassword"
+            android:textColor="@color/black1"
+            android:textColorHint="@color/black1_30"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/brown1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        android:paddingEnd="64dp"
+        android:paddingStart="@dimen/normalHorizontalMargin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_square_round_extra_bold"
+            android:text="새 비밀번호 확인"
+            android:textColor="@color/black2"
+            android:textSize="14sp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="27dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/nanum_square_round_bold"
+            android:hint="새 비밀번호 입력"
+            android:inputType="textPassword"
+            android:textColor="@color/black1"
+            android:textColorHint="@color/black1_30"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/brown1" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/brown1"
+        android:fontFamily="@font/nanum_square_round_bold"
+        android:paddingBottom="17dp"
+        android:paddingTop="17dp"
+        android:text="완료"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+</LinearLayout>

@@ -21,7 +21,8 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,11 +30,12 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/personalButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
                 android:orientation="horizontal"
                 android:paddingBottom="20dp"
+                android:paddingStart="24dp"
                 android:paddingTop="20dp">
 
                 <ImageView
@@ -57,8 +59,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
                         android:fontFamily="@font/nanum_square_round_regular"
+                        android:paddingTop="4dp"
                         android:text="이름, 이메일, 전화번호"
                         android:textColor="@color/black1_30"
                         android:textSize="12sp" />
@@ -66,19 +68,20 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/accountButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
                 android:orientation="horizontal"
                 android:paddingBottom="20dp"
+                android:paddingStart="24dp"
                 android:paddingTop="20dp">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:tint="@color/brown1"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_settings" />
+                    android:src="@drawable/ic_settings"
+                    android:tint="@color/brown1" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -104,11 +107,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/paymentButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
                 android:orientation="horizontal"
                 android:paddingBottom="20dp"
+                android:paddingStart="24dp"
                 android:paddingTop="20dp">
 
                 <ImageView
@@ -143,47 +147,50 @@
 
             <TextView
                 style="@style/Bold"
+                android:id="@+id/languageButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="28dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="28dp"
+                android:paddingBottom="28dp"
+                android:paddingStart="24dp"
+                android:paddingTop="28dp"
                 android:text="언어 설정" />
 
             <TextView
+                android:id="@+id/serviceButton"
                 style="@style/Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="28dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="28dp"
+                android:paddingBottom="28dp"
+                android:paddingStart="24dp"
+                android:paddingTop="28dp"
                 android:text="고객센터" />
 
             <TextView
+                android:id="@+id/infoButton"
                 style="@style/Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="28dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="28dp"
+                android:paddingBottom="28dp"
+                android:paddingStart="24dp"
+                android:paddingTop="28dp"
                 android:text="정보" />
 
             <TextView
                 style="@style/Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="28dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="28dp"
+                android:paddingBottom="28dp"
+                android:paddingStart="24dp"
+                android:paddingTop="28dp"
                 android:text="회원탈퇴" />
 
             <TextView
                 style="@style/Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="28dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="28dp"
+                android:paddingBottom="28dp"
+                android:paddingStart="24dp"
+                android:paddingTop="28dp"
                 android:text="로그아웃" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

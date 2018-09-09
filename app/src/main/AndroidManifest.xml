@@ -38,7 +38,12 @@
         <activity android:name=".activity.GalleryActivity" />
         <activity android:name=".activity.LogActivity" />
         <activity android:name=".activity.DetailFeedActivity" />
-        <activity android:name=".activity.SettingActivity"></activity>
+        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.PersonalSettingActivity" />
+        <activity android:name=".activity.AccountSettingActivity" />
+        <activity android:name=".activity.LanguageSettingActivity" />
+        <activity android:name=".activity.ServiceSettingActivity" />
+        <activity android:name=".activity.InfoSettingActivity"></activity>
     </application>
 
 </manifest>
