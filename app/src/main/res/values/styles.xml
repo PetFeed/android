@@ -4,7 +4,12 @@
         <item name="colorPrimary">@color/brown1</item>
         <item name="colorPrimaryDark">@color/white2</item>
         <item name="colorAccent">@color/brown1</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <!--<item name="android:windowLightStatusBar" tools:targetApi="m">true</item>-->
+    </style>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/brown1</item>
     </style>
 
     <style name="ToolBarItemWhite" parent="AppTheme">

@@ -19,6 +19,7 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.support.v4.onPageChangeListener
 
+
 class MainActivity : AppCompatActivity() {
 
     var boards = ArrayList<Any>().apply {
@@ -96,7 +97,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setBottomBarClickHelper() { // bottomBarItem onClicks
         bottomBarClickHelper = BottomBarClickHelper(bottomItems.toTypedArray()).apply {
-            onClickItem = { v, i ->
+            onClickItem = { _, i ->
                 when (i) {
                     in 0..1 -> {
                         viewPager.currentItem = i
@@ -133,6 +134,4 @@ class MainActivity : AppCompatActivity() {
             contentContainer.backgroundColor = UIUtils.ratioARGB(brown, 1 - ratio)
         }
     }
-
-
 }
