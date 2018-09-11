@@ -10,7 +10,7 @@ import android.view.ViewTreeObserver
 import com.github.nitrico.lastadapter.LastAdapter
 import com.petfeed.petfeed.BR
 import com.petfeed.petfeed.R
-import com.petfeed.petfeed.adapter.MyPagerAdapter
+import com.petfeed.petfeed.adapter.MainPagerAdapter
 import com.petfeed.petfeed.databinding.ItemBoardBinding
 import com.petfeed.petfeed.util.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
             add(bottomTabItem4)
             add(bottomTabItem5)
         }
-        viewPager.adapter = MyPagerAdapter(supportFragmentManager)
+        viewPager.adapter = MainPagerAdapter(supportFragmentManager)
         viewPager.onPageChangeListener {
             onPageSelected {
                 bottomItems.filterIndexed { i, _ -> i != 2 }.forEachIndexed { i, v ->

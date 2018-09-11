@@ -12,4 +12,6 @@
     <color name="white1">#f7f7f7</color>
     <color name="white2">#f4f4f4</color>
     <color name="white3">#fff9f5</color>
+    <color name="orange1">#ff5555</color>
+    <color name="orange1_40">#65ff5555</color>
 </resources>

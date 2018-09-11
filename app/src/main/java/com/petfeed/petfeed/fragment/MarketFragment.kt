@@ -8,11 +8,13 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.*
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.activity.MainActivity
+import com.petfeed.petfeed.activity.TermPayActivity
 import com.petfeed.petfeed.util.ActivityUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_market.*
 import org.jetbrains.anko.firstChild
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.support.v4.startActivity
 
 class MarketFragment : Fragment() {
 
@@ -24,12 +26,12 @@ class MarketFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         setDrawer()
+
 
     }
 
-    fun setDrawer() {
+    private fun setDrawer() {
         val activity = context as MainActivity
 
         val toggle = ActionBarDrawerToggle(activity, activity.drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -43,7 +45,6 @@ class MarketFragment : Fragment() {
             activity.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
         }
-
 
         activity.drawerLayout.addDrawerListener(
                 object : DrawerLayout.DrawerListener {
@@ -63,6 +64,9 @@ class MarketFragment : Fragment() {
 
                     }
                 })
+        activity.chargeLuvButton.onClick {
+            startActivity<TermPayActivity>()
+        }
     }
 
     companion object {

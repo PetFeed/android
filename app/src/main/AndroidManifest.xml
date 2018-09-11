@@ -43,7 +43,9 @@
         <activity android:name=".activity.AccountSettingActivity" />
         <activity android:name=".activity.LanguageSettingActivity" />
         <activity android:name=".activity.ServiceSettingActivity" />
-        <activity android:name=".activity.InfoSettingActivity"></activity>
+        <activity android:name=".activity.InfoSettingActivity" />
+        <activity android:name=".activity.TermPayActivity" />
+        <activity android:name=".activity.ChargeLuvPayActivity"></activity>
     </application>
 
 </manifest>

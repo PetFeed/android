@@ -58,9 +58,10 @@
     </style>
 
     <style name="MarketPrice">
+        <item name="android:fontFamily">@font/nanum_square_round_extra_bold</item>
         <item name="android:textSize">18sp</item>
         <item name="android:lineSpacingExtra">-3sp</item>
-        <!--<item name="android:textColor">@color/PetFeed_Emphasize</item>-->
+        <item name="android:textColor">@color/orange1</item>
     </style>
 
     <style name="Bold">
@@ -70,6 +71,7 @@
     </style>
 
     <style name="DrawerMenu">
+        <item name="android:fontFamily">@font/nanum_square_round_regular</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/black1</item>
     </style>

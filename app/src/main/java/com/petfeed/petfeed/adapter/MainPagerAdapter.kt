@@ -8,7 +8,7 @@ import com.petfeed.petfeed.fragment.NotificationFragment
 import com.petfeed.petfeed.fragment.ProfileFragment
 import com.petfeed.petfeed.fragment.SearchFragment
 
-class MyPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+class MainPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     override fun getItem(position: Int): Fragment = when (position) {
         0 -> SearchFragment.newInstance()
         1 -> NotificationFragment.newInstance()
