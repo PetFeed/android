@@ -42,8 +42,9 @@ class RoundedRecyclerView : RecyclerView {
             innerPaint.color = value
             invalidate()
         }
-    var childAlpha = 1f
 
+    var horizontalMargin: Float = 0f
+    var childAlpha = 1f
     var onInterceptTouchEvent: ((MotionEvent) -> Boolean)? = null
 
     constructor(context: Context?) : super(context!!)
@@ -86,15 +87,21 @@ class RoundedRecyclerView : RecyclerView {
     }
 
     private fun drawOuters(canvas: Canvas?) {
-        val leftRect = RectF(0f, 0f, radius, radius)
-        val rightRect = RectF((width - radius), 0f, width.toFloat(), radius)
+        val ew = width - horizontalMargin
+        val sw = horizontalMargin
+        val leftRect = RectF(sw, 0f, sw + radius, radius)
+        val rightRect = RectF((ew - radius), 0f, ew, radius)
         val path = Path().apply {
             addArc(leftRect, 180f, 90f)
             lineTo(0f, 0f)
-            lineTo(0f, radius)
+            lineTo(0f, height.toFloat())
+            lineTo(sw, height.toFloat())
+            lineTo(sw, radius)
             addArc(rightRect, 270f, 90f)
+            lineTo(ew, height.toFloat())
+            lineTo(ew, height.toFloat())
             lineTo(width.toFloat(), 0f)
-            lineTo(width.toFloat() - radius, 0f)
+            lineTo(ew - radius, 0f)
         }
         canvas?.drawPath(path, outerPaint)
     }
