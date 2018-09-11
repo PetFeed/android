@@ -5,6 +5,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Gravity
 import android.view.View
 import android.view.ViewTreeObserver
 import com.github.nitrico.lastadapter.LastAdapter
@@ -133,5 +134,12 @@ class MainActivity : AppCompatActivity() {
             viewPager.alpha = ratio
             contentContainer.backgroundColor = UIUtils.ratioARGB(brown, 1 - ratio)
         }
+    }
+
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(Gravity.START)) {
+            drawerLayout.closeDrawer(Gravity.START)
+        } else
+            super.onBackPressed()
     }
 }

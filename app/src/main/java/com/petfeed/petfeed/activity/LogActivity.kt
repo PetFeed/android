@@ -9,6 +9,7 @@ import com.github.nitrico.lastadapter.LastAdapter
 import com.petfeed.petfeed.BR
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.databinding.ItemLogContentBinding
+import com.petfeed.petfeed.util.ActivityUtils
 import kotlinx.android.synthetic.main.activity_log.*
 import org.jetbrains.anko.backgroundColor
 
@@ -30,6 +31,7 @@ class LogActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ActivityUtils.statusBarSetting(window, this, R.color.white2, false)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log)
 

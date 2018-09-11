@@ -13,12 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/contentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/brown1"
-            android:clipChildren="false">
+            android:background="@color/brown1">
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewPager"
@@ -28,32 +27,29 @@
                 android:alpha="0"
                 android:background="@android:color/white" />
 
-            <RelativeLayout
+
+            <com.petfeed.petfeed.view.RoundedRecyclerView
+                android:layout_alignParentBottom="true"
+                android:id="@+id/boardRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:clipToPadding="true"
+                android:paddingBottom="52dp"
+                app:top_height="16dp"
+                app:top_radius="16dp"
+                tools:listitem="@layout/item_board" />
 
-                <com.petfeed.petfeed.view.RoundedRecyclerView
-                    android:id="@+id/boardRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:clipToPadding="true"
-                    android:paddingBottom="52dp"
-                    app:top_height="16dp"
-                    app:top_radius="16dp"
-                    tools:listitem="@layout/item_board" />
-
-                <View
-                    android:id="@+id/dummyView"
-                    android:layout_width="72dp"
-                    android:layout_height="6dp"
-                    android:layout_alignTop="@id/boardRecyclerView"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:alpha="0.3"
-                    android:background="@drawable/brown1_solid_radius_10dp" />
-            </RelativeLayout>
-        </FrameLayout>
+            <View
+                android:id="@+id/dummyView"
+                android:layout_width="72dp"
+                android:layout_height="6dp"
+                android:layout_alignTop="@id/boardRecyclerView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:alpha="0.3"
+                android:background="@drawable/brown1_solid_radius_10dp" />
+        </RelativeLayout>
 
         <com.loopeer.shadow.ShadowView
             android:id="@+id/bottomTabBar"

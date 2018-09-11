@@ -41,29 +41,7 @@ class MarketFragment : Fragment() {
         toggle.syncState()
         toolbar.firstChild { true }.onClick {
             activity.drawerLayout.openDrawer(Gravity.START)
-            ActivityUtils.statusBarSetting(activity.window, this@MarketFragment.context, R.color.white1, true)
-            activity.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-
         }
-
-        activity.drawerLayout.addDrawerListener(
-                object : DrawerLayout.DrawerListener {
-                    override fun onDrawerStateChanged(p0: Int) {
-
-                    }
-
-                    override fun onDrawerSlide(p0: View, p1: Float) {
-                    }
-
-                    override fun onDrawerClosed(p0: View) {
-                        ActivityUtils.statusBarSetting(activity.window, context, R.color.white1, false)
-                        activity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                    }
-
-                    override fun onDrawerOpened(p0: View) {
-
-                    }
-                })
         activity.chargeLuvButton.onClick {
             startActivity<TermPayActivity>()
         }

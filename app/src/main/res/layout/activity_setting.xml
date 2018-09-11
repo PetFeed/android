@@ -42,7 +42,8 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_person" />
+                    android:src="@drawable/ic_person"
+                    android:tint="@color/brown1" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -119,7 +120,8 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_person" />
+                    android:src="@drawable/ic_card"
+                    android:tint="@color/brown1" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -146,8 +148,8 @@
 
 
             <TextView
-                style="@style/Bold"
                 android:id="@+id/languageButton"
+                style="@style/Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="28dp"
