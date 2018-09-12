@@ -1,25 +1,24 @@
 package com.petfeed.petfeed.activity
 
-import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
 import android.view.MenuItem
 import com.petfeed.petfeed.R
+import com.petfeed.petfeed.adapter.CardPagerAdapter
 import com.petfeed.petfeed.util.ActivityUtils
-import kotlinx.android.synthetic.main.activity_term_pay.*
-import org.jetbrains.anko.sdk25.coroutines.onClick
-import org.jetbrains.anko.startActivity
+import com.petfeed.petfeed.util.UIUtils
+import kotlinx.android.synthetic.main.activity_donate_pay.*
 
-class TermPayActivity : AppCompatActivity() {
+class DonatePayActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         ActivityUtils.statusBarSetting(window, this, R.color.white2, false)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_term_pay)
+        setContentView(R.layout.activity_donate_pay)
 
+        cardPager.pageMargin = UIUtils.makeDP(this, 6f).toInt()
+        cardPager.adapter = CardPagerAdapter(supportFragmentManager)
         setToolbar()
-        nextButton.onClick {
-            startActivity<PasswordPayActivity>()
-        }
     }
 
     private fun setToolbar() {

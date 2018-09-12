@@ -14,11 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/orange1"
-
         android:paddingBottom="12dp"
         android:paddingEnd="16dp"
         android:paddingStart="16dp"
-        android:paddingTop="12dp"
+        android:paddingTop="24dp"
         app:radius="8dp">
 
         <LinearLayout
@@ -33,7 +32,9 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:src="@drawable/ic_card_chip" />
 
                 <View
                     android:layout_width="0dp"
@@ -42,10 +43,12 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_card_logo1" />
             </LinearLayout>
 
             <TextView
+                android:layout_marginTop="14dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nanum_square_round_extra_bold"

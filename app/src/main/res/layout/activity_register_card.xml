@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.RegisterCardActivity">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/normalHorizontalMargin"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/nanum_square_round_extra_bold"
+        android:text="카드정보 입력"
+        android:textColor="@color/black2"
+        android:textSize="24sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/normalHorizontalMargin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_square_round_extra_bold"
+            android:text="카드 번호"
+            android:textColor="@color/black2"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="27dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/cardNum1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/nanum_square_round_bold"
+                android:hint="1023"
+                android:inputType="numberDecimal"
+                android:maxLength="4"
+                android:nextFocusDown="@id/cardNum2"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanum_square_round_extra_bold"
+                android:gravity="center"
+                android:text="-"
+                android:textColor="@color/black1"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/cardNum2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/nanum_square_round_bold"
+                android:hint="1023"
+                android:inputType="numberDecimal"
+                android:maxLength="4"
+                android:nextFocusDown="@id/cardNum3"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanum_square_round_extra_bold"
+                android:gravity="center"
+                android:text="-"
+                android:textColor="@color/black1"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/cardNum3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/nanum_square_round_bold"
+                android:hint="1023"
+                android:inputType="numberDecimal"
+                android:maxLength="4"
+                android:nextFocusDown="@id/cardNum4"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanum_square_round_extra_bold"
+                android:gravity="center"
+                android:text="-"
+                android:textColor="@color/black1"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/cardNum4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/nanum_square_round_bold"
+                android:hint="1023"
+                android:inputType="numberDecimal"
+                android:maxLength="4"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="7dp"
+            android:background="@color/brown1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/normalHorizontalMargin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_square_round_extra_bold"
+            android:text="유효 기간"
+            android:textColor="@color/black2"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="27dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/month"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/nanum_square_round_bold"
+                android:hint="Month"
+                android:inputType="numberDecimal"
+                android:maxLength="2"
+                android:nextFocusDown="@id/year"
+                android:textAlignment="center"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_square_round_extra_bold"
+                android:gravity="center"
+                android:text="-"
+                android:textColor="@color/black1"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/year"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/nanum_square_round_bold"
+                android:hint="Year"
+                android:inputType="numberDecimal"
+                android:maxLength="2"
+                android:textAlignment="center"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="7dp"
+            android:background="@color/brown1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/normalHorizontalMargin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_square_round_extra_bold"
+            android:text="카드 비밀번호 (2 자리)"
+            android:textColor="@color/black2"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/cardPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="27dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/nanum_square_round_bold"
+            android:hint="카드 비밀번호 입력"
+            android:inputType="numberDecimal"
+            android:maxLength="2"
+            android:textColor="@color/black1"
+            android:textColorHint="@color/black1_30"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/brown1" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/brown1"
+        android:fontFamily="@font/nanum_square_round_bold"
+        android:paddingBottom="17dp"
+        android:paddingTop="17dp"
+        android:text="완료"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+</LinearLayout>

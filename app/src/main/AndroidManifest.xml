@@ -45,7 +45,10 @@
         <activity android:name=".activity.ServiceSettingActivity" />
         <activity android:name=".activity.InfoSettingActivity" />
         <activity android:name=".activity.TermPayActivity" />
-        <activity android:name=".activity.ChargeLuvPayActivity"></activity>
+        <activity android:name=".activity.ChargeLuvPayActivity" />
+        <activity android:name=".activity.DonatePayActivity" />
+        <activity android:name=".activity.RegisterCardActivity" />
+        <activity android:name=".activity.PasswordPayActivity"></activity>
     </application>
 
 </manifest>

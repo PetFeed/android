@@ -3,13 +3,15 @@ package com.petfeed.petfeed.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.petfeed.petfeed.R
+import com.petfeed.petfeed.activity.DonatePayActivity
 import com.petfeed.petfeed.activity.MainActivity
 import com.petfeed.petfeed.activity.TermPayActivity
-import com.petfeed.petfeed.util.ActivityUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_market.*
 import org.jetbrains.anko.firstChild
@@ -44,6 +46,9 @@ class MarketFragment : Fragment() {
         }
         activity.chargeLuvButton.onClick {
             startActivity<TermPayActivity>()
+        }
+        activity.donateButton.onClick {
+            startActivity<DonatePayActivity>()
         }
     }
 
