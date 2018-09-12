@@ -50,7 +50,6 @@ class SearchFragment : Fragment() {
             }
         }
         scrollView.setOnScrollChangeListener { _: NestedScrollView?, _: Int, _: Int, _: Int, _: Int ->
-            Log.e("Asdfasdf", "Asdf")
             hideKeyBoard()
         }
 
