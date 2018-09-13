@@ -32,15 +32,15 @@ class CustomAnimator {
     private fun animate() {
         isRunning = true
         val diff = endValue - startValue
-        (1..20).forEach {
+        (1..15).forEach {
             handler.postDelayed({
-                nowValue = startValue + (diff * (it / 20f)).toInt()
+                nowValue = startValue + (diff * (it / 15f)).toInt()
                 onAnimationUpdate.invoke(nowValue)
-                if (it == 30) {
+                if (it == 15) {
                     isRunning = false
                     onAnimationEnd.invoke()
                 }
-            }, 15L * it)
+            }, (duration / 15L) * it)
         }
     }
 }

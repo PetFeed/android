@@ -19,7 +19,7 @@ class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView
     var isScroll = false
 
     val animator: CustomAnimator = CustomAnimator().apply {
-        duration = 300
+        duration = 200
         onAnimationUpdate = { mMargin = it }
         onAnimationEnd = { isScroll = false }
         onAnimationCancel = { isScroll = false }
