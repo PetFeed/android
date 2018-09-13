@@ -99,7 +99,7 @@ class RoundedRecyclerView : RecyclerView {
             lineTo(sw, radius)
             addArc(rightRect, 270f, 90f)
             lineTo(ew, height.toFloat())
-            lineTo(ew, height.toFloat())
+            lineTo(width.toFloat(), height.toFloat())
             lineTo(width.toFloat(), 0f)
             lineTo(ew - radius, 0f)
         }

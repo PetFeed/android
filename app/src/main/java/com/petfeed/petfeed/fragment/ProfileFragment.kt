@@ -4,17 +4,22 @@ package com.petfeed.petfeed.fragment
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.github.nitrico.lastadapter.LastAdapter
 import com.petfeed.petfeed.BR
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.activity.LogActivity
 import com.petfeed.petfeed.activity.SettingActivity
+import com.petfeed.petfeed.util.DataHelper
+import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.fragment_profile.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.startActivity
+import java.net.URI
 import java.util.*
 
 class ProfileFragment : Fragment() {
@@ -38,6 +43,13 @@ class ProfileFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setRecyclerView()
+
+        val imageUrl = NetworkHelper.url + DataHelper.datas?.user?.profile
+        DataHelper.datas?.user?.profile
+        Glide.with(context!!)
+                .load(imageUrl)
+                .into(profileImage)
+        Log.e("asdf", "${imageUrl}")
         logButton.onClick {
             startActivity<LogActivity>()
         }
