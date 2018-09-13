@@ -117,6 +117,38 @@
             android:background="@color/brown1" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        android:paddingEnd="64dp"
+        android:paddingStart="@dimen/normalHorizontalMargin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_square_round_extra_bold"
+            android:text="닉네임 입력"
+            android:textColor="@color/black2"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/nameEditText"
+            style="@style/RegisterInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="닉네임 입력"
+            android:inputType="text" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/brown1" />
+    </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"

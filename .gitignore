@@ -52,6 +52,9 @@ captures/
 # Google Services (e.g. APIs or Firebase)
 google-services.json
 
+# Network
+app/src/main/java/com/petfeed/petfeed/util/network/
+
 # Freeline
 freeline.py
 freeline/
