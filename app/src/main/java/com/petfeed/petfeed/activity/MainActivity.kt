@@ -5,6 +5,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewTreeObserver
@@ -15,6 +16,7 @@ import com.petfeed.petfeed.adapter.MainPagerAdapter
 import com.petfeed.petfeed.databinding.ItemBoardBinding
 import com.petfeed.petfeed.util.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.item_board.view.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
@@ -77,10 +79,13 @@ class MainActivity : AppCompatActivity() {
             LastAdapter(boards, BR.item)
                     .map<String, ItemBoardBinding>(R.layout.item_board) {
 
-                        onCreate {
+                        onBind {
+                            it.itemView.feedGridView.imageUrls.add("https://cdn.pixabay.com/photo/2018/08/31/19/16/fan-3645379_1280.jpg")
                             it.itemView.onClick {
                                 startActivity<DetailFeedActivity>()
                             }
+                        }
+                        onRecycle {
                         }
                     }
                     .into(this)

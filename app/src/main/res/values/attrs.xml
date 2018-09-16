@@ -29,4 +29,8 @@
         <attr name="title" format="string" />
         <attr name="count" format="string" />
     </declare-styleable>
+    <declare-styleable name="FeedGridView">
+        <attr name="distance" format="dimension" />
+        <attr name="fontSize" format="dimension" />
+    </declare-styleable>
 </resources>
