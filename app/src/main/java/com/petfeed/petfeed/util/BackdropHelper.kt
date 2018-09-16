@@ -19,7 +19,7 @@ class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView
     var isScroll = false
 
     val animator: CustomAnimator = CustomAnimator().apply {
-        duration = 200
+        duration = 150
         onAnimationUpdate = { mMargin = it }
         onAnimationEnd = { isScroll = false }
         onAnimationCancel = { isScroll = false }
@@ -38,10 +38,9 @@ class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView
 
     val dp16 = makeDP(mContext, 16f)
     val dp4 = makeDP(mContext, 4f)
-    var lastMargin = dp16
     private fun onMarginChange(margin: Int) {
         val ratio = margin.toFloat() / maxMarginSize
-        val horizontalMargin: Float = if ((lastMargin - ratio * dp16).toInt().absoluteValue >= dp4) ratio * dp16 else lastMargin
+        val horizontalMargin: Float = ratio * dp16
 
         contentParams.setMargins(0, margin, 0, 0)
         contentView.run {

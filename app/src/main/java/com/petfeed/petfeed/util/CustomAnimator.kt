@@ -31,16 +31,17 @@ class CustomAnimator {
 
     private fun animate() {
         isRunning = true
+        val max = duration / 16
         val diff = endValue - startValue
-        (1..15).forEach {
+        (1..max).forEach {
             handler.postDelayed({
-                nowValue = startValue + (diff * (it / 15f)).toInt()
+                nowValue = startValue + (diff * (it / max.toFloat())).toInt()
                 onAnimationUpdate.invoke(nowValue)
-                if (it == 15) {
+                if (it == max) {
                     isRunning = false
                     onAnimationEnd.invoke()
                 }
-            }, (duration / 15L) * it)
+            }, (duration / max) * it)
         }
     }
 }
