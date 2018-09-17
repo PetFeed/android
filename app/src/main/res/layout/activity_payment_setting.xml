@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.DonatePayActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/normalHorizontalMargin"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/nanum_square_round_extra_bold"
+        android:text="결제 설정"
+        android:textColor="@color/black2"
+        android:textSize="24sp" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/cardPager"
+        android:layout_width="match_parent"
+        android:layout_height="194dp"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:paddingEnd="22dp"
+        android:paddingStart="22dp" />
+
+    <LinearLayout
+        android:id="@+id/paymentButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        android:paddingBottom="20dp"
+        android:paddingStart="24dp"
+        android:paddingTop="20dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_lock"
+            android:tint="@color/brown1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="결제 비밀번호 재설정" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/nanum_square_round_regular"
+                android:text="결제 비밀번호를 다시 설정합니다."
+                android:textColor="@color/black1_30"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/doneButton"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/brown1"
+        android:fontFamily="@font/nanum_square_round_extra_bold"
+        android:gravity="center"
+        android:text="완료"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+</LinearLayout>
