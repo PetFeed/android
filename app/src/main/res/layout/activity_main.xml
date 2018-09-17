@@ -244,9 +244,4 @@
             <!--android:text="거래 내역" />-->
         </LinearLayout>
     </android.support.design.widget.NavigationView>
-
-    <View
-        android:id="@+id/overlayView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 </android.support.v4.widget.DrawerLayout>

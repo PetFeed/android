@@ -4,6 +4,7 @@ package com.petfeed.petfeed.fragment
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBarDrawerToggle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +15,10 @@ import com.petfeed.petfeed.activity.MainActivity
 import com.petfeed.petfeed.activity.TermPayActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_market.*
+import org.jetbrains.anko.childrenRecursiveSequence
 import org.jetbrains.anko.firstChild
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.sdk25.coroutines.onTouch
 import org.jetbrains.anko.support.v4.startActivity
 
 class MarketFragment : Fragment() {
