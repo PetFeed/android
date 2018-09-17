@@ -29,10 +29,10 @@
 
 
             <com.petfeed.petfeed.view.RoundedRecyclerView
-                android:layout_alignParentBottom="true"
                 android:id="@+id/boardRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
                 android:background="@android:color/transparent"
                 android:clipToPadding="true"
                 android:paddingBottom="52dp"
@@ -244,4 +244,9 @@
             <!--android:text="거래 내역" />-->
         </LinearLayout>
     </android.support.design.widget.NavigationView>
+
+    <View
+        android:id="@+id/overlayView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </android.support.v4.widget.DrawerLayout>

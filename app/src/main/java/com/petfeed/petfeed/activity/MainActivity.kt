@@ -5,12 +5,12 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewTreeObserver
 import com.github.nitrico.lastadapter.LastAdapter
 import com.petfeed.petfeed.BR
+import com.petfeed.petfeed.LuvDonateDialog
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.adapter.MainPagerAdapter
 import com.petfeed.petfeed.databinding.ItemBoardBinding
@@ -83,6 +83,10 @@ class MainActivity : AppCompatActivity() {
                             it.itemView.feedGridView.imageUrls.add("https://cdn.pixabay.com/photo/2018/08/31/19/16/fan-3645379_1280.jpg")
                             it.itemView.onClick {
                                 startActivity<DetailFeedActivity>()
+                            }
+                            it.itemView.luvButton.onClick {
+                                LuvDonateDialog(this@MainActivity)
+                                        .show()
                             }
                         }
                         onRecycle {

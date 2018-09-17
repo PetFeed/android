@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.github.nitrico.lastadapter.LastAdapter
 import com.petfeed.petfeed.BR
+import com.petfeed.petfeed.LuvDonateDialog
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.util.ActivityUtils
 import kotlinx.android.synthetic.main.activity_detail_feed.*
@@ -35,6 +36,9 @@ class DetailFeedActivity : AppCompatActivity() {
         setRecyclerView()
         backButton.onClick {
             finish()
+        }
+        luvButton.onClick{
+           LuvDonateDialog(this@DetailFeedActivity).show()
         }
     }
 

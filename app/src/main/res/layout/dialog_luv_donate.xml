@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.petfeed.petfeed.view.RoundLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="312dp"
+    android:layout_height="wrap_content"
+    android:paddingBottom="36dp"
+    android:paddingEnd="64dp"
+    android:paddingStart="64dp"
+    android:paddingTop="56dp"
+    app:radius="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_heart" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/nanum_square_round_light"
+            android:gravity="center"
+            android:text="다게님에게 나의 럽\n포인트를 후원합니다."
+            android:textColor="@color/brown1"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="14dp"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="3sp"
+            android:text="후원된 럽은 번복될 수 없습니다.\n
+신중히 후원해주세요."
+            android:textColor="@color/black1_30"
+            android:textSize="12sp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/nanum_square_round_bold"
+            android:gravity="center"
+            android:hint="132"
+            android:imeOptions="actionDone"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:textColor="@color/brown1"
+            android:textColorHint="@color/brown1_10"
+            android:textSize="48sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/brown1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="47dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_luv" />
+
+            <TextView
+                style="@style/MarketPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="2,400" />
+        </LinearLayout>
+    </LinearLayout>
+</com.petfeed.petfeed.view.RoundLayout>
