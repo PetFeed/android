@@ -2,6 +2,7 @@ package com.petfeed.petfeed.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import com.google.gson.Gson
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.model.User
@@ -24,16 +25,20 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         loginButton.onClick {
+            if (!NetworkHelper.checkNetworkConnected(this@LoginActivity)) {
+                Toast.makeText(this@LoginActivity, "네트워크를 확인해주세요", Toast.LENGTH_SHORT).show()
+                return@onClick
+            }
             if (!checkInput())
                 return@onClick
 
             val id = idEditText.text.toString()
             val pw = pwEditText.text.toString()
 
-            var userToken = ""
             async(CommonPool) { NetworkHelper.retrofitInstance.postLogin(id, pw).execute() }.await().apply {
-                if (!isSuccessful)
+                if (!isSuccessful) {
                     return@onClick
+                }
 
                 val json: JSONObject = JSONObject(body()!!.string())
                 val isSuccess = json.getBoolean("success")
@@ -41,10 +46,10 @@ class LoginActivity : AppCompatActivity() {
                 if (!isSuccess)
                     return@onClick
 
-                userToken = json.getString("token")
+                DataHelper.datas?.token = json.getString("token")
             }
 
-            async(CommonPool) { NetworkHelper.retrofitInstance.getUser(userToken).execute() }.await().apply {
+            async(CommonPool) { NetworkHelper.retrofitInstance.getUser(DataHelper.datas!!.token).execute() }.await().apply {
                 if (!isSuccessful)
                     return@onClick
 
@@ -66,9 +71,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun checkInput(): Boolean {
-        if (idEditText.text.isEmpty())
+        if (idEditText.text.toString().isEmpty())
             return false
-        if (pwEditText.text.isEmpty())
+        if (pwEditText.text.toString().isEmpty())
             return false
         return true
     }

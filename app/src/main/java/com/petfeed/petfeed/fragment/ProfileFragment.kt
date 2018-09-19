@@ -25,13 +25,6 @@ import java.util.*
 class ProfileFragment : Fragment() {
 
     var boards = ArrayList<Any>().apply {
-        add("asdf")
-        add("asdf")
-        add("asdf")
-        add("asdf")
-        add("asdf")
-        add("asdf")
-        add("asdf")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +42,6 @@ class ProfileFragment : Fragment() {
         Glide.with(context!!)
                 .load(imageUrl)
                 .into(profileImage)
-        Log.e("asdf", "${imageUrl}")
         logButton.onClick {
             startActivity<LogActivity>()
         }

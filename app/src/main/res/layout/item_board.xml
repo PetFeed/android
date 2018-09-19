@@ -6,7 +6,7 @@
 
         <variable
             name="item"
-            type="String" />
+            type="com.petfeed.petfeed.model.Board" />
     </data>
 
     <LinearLayout
@@ -74,7 +74,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:text="그냥 찍어도 화보처럼 나오는 우리 까미 이쁘게 봐주세요 ^_^" />
+            android:text="@{item.contents}" />
 
         <com.petfeed.petfeed.view.FeedGridView
             android:id="@+id/feedGridView"

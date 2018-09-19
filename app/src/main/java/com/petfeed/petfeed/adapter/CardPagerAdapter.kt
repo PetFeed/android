@@ -9,7 +9,7 @@ import com.petfeed.petfeed.fragment.EmptyCardFragment
 
 class CardPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
-    override fun getItem(position: Int): Fragment = if (count - 1 == position) EmptyCardFragment.newInstance() else CardFragment.newInstance()
+    override fun getItem(position: Int): Fragment = if (position == 0) EmptyCardFragment.newInstance() else CardFragment.newInstance()
     override fun getCount(): Int = 3
     override fun getItemPosition(`object`: Any): Int = PagerAdapter.POSITION_NONE
 }

@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.res.ResourcesCompat
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity.CENTER
 import android.view.View
@@ -19,13 +18,16 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.view.FeedGridView.LayoutMode.*
+import kotlin.math.min
 
 class FeedGridView : ConstraintLayout {
     var imageUrls = ArrayList<String>()
-    var images = Array<Bitmap?>(5) { null }
     var imageViews = ArrayList<ImageView>()
     var distance = 0f
     var fontSize = 0f
+    var imageCount = 0
+
+    lateinit var firstImage: Bitmap
     private var layoutMode: LayoutMode = SQUARE2
 
     constructor(context: Context?) : super(context)
@@ -38,40 +40,34 @@ class FeedGridView : ConstraintLayout {
     }
 
     private fun initImages() {
-        imageUrls.forEachIndexed { index, s ->
-            if (index > 3)
-                return@forEachIndexed
-            Glide.with(context).asBitmap().load(s)
-                    .into(object : SimpleTarget<Bitmap>() {
-                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                            images[index] = resource
-                            val max = if (imageUrls.size >= 4) 4 else imageUrls.size
-                            if (images.filter { it != null }.size == max) {
-                                initView()
-                            }
-                        }
-                    })
+        if (imageUrls.size == 0)
+            return
+        Glide.with(context).asBitmap().load(imageUrls.first())
+                .into(object : SimpleTarget<Bitmap>() {
+                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                        firstImage = resource
+                        initView()
+                    }
+                })
 
-        }
     }
 
     fun viewUpdate() {
         removeAllViews()
-        images.forEachIndexed { i, _ -> images[i] = null }
         imageViews.clear()
         initImages()
     }
 
     private fun initView() {
-        val ratio = images[0]!!.ratio()
+        val ratio = firstImage.ratio()
         val shape = when {
             imageUrls.size == 1 -> 0
             ratio > 1.2f -> 2
             ratio < 0.8f -> 3
             else -> 1
         }
-        val count = if (imageUrls.size != 1) images.filter { it != null }.size else 1
-        layoutMode = LayoutMode.get(shape, count)
+        imageCount = min(imageUrls.size, 4)
+        layoutMode = LayoutMode.get(shape, imageCount)
         when (layoutMode) {
             ONE -> setViewOne()
             SQUARE2 -> setViewSquare2()
@@ -124,8 +120,8 @@ class FeedGridView : ConstraintLayout {
     }
 
     private fun setViewOne() {
-        val ratio = images[0]!!.ratio()
-        images.filter { it != null }.forEach {
+        val ratio = firstImage.ratio()
+        (0 until imageCount).forEach {
             makeImageView(width, (width * ratio).toInt())
         }
         imageViews.forEachIndexed { i, it ->
@@ -138,7 +134,7 @@ class FeedGridView : ConstraintLayout {
     }
 
     private fun setViewSquare2() {
-        images.filter { it != null }.forEach {
+        (0 until imageCount).forEach {
             makeImageView(((width - distance) / 2f).toInt(), ((width - distance) / 2f).toInt())
         }
         imageViews.forEachIndexed { i, it ->
@@ -158,7 +154,7 @@ class FeedGridView : ConstraintLayout {
     }
 
     private fun setViewSquare3() {
-        images.filter { it != null }.forEach {
+        (0 until imageCount).forEach {
             makeImageView(((width - distance * 2) / 3f).toInt(), ((width - distance * 2) / 3f).toInt())
         }
         imageViews.forEachIndexed { i, it ->
@@ -184,7 +180,7 @@ class FeedGridView : ConstraintLayout {
     }
 
     private fun setViewSquare4() {
-        images.filter { it != null }.forEach {
+        (0 until imageCount).forEach {
             makeImageView(((width - distance) / 2f).toInt(), ((width - distance) / 2f).toInt())
         }
         imageViews.forEachIndexed { i, it ->
@@ -216,7 +212,7 @@ class FeedGridView : ConstraintLayout {
     }
 
     private fun setViewHorizontal2() {
-        images.filter { it != null }.forEachIndexed { i, _ ->
+        (0 until imageCount).forEachIndexed { i, _ ->
             makeImageView(((width - distance) / 2f).toInt(), width)
         }
 
@@ -238,7 +234,7 @@ class FeedGridView : ConstraintLayout {
     }
 
     private fun setViewHorizontal3() {
-        images.filter { it != null }.forEachIndexed { i, _ ->
+        (0 until imageCount).forEachIndexed { i, _ ->
             if (i == 0)
                 makeImageView(((width - distance) / 2f).toInt(), width)
             else
@@ -270,7 +266,7 @@ class FeedGridView : ConstraintLayout {
     }
 
     private fun setViewHorizontal4() {
-        images.filter { it != null }.forEachIndexed { i, _ ->
+        (0 until imageCount).forEachIndexed { i, _ ->
             if (i == 0)
                 makeImageView(((width - distance * 2) / 3f * 2f + distance).toInt(), width)
             else
@@ -304,7 +300,7 @@ class FeedGridView : ConstraintLayout {
     }
 
     private fun setViewVertical2() {
-        images.filter { it != null }.forEachIndexed { i, _ ->
+        (0 until imageCount).forEachIndexed { i, _ ->
             makeImageView(width, ((width - distance) / 2f).toInt())
         }
 
@@ -328,7 +324,7 @@ class FeedGridView : ConstraintLayout {
     }
 
     private fun setViewVertical3() {
-        images.filter { it != null }.forEachIndexed { i, _ ->
+        (0 until imageCount).forEachIndexed { i, _ ->
             if (i == 0)
                 makeImageView(width, ((width - distance) / 2f).toInt())
             else
@@ -362,7 +358,7 @@ class FeedGridView : ConstraintLayout {
     }
 
     private fun setViewVertical4() {
-        images.filter { it != null }.forEachIndexed { i, _ ->
+        (0 until imageCount).forEachIndexed { i, _ ->
             if (i == 0)
                 makeImageView(width, ((width - distance * 2) / 3f * 2f + distance).toInt())
             else

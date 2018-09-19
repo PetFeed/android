@@ -2,22 +2,28 @@ package com.petfeed.petfeed.util
 
 import android.content.Context
 import android.graphics.Color
+import android.support.v4.widget.SwipeRefreshLayout
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import com.petfeed.petfeed.util.UIUtils.makeDP
 import com.petfeed.petfeed.util.UIUtils.ratioARGB
 import com.petfeed.petfeed.view.RoundedRecyclerView
-import kotlin.math.absoluteValue
 
-class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView, val keyboardHelper: KeyboardHelper) {
+class BackdropHelper(val mContext: Context,
+                     val contentView: RoundedRecyclerView,
+                     val keyboardHelper: KeyboardHelper,
+                     val swipeRefreshLayout: SwipeRefreshLayout) {
 
     val contentViewHeight = contentView.height
     val contentParams = contentView.layoutParams as RelativeLayout.LayoutParams
     val topHeight = contentView.topHeight
 
     var isScroll = false
-
+        set(value) {
+            field = value
+            swipeRefreshLayout.isEnabled = !field
+        }
     val animator: CustomAnimator = CustomAnimator().apply {
         duration = 150
         onAnimationUpdate = { mMargin = it }
@@ -119,6 +125,5 @@ class BackdropHelper(val mContext: Context, val contentView: RoundedRecyclerView
             endValue = 0
             start()
         }
-        animator.start()
     }
 }

@@ -23,13 +23,7 @@ import java.util.*
 
 class SearchFragment : Fragment() {
     var boards = ArrayList<Any>().apply {
-        add("asdf")
-        add("asdf")
-        add("asdf")
-        add("asdf")
-        add("asdf")
-        add("asdf")
-        add("asdf")
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

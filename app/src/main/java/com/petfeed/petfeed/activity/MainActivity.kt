@@ -9,30 +9,33 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewTreeObserver
 import com.github.nitrico.lastadapter.LastAdapter
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.petfeed.petfeed.BR
 import com.petfeed.petfeed.LuvDonateDialog
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.adapter.MainPagerAdapter
 import com.petfeed.petfeed.databinding.ItemBoardBinding
+import com.petfeed.petfeed.model.Board
 import com.petfeed.petfeed.util.*
+import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_board.view.*
+import okhttp3.ResponseBody
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.support.v4.onPageChangeListener
+import org.jetbrains.anko.support.v4.onRefresh
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class MainActivity : AppCompatActivity() {
 
-    var boards = ArrayList<Any>().apply {
-        add("asdf")
-        add("asdf")
-        add("asdf")
-        add("asdf")
-        add("asdf")
-        add("asdf")
-    }
+    var boards = ArrayList<Board>()
     val bottomItems = ArrayList<View>() // view
     lateinit var backdropHelper: BackdropHelper
     lateinit var bottomBarClickHelper: BottomBarClickHelper
@@ -49,8 +52,13 @@ class MainActivity : AppCompatActivity() {
             override fun onGlobalLayout() {
                 boardRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 setRecyclerView()
+                getBoards()
             }
         })
+
+        swipeRefreshLayout.onRefresh {
+            getBoards()
+        }
     }
 
     private fun setViewPager() {
@@ -72,15 +80,40 @@ class MainActivity : AppCompatActivity() {
         viewPager.currentItem = 0
     }
 
+    private fun getBoards() {
+        NetworkHelper.retrofitInstance.getAllBoards(DataHelper.datas!!.token).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                val json: JSONObject = JSONObject(response.body()!!.string())
+                val isSuccess = json.getBoolean("success")
+
+                if (!isSuccess)
+                    return
+                DataHelper.datas?.mainBoards = Gson().fromJson(json.getString("data"), object : TypeToken<ArrayList<Board>>() {}.type)
+                boards.run {
+                    clear()
+                    addAll(DataHelper.datas!!.mainBoards)
+                }
+                boardRecyclerView.adapter!!.notifyDataSetChanged()
+            }
+        })
+    }
+
     private fun setRecyclerView() {
         val statusBarSize = UIUtils.makeDP(this, 24f)
         boardRecyclerView.run {
             layoutManager = LinearLayoutManager(this@MainActivity)
             LastAdapter(boards, BR.item)
-                    .map<String, ItemBoardBinding>(R.layout.item_board) {
+                    .map<Board, ItemBoardBinding>(R.layout.item_board) {
 
                         onBind {
-                            it.itemView.feedGridView.imageUrls.add("https://cdn.pixabay.com/photo/2018/08/31/19/16/fan-3645379_1280.jpg")
+                            val board = boards[it.adapterPosition]
+                            it.itemView.feedGridView.imageUrls.addAll(board.pictures)
+                            it.itemView.feedGridView.viewUpdate()
+
                             it.itemView.onClick {
                                 startActivity<DetailFeedActivity>()
                             }
@@ -90,6 +123,7 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                         onRecycle {
+                            it.itemView.feedGridView.imageUrls.clear()
                         }
                     }
                     .into(this)
@@ -128,7 +162,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setBackDropHelper() {
         keyboardHelper = KeyboardHelper(this@MainActivity)
-        backdropHelper = BackdropHelper(this@MainActivity, boardRecyclerView, keyboardHelper)
+        backdropHelper = BackdropHelper(this@MainActivity, boardRecyclerView, keyboardHelper, swipeRefreshLayout)
         val brown = ContextCompat.getColor(this, R.color.brown1)
         val white = ContextCompat.getColor(this, R.color.white2)
 

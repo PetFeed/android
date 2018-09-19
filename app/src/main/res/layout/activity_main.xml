@@ -28,27 +28,39 @@
                 android:background="@android:color/white" />
 
 
-            <com.petfeed.petfeed.view.RoundedRecyclerView
-                android:id="@+id/boardRecyclerView"
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:background="@android:color/transparent"
-                android:clipToPadding="true"
-                android:paddingBottom="52dp"
-                app:top_height="16dp"
-                app:top_radius="16dp"
-                tools:listitem="@layout/item_board" />
+                android:layout_height="match_parent">
 
-            <View
-                android:id="@+id/dummyView"
-                android:layout_width="72dp"
-                android:layout_height="6dp"
-                android:layout_alignTop="@id/boardRecyclerView"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:alpha="0.3"
-                android:background="@drawable/brown1_solid_radius_10dp" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.petfeed.petfeed.view.RoundedRecyclerView
+                        android:id="@+id/boardRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentBottom="true"
+                        android:background="@android:color/transparent"
+                        android:clipToPadding="false"
+                        android:paddingBottom="52dp"
+                        android:paddingTop="10dp"
+                        app:top_height="16dp"
+                        app:top_radius="16dp"
+                        tools:listitem="@layout/item_board" />
+
+                    <View
+                        android:id="@+id/dummyView"
+                        android:layout_width="72dp"
+                        android:layout_height="6dp"
+                        android:layout_alignTop="@id/boardRecyclerView"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:alpha="0.3"
+                        android:background="@drawable/brown1_solid_radius_10dp" />
+                </RelativeLayout>
+            </android.support.v4.widget.SwipeRefreshLayout>
         </RelativeLayout>
 
         <com.loopeer.shadow.ShadowView

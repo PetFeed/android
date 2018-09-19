@@ -2,7 +2,6 @@ package com.petfeed.petfeed.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import com.petfeed.petfeed.R
@@ -21,7 +20,6 @@ class PasswordPayActivity : AppCompatActivity() {
         set(value) {
             field = value
             onChangePassword()
-
         }
     val keyList = ArrayList<TextView>()
     val numList = ArrayList<ImageView>()
@@ -30,7 +28,6 @@ class PasswordPayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_password_pay)
 
-        startActivity<ChargeLuvPayActivity>()
 
         initData()
         generateKey()
@@ -86,6 +83,9 @@ class PasswordPayActivity : AppCompatActivity() {
         numList.forEachIndexed { i, imageView ->
             imageView.imageResource = if (i in 0 until password.length) R.drawable.brown1_solid_radius
             else android.R.color.transparent
+        }
+        if (password.length == 6) {
+            startActivity<ChargeLuvPayActivity>()
         }
     }
 }
