@@ -5,6 +5,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewTreeObserver
@@ -21,16 +22,15 @@ import com.petfeed.petfeed.util.*
 import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_board.view.*
-import okhttp3.ResponseBody
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.support.v4.onPageChangeListener
 import org.jetbrains.anko.support.v4.onRefresh
 import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class MainActivity : AppCompatActivity() {
@@ -52,12 +52,16 @@ class MainActivity : AppCompatActivity() {
             override fun onGlobalLayout() {
                 boardRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 setRecyclerView()
-                getBoards()
+                async(UI) {
+                    getBoards()
+                }
             }
         })
 
         swipeRefreshLayout.onRefresh {
-            getBoards()
+            async(UI) {
+                getBoards()
+            }
         }
     }
 
@@ -80,26 +84,30 @@ class MainActivity : AppCompatActivity() {
         viewPager.currentItem = 0
     }
 
-    private fun getBoards() {
-        NetworkHelper.retrofitInstance.getAllBoards(DataHelper.datas!!.token).enqueue(object : Callback<ResponseBody> {
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+    private suspend fun getBoards() {
+        async(CommonPool) { NetworkHelper.retrofitInstance.getAllBoards(DataHelper.datas!!.token).execute() }.await().apply {
+            if (!isSuccessful)
+                return@apply
 
-            }
+            val json: JSONObject = JSONObject(body()!!.string())
+            val isSuccess = json.getBoolean("success")
 
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                val json: JSONObject = JSONObject(response.body()!!.string())
-                val isSuccess = json.getBoolean("success")
-
-                if (!isSuccess)
-                    return
-                DataHelper.datas?.mainBoards = Gson().fromJson(json.getString("data"), object : TypeToken<ArrayList<Board>>() {}.type)
-                boards.run {
-                    clear()
-                    addAll(DataHelper.datas!!.mainBoards)
+            if (!isSuccess)
+                return@apply
+            DataHelper.datas?.mainBoards = Gson().fromJson(json.getString("data"), object : TypeToken<ArrayList<Board>>() {}.type)
+            DataHelper.datas?.mainBoards?.forEach {
+                it.pictures.forEachIndexed { index, s ->
+                    Log.e("asdf", "${s}")
+                    it.pictures[index] = NetworkHelper.url + s
                 }
-                boardRecyclerView.adapter!!.notifyDataSetChanged()
             }
-        })
+            boards.run {
+                clear()
+                addAll(DataHelper.datas!!.mainBoards)
+            }
+            boardRecyclerView.adapter!!.notifyDataSetChanged()
+        }
+        swipeRefreshLayout.isRefreshing = false
     }
 
     private fun setRecyclerView() {
@@ -111,6 +119,8 @@ class MainActivity : AppCompatActivity() {
 
                         onBind {
                             val board = boards[it.adapterPosition]
+
+                            it.itemView.feedGridView.imageUrls.clear()
                             it.itemView.feedGridView.imageUrls.addAll(board.pictures)
                             it.itemView.feedGridView.viewUpdate()
 
@@ -123,7 +133,6 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                         onRecycle {
-                            it.itemView.feedGridView.imageUrls.clear()
                         }
                     }
                     .into(this)

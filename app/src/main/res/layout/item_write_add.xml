@@ -25,6 +25,7 @@
         app:shadowRadius="8dp">
 
         <com.petfeed.petfeed.view.RoundLayout
+            android:id="@+id/imageContainer"
             android:layout_width="72dp"
             android:layout_height="72dp"
             app:radius="4dp">

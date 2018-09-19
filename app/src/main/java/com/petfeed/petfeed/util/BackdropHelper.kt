@@ -22,7 +22,7 @@ class BackdropHelper(val mContext: Context,
     var isScroll = false
         set(value) {
             field = value
-            swipeRefreshLayout.isEnabled = !field
+            swipeRefreshLayout.isEnabled = !field && mMargin == 0
         }
     val animator: CustomAnimator = CustomAnimator().apply {
         duration = 150

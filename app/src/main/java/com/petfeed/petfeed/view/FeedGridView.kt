@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.res.ResourcesCompat
 import android.util.AttributeSet
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity.CENTER
 import android.view.View
@@ -68,6 +69,8 @@ class FeedGridView : ConstraintLayout {
         }
         imageCount = min(imageUrls.size, 4)
         layoutMode = LayoutMode.get(shape, imageCount)
+        if(imageViews.size != 0)
+            imageViews.clear()
         when (layoutMode) {
             ONE -> setViewOne()
             SQUARE2 -> setViewSquare2()

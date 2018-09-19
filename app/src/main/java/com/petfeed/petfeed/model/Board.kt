@@ -27,4 +27,4 @@ class Board(
         var contents: String = "",
 
         @SerializedName("writer")
-        var writer: String = "")
+        var writer: User = User())

@@ -4,12 +4,15 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
+import android.widget.ImageView
 import com.android.databinding.library.baseAdapters.BR
 import com.bumptech.glide.Glide
 import com.github.nitrico.lastadapter.LastAdapter
@@ -17,11 +20,21 @@ import com.petfeed.petfeed.R
 import com.petfeed.petfeed.databinding.ItemWriteAddBinding
 import com.petfeed.petfeed.databinding.ItemWriteCardBinding
 import com.petfeed.petfeed.util.ActivityUtils
+import com.petfeed.petfeed.util.DataHelper
 import com.petfeed.petfeed.util.UIUtils
+import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.activity_write.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.async
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.backgroundResource
 import org.jetbrains.anko.imageResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivityForResult
+import java.io.File
 
 
 class WriteActivity : AppCompatActivity() {
@@ -29,14 +42,29 @@ class WriteActivity : AppCompatActivity() {
     val imageArray: ArrayList<Any> = ArrayList()
     val GALLERY_CODE = 1
     val PERMISSION_CODE = 2
+    var isWriting = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ActivityUtils.statusBarSetting(window, this, R.color.white2, false)
         setContentView(R.layout.activity_write)
         setToolbar()
         setRecyclerView()
+
         writeButton.onClick {
-            finish()
+            if (isWriting)
+                return@onClick
+            val pictures = ArrayList<MultipartBody.Part>()
+            imageArray.filter { it is String }.forEach {
+                val file = File(it as String)
+                val body = RequestBody.create(MediaType.parse("image/*"), file)
+                pictures.add(MultipartBody.Part.createFormData("pictures", file.name, body))
+            }
+            val contents = RequestBody.create(MediaType.parse("text/plain"), contents.text.toString())
+            async(CommonPool) { NetworkHelper.retrofitInstance.postBoard(DataHelper.datas!!.token, pictures.toTypedArray(), contents, arrayOf()).execute() }
+                    .await().apply {
+                        if(isSuccessful)
+                            finish()
+                    }
         }
     }
 
@@ -47,22 +75,31 @@ class WriteActivity : AppCompatActivity() {
             LastAdapter(imageArray, BR.item)
                     .map<Int, ItemWriteAddBinding>(R.layout.item_write_add) {
                         onBind {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                it.itemView.findViewById<ImageView>(R.id.imageContainer).backgroundResource = R.drawable.ripple
+                            }
                             it.binding.image.layoutParams = it.binding.image.layoutParams.apply {
                                 width = UIUtils.makeDP(this@WriteActivity, 24f).toInt()
                                 height = UIUtils.makeDP(this@WriteActivity, 24f).toInt()
                             }
                             it.binding.image.imageResource = R.drawable.ic_add
                         }
+
                         onClick {
                             requestPermission()
                         }
                     }
                     .map<String, ItemWriteCardBinding>(R.layout.item_write_card) {
                         onBind {
+                            it.itemView.findViewById<ImageView>(R.id.imageContainer).backgroundColor = Color.TRANSPARENT
                             it.adapterPosition
                             Glide.with(context)
                                     .load(imageArray[it.adapterPosition])
                                     .into(it.binding.image)
+                        }
+                        onLongClick {
+                            imageArray.removeAt(it.adapterPosition)
+                            imageRecyclerView.adapter?.notifyItemRemoved(it.adapterPosition)
                         }
                     }
                     .into(this)
