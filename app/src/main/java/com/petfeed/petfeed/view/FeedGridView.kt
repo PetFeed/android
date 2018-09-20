@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.res.ResourcesCompat
 import android.util.AttributeSet
@@ -14,7 +15,7 @@ import android.view.Gravity.CENTER
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.petfeed.petfeed.R
@@ -30,20 +31,24 @@ class FeedGridView : ConstraintLayout {
 
     lateinit var firstImage: Bitmap
     private var layoutMode: LayoutMode = SQUARE2
+    var requestManager: RequestManager? = null
+    var mImages: ArrayList<Bitmap> = ArrayList()
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
         getAttrs(attrs!!)
+        viewUpdate()
     }
 
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         getAttrs(attrs!!, defStyleAttr)
+        viewUpdate()
     }
 
     private fun initImages() {
         if (imageUrls.size == 0)
             return
-        Glide.with(context).asBitmap().load(imageUrls.first())
+        requestManager!!.asBitmap().load(imageUrls.first()).thumbnail(0.1f)
                 .into(object : SimpleTarget<Bitmap>() {
                     override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                         firstImage = resource
@@ -54,12 +59,12 @@ class FeedGridView : ConstraintLayout {
     }
 
     fun viewUpdate() {
-        removeAllViews()
         imageViews.clear()
+        removeAllViews()
         initImages()
     }
 
-    private fun initView() {
+    fun initView() {
         val ratio = firstImage.ratio()
         val shape = when {
             imageUrls.size == 1 -> 0
@@ -69,7 +74,7 @@ class FeedGridView : ConstraintLayout {
         }
         imageCount = min(imageUrls.size, 4)
         layoutMode = LayoutMode.get(shape, imageCount)
-        if(imageViews.size != 0)
+        if (imageViews.size != 0)
             imageViews.clear()
         when (layoutMode) {
             ONE -> setViewOne()
@@ -83,18 +88,34 @@ class FeedGridView : ConstraintLayout {
             VERTICAL3 -> setViewVertical3()
             VERTICAL4 -> setViewVertical4()
         }
-        addImageViews()
+        if (mImages.isEmpty())
+            addImageViews()
+        else addImageViews(mImages)
         lastOverlay()
     }
 
 
     private fun addImageViews() {
+        if (requestManager == null)
+            return
         imageViews.forEachIndexed { i, it ->
             it.setBackgroundColor(Color.TRANSPARENT)
             removeView(it)
             addView(it)
-            Glide.with(context)
+            requestManager!!
                     .load(imageUrls[i])
+                    .thumbnail(0.1f)
+                    .into(it)
+        }
+    }
+
+    private fun addImageViews(images: ArrayList<Bitmap>) {
+        imageViews.forEachIndexed { i, it ->
+            it.setBackgroundColor(Color.TRANSPARENT)
+            removeView(it)
+            addView(it)
+            requestManager!!
+                    .load(images[i])
                     .into(it)
         }
     }
@@ -405,6 +426,14 @@ class FeedGridView : ConstraintLayout {
         })
     }
 
+    fun getImages(): ArrayList<Bitmap> {
+        val images = ArrayList<Bitmap>()
+        imageViews.forEach {
+            images.add((it.drawable as BitmapDrawable).bitmap)
+        }
+        return images
+    }
+
     private fun getAttrs(attrs: AttributeSet, defStyleAttr: Int) {
         val typeArray: TypedArray = context.obtainStyledAttributes(attrs, R.styleable.FeedGridView, defStyleAttr, 0)
         setTypeArray(typeArray)
@@ -440,15 +469,5 @@ class FeedGridView : ConstraintLayout {
             }
 
         }
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        viewUpdate()
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        imageViews.clear()
     }
 }

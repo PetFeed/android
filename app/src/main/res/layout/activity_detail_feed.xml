@@ -28,6 +28,7 @@
             android:src="@drawable/ic_back" />
 
         <com.petfeed.petfeed.view.CircleImageView
+            android:id="@+id/writerProfileImage"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_marginEnd="16dp"
@@ -41,6 +42,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/writerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nanum_square_round_bold"
@@ -49,6 +51,7 @@
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nanum_square_round_regular"
@@ -84,6 +87,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/contents"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -95,11 +99,12 @@
                 android:textColor="@color/black1"
                 android:textSize="12sp" />
 
-            <ImageView
+            <com.petfeed.petfeed.view.FeedGridView
+                android:id="@+id/feedGridView"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/pic_7" />
+                android:layout_height="wrap_content"
+                app:distance="4dp"
+                app:fontSize="24sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -170,8 +175,8 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:layout_marginBottom="12dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp">
 

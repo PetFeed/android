@@ -5,10 +5,11 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewTreeObserver
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.github.nitrico.lastadapter.LastAdapter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -40,12 +41,13 @@ class MainActivity : AppCompatActivity() {
     lateinit var backdropHelper: BackdropHelper
     lateinit var bottomBarClickHelper: BottomBarClickHelper
     lateinit var keyboardHelper: KeyboardHelper
-
+    lateinit var requestManager: RequestManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ActivityUtils.statusBarSetting(window, this, R.color.brown1, true)
         setContentView(R.layout.activity_main)
 
+        requestManager = Glide.with(this)
         setViewPager()
         viewPager.requestFocus()
         boardRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
@@ -97,7 +99,6 @@ class MainActivity : AppCompatActivity() {
             DataHelper.datas?.mainBoards = Gson().fromJson(json.getString("data"), object : TypeToken<ArrayList<Board>>() {}.type)
             DataHelper.datas?.mainBoards?.forEach {
                 it.pictures.forEachIndexed { index, s ->
-                    Log.e("asdf", "${s}")
                     it.pictures[index] = NetworkHelper.url + s
                 }
             }
@@ -124,7 +125,13 @@ class MainActivity : AppCompatActivity() {
                             it.itemView.feedGridView.imageUrls.addAll(board.pictures)
                             it.itemView.feedGridView.viewUpdate()
 
-                            it.itemView.onClick {
+                            requestManager
+                                    .load(NetworkHelper.url + board.writer.profile)
+                                    .into(it.itemView.writerImage)
+
+                            it.itemView.writerName.text = board.writer.nickname
+                            it.itemView.onClick { _ ->
+                                DataHelper.datas?.selectedBoard = board
                                 startActivity<DetailFeedActivity>()
                             }
                             it.itemView.luvButton.onClick {
@@ -133,6 +140,15 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                         onRecycle {
+                            it.itemView.feedGridView.imageViews.clear()
+                        }
+
+                        onCreate {
+                            requestManager
+                                    .load(NetworkHelper.url + DataHelper.datas?.user?.profile)
+                                    .into(it.itemView.profileImage)
+
+                            it.itemView.feedGridView.requestManager = this@MainActivity.requestManager
                         }
                     }
                     .into(this)
@@ -193,5 +209,15 @@ class MainActivity : AppCompatActivity() {
             drawerLayout.closeDrawer(Gravity.START)
         } else
             super.onBackPressed()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        Glide.get(this).clearMemory()
+    }
+
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        Glide.get(this).trimMemory(level)
     }
 }

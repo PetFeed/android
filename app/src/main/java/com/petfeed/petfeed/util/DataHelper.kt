@@ -1,5 +1,6 @@
 package com.petfeed.petfeed.util
 
+import android.graphics.Bitmap
 import com.petfeed.petfeed.model.Board
 import com.petfeed.petfeed.model.User
 
@@ -10,6 +11,7 @@ class DataHelper private constructor() {
     var token = ""
     var user = User()
     var mainBoards = ArrayList<Board>()
+    var selectedBoard = Board()
 
     companion object {
         private var dataHelper: DataHelper? = null

@@ -29,11 +29,8 @@ import kotlinx.coroutines.experimental.async
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.backgroundResource
-import org.jetbrains.anko.imageResource
+import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
-import org.jetbrains.anko.startActivityForResult
 import java.io.File
 
 
@@ -53,6 +50,7 @@ class WriteActivity : AppCompatActivity() {
         writeButton.onClick {
             if (isWriting)
                 return@onClick
+            isWriting = true
             val pictures = ArrayList<MultipartBody.Part>()
             imageArray.filter { it is String }.forEach {
                 val file = File(it as String)
@@ -62,9 +60,12 @@ class WriteActivity : AppCompatActivity() {
             val contents = RequestBody.create(MediaType.parse("text/plain"), contents.text.toString())
             async(CommonPool) { NetworkHelper.retrofitInstance.postBoard(DataHelper.datas!!.token, pictures.toTypedArray(), contents, arrayOf()).execute() }
                     .await().apply {
-                        if(isSuccessful)
+                        if (isSuccessful)
                             finish()
+                        else
+                            toast("오류가 발생했습니다.")
                     }
+            isWriting = false
         }
     }
 
