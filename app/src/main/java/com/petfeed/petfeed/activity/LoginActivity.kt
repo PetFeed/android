@@ -3,6 +3,7 @@ package com.petfeed.petfeed.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.model.User
@@ -14,6 +15,7 @@ import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 import org.json.JSONObject
 
 
@@ -34,8 +36,8 @@ class LoginActivity : AppCompatActivity() {
 
             val id = idEditText.text.toString()
             val pw = pwEditText.text.toString()
-
-            async(CommonPool) { NetworkHelper.retrofitInstance.postLogin(id, pw).execute() }.await().apply {
+            val fcmToken = FirebaseInstanceId.getInstance().token!!
+            async(CommonPool) { NetworkHelper.retrofitInstance.postLogin(id, pw, fcmToken).execute() }.await().apply {
                 if (!isSuccessful) {
                     return@onClick
                 }
@@ -43,8 +45,11 @@ class LoginActivity : AppCompatActivity() {
                 val json: JSONObject = JSONObject(body()!!.string())
                 val isSuccess = json.getBoolean("success")
 
-                if (!isSuccess)
+                if (!isSuccess) {
+                    val message = json.getString("message")
+                    toast(message)
                     return@onClick
+                }
 
                 DataHelper.datas?.token = json.getString("token")
             }

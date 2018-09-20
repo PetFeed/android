@@ -6,6 +6,8 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
 import org.jetbrains.anko.displayMetrics
+import java.text.SimpleDateFormat
+import java.util.*
 
 object UIUtils {
     fun makeDP(context: Context, dp: Float): Float = context.displayMetrics.density * dp
@@ -23,4 +25,18 @@ object UIUtils {
                 val realColor = if (colorId != 0) ContextCompat.getColor(context, colorId) else color
                 setColorFilter(realColor, PorterDuff.Mode.SRC_ATOP)
             }
+
+    fun getLaterText(date: Date): String {
+        val diff = System.currentTimeMillis() - date.time
+        val pattern: String = when {
+            diff > 1000L * 60 * 60 * 24 * 30 * 365 -> "y년 전"
+            diff > 1000L * 60 * 60 * 24 * 30 -> "M월 전"
+            diff > 1000L * 60 * 60 * 24 -> "d일 전"
+            diff > 1000L * 60 * 60 -> "H시간 전"
+            diff > 1000L * 60 -> "m분 전"
+            diff > 1000L -> "s초 전"
+            else -> ""
+        }
+        return SimpleDateFormat(pattern).format(diff)
+    }
 }

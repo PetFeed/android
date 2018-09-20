@@ -103,4 +103,8 @@ class GalleryActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    companion object {
+        val ONLYONE = 1
+        val MANY = 2
+    }
 }

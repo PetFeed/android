@@ -12,7 +12,7 @@ class Board(
         var pictures: ArrayList<String> = ArrayList(),
 
         @SerializedName("comments")
-        var comments: ArrayList<String> = ArrayList(),
+        var comments: ArrayList<Comment> = ArrayList(),
 
         @SerializedName("hash_tags")
         var hashTags: ArrayList<String> = ArrayList(),

@@ -119,6 +119,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/userName"
                     style="@style/BigTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -130,7 +131,8 @@
                     android:fontFamily="@font/nanum_square_round_regular"
                     android:text="제 나이는 9개월이고여! 말티즈에요!!"
                     android:textColor="@color/black1"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <ImageView

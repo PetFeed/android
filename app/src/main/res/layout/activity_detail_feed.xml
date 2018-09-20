@@ -51,7 +51,7 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/time"
+                android:id="@+id/writeDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nanum_square_round_regular"
@@ -190,7 +190,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/commitEditText"
+                android:id="@+id/commentEditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -212,9 +212,10 @@
                 android:layout_marginEnd="14dp"
                 android:alpha="0.3"
                 android:src="@drawable/ic_luv"
-                app:layout_constraintBottom_toBottomOf="@id/commitEditText"
-                app:layout_constraintEnd_toEndOf="@id/commitEditText"
-                app:layout_constraintTop_toTopOf="@id/commitEditText" />
+                android:tint="@color/brown1"
+                app:layout_constraintBottom_toBottomOf="@id/commentEditText"
+                app:layout_constraintEnd_toEndOf="@id/commentEditText"
+                app:layout_constraintTop_toTopOf="@id/commentEditText" />
         </android.support.constraint.ConstraintLayout>
     </com.loopeer.shadow.ShadowView>
 </RelativeLayout>

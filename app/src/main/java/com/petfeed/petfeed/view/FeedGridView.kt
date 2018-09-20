@@ -16,8 +16,12 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.Key
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.bumptech.glide.signature.ObjectKey
+import com.petfeed.petfeed.GlideRequests
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.view.FeedGridView.LayoutMode.*
 import kotlin.math.min
@@ -31,7 +35,7 @@ class FeedGridView : ConstraintLayout {
 
     lateinit var firstImage: Bitmap
     private var layoutMode: LayoutMode = SQUARE2
-    var requestManager: RequestManager? = null
+    var requestManager: GlideRequests? = null
     var mImages: ArrayList<Bitmap> = ArrayList()
 
     constructor(context: Context?) : super(context)
@@ -104,6 +108,8 @@ class FeedGridView : ConstraintLayout {
             addView(it)
             requestManager!!
                     .load(imageUrls[i])
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .signature(ObjectKey(imageUrls[i]))
                     .thumbnail(0.1f)
                     .into(it)
         }

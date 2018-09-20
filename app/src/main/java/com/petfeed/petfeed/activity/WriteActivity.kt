@@ -32,6 +32,7 @@ import okhttp3.RequestBody
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.io.File
+import java.net.SocketTimeoutException
 
 
 class WriteActivity : AppCompatActivity() {
@@ -58,13 +59,19 @@ class WriteActivity : AppCompatActivity() {
                 pictures.add(MultipartBody.Part.createFormData("pictures", file.name, body))
             }
             val contents = RequestBody.create(MediaType.parse("text/plain"), contents.text.toString())
-            async(CommonPool) { NetworkHelper.retrofitInstance.postBoard(DataHelper.datas!!.token, pictures.toTypedArray(), contents, arrayOf()).execute() }
-                    .await().apply {
-                        if (isSuccessful)
-                            finish()
-                        else
-                            toast("오류가 발생했습니다.")
-                    }
+            try {
+                async(CommonPool) { NetworkHelper.retrofitInstance.postBoard(DataHelper.datas!!.token, pictures.toTypedArray(), contents, arrayOf()).execute() }
+                        .await().apply {
+                            if (isSuccessful)
+                                finish()
+                            else
+                                toast("오류가 발생했습니다.")
+                        }
+            } catch (e: SocketTimeoutException){
+                e.printStackTrace()
+                toast("네트워크 오류가 발생했습니다.")
+            }
+
             isWriting = false
         }
     }

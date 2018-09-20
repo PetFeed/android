@@ -5,17 +5,16 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewTreeObserver
-import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.signature.ObjectKey
 import com.github.nitrico.lastadapter.LastAdapter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.petfeed.petfeed.BR
-import com.petfeed.petfeed.LuvDonateDialog
-import com.petfeed.petfeed.R
+import com.petfeed.petfeed.*
 import com.petfeed.petfeed.adapter.MainPagerAdapter
 import com.petfeed.petfeed.databinding.ItemBoardBinding
 import com.petfeed.petfeed.model.Board
@@ -32,6 +31,8 @@ import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.support.v4.onPageChangeListener
 import org.jetbrains.anko.support.v4.onRefresh
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -41,13 +42,16 @@ class MainActivity : AppCompatActivity() {
     lateinit var backdropHelper: BackdropHelper
     lateinit var bottomBarClickHelper: BottomBarClickHelper
     lateinit var keyboardHelper: KeyboardHelper
-    lateinit var requestManager: RequestManager
+    lateinit var requestManager: GlideRequests
+
+    val dateFormat = SimpleDateFormat("MMM d일 a KK시 mm분", Locale.KOREAN)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ActivityUtils.statusBarSetting(window, this, R.color.brown1, true)
         setContentView(R.layout.activity_main)
 
-        requestManager = Glide.with(this)
+        requestManager = GlideApp.with(this)
+
         setViewPager()
         viewPager.requestFocus()
         boardRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
@@ -64,6 +68,9 @@ class MainActivity : AppCompatActivity() {
             async(UI) {
                 getBoards()
             }
+        }
+        async(UI) {
+            getBoards()
         }
     }
 
@@ -88,24 +95,32 @@ class MainActivity : AppCompatActivity() {
 
     private suspend fun getBoards() {
         async(CommonPool) { NetworkHelper.retrofitInstance.getAllBoards(DataHelper.datas!!.token).execute() }.await().apply {
-            if (!isSuccessful)
+
+            if (!isSuccessful) {
+                swipeRefreshLayout.isRefreshing = false
                 return@apply
+            }
 
             val json: JSONObject = JSONObject(body()!!.string())
             val isSuccess = json.getBoolean("success")
 
-            if (!isSuccess)
+            if (!isSuccess) {
+                swipeRefreshLayout.isRefreshing = false
                 return@apply
+            }
             DataHelper.datas?.mainBoards = Gson().fromJson(json.getString("data"), object : TypeToken<ArrayList<Board>>() {}.type)
+
             DataHelper.datas?.mainBoards?.forEach {
                 it.pictures.forEachIndexed { index, s ->
                     it.pictures[index] = NetworkHelper.url + s
                 }
             }
+
             boards.run {
                 clear()
                 addAll(DataHelper.datas!!.mainBoards)
             }
+
             boardRecyclerView.adapter!!.notifyDataSetChanged()
         }
         swipeRefreshLayout.isRefreshing = false
@@ -127,12 +142,14 @@ class MainActivity : AppCompatActivity() {
 
                             requestManager
                                     .load(NetworkHelper.url + board.writer.profile)
+                                    .signature(ObjectKey(NetworkHelper.url + board.writer.profile))
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .into(it.itemView.writerImage)
 
+                            it.itemView.writeDate.text = dateFormat.format(board.createDate)
                             it.itemView.writerName.text = board.writer.nickname
                             it.itemView.onClick { _ ->
-                                DataHelper.datas?.selectedBoard = board
-                                startActivity<DetailFeedActivity>()
+                                startActivity<DetailFeedActivity>("boardId" to board.boardId)
                             }
                             it.itemView.luvButton.onClick {
                                 LuvDonateDialog(this@MainActivity)
@@ -213,11 +230,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onLowMemory() {
         super.onLowMemory()
-        Glide.get(this).clearMemory()
+        Log.e("adsfasdf", "asdfasdf")
+//        Glide.get(this).clearMemory()
     }
 
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
-        Glide.get(this).trimMemory(level)
+//        Glide.get(this).trimMemory(level)
     }
 }

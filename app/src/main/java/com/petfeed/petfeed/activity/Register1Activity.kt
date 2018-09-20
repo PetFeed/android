@@ -3,6 +3,7 @@ package com.petfeed.petfeed.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import com.google.firebase.iid.FirebaseInstanceId
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.util.ActivityUtils
 import com.petfeed.petfeed.util.network.NetworkHelper
@@ -10,7 +11,6 @@ import kotlinx.android.synthetic.main.activity_register1.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.sdk25.coroutines.onClick
-import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 
 class Register1Activity : AppCompatActivity() {
@@ -29,10 +29,9 @@ class Register1Activity : AppCompatActivity() {
             val pw = pwEditText.text.toString()
             val nickname = nameEditText.text.toString()
 
-            async(CommonPool) { NetworkHelper.retrofitInstance.postRegister(id, pw, nickname).execute() }.await().apply {
+            async(CommonPool) { NetworkHelper.retrofitInstance.postRegister(id, pw, nickname, FirebaseInstanceId.getInstance().token!!).execute() }.await().apply {
                 if (!isSuccessful)
                     return@onClick
-
 
                 val json: JSONObject = JSONObject(body()!!.string())
                 val isSuccess = json.getBoolean("success")
