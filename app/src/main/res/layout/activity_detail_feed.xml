@@ -115,12 +115,14 @@
                 android:paddingTop="14dp">
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:id="@+id/likeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/ic_favorite"
                     android:tint="@color/brown1" />
 
                 <TextView
+                    android:id="@+id/likeCountText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -132,13 +134,14 @@
 
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:src="@drawable/ic_comment"
                     android:tint="@color/brown1" />
 
                 <TextView
+                    android:id="@+id/commentCountText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

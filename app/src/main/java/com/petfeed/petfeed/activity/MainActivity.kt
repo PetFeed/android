@@ -145,51 +145,55 @@ class MainActivity : AppCompatActivity() {
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .into(it.itemView.writerImage)
 
-                            it.binding.writeDate.text = dateFormat.format(board.createDate)
-                            it.binding.writerName.text = board.writer.nickname//
+                            it.binding.run {
+                                writeDate.text = dateFormat.format(board.createDate)
+                                writerName.text = board.writer.nickname//
 
-                            var commentCount = 0
-                            board.comments.forEach { commentCount += 1 + it.reComment.size }
-                            it.binding.commentCountText.text = "$commentCount+"
-                            it.binding.likeCountText.text = "${board.likes.size}+"
+                                var commentCount = 0
+                                board.comments.forEach { commentCount += 1 + it.reComment.size }
+                                commentCountText.text = "$commentCount+"
+                                likeCountText.text = "${board.likes.size}+"
 
-                            it.binding.likeButton.imageResource =
-                                    if (board.likes.any { it == DataHelper.datas?.user?._id }) R.drawable.ic_favorite
-                                    else R.drawable.ic_favorite_empty
-
-                            it.binding.likeButton.onClick { _ ->
-                                DataHelper.datas!!.mainBoards[it.adapterPosition] = boards[it.adapterPosition].apply {
-                                    val isLike = likes.any { it == DataHelper.datas!!.user._id }
-                                    if (isLike) {
-                                        likes.remove(DataHelper.datas!!.user._id)
-                                    } else {
-                                        likes.add(DataHelper.datas!!.user._id)
-                                    }
-                                    it.binding.likeCountText.text = "${likes.size}+"
-                                }
-                                it.binding.likeButton.imageResource =
-                                        if (board.likes.filter { it == DataHelper.datas?.user?._id }.isNotEmpty()) R.drawable.ic_favorite
+                                likeButton.imageResource =
+                                        if (board.likes.any { it == DataHelper.datas?.user?._id }) R.drawable.ic_favorite
                                         else R.drawable.ic_favorite_empty
-                                val userToken = DataHelper.datas?.token!!
-                                async(CommonPool) { NetworkHelper.retrofitInstance.likeBoard(userToken, board._id).execute() }.await().apply {
 
-                                    if (!isSuccessful)
-                                        return@onClick
-
-                                    val json: JSONObject = JSONObject(body()!!.string())
-                                    val isSuccess = json.getBoolean("success")
-
-                                    if (!isSuccess) {
-                                        return@apply
+                                likeButton.onClick { _ ->
+                                    DataHelper.datas!!.mainBoards[it.adapterPosition] = boards[it.adapterPosition].apply {
+                                        val isLike = likes.any { it == DataHelper.datas!!.user._id }
+                                        if (isLike) {
+                                            likes.remove(DataHelper.datas!!.user._id)
+                                        } else {
+                                            likes.add(DataHelper.datas!!.user._id)
+                                        }
+                                        likeCountText.text = "${likes.size}+"
                                     }
+
+                                    likeButton.imageResource =
+                                            if (board.likes.filter { it == DataHelper.datas?.user?._id }.isNotEmpty()) R.drawable.ic_favorite
+                                            else R.drawable.ic_favorite_empty
+
+                                    val userToken = DataHelper.datas?.token!!
+                                    async(CommonPool) { NetworkHelper.retrofitInstance.likeBoard(userToken, board._id).execute() }.await().apply {
+
+                                        if (!isSuccessful)
+                                            return@onClick
+
+                                        val json: JSONObject = JSONObject(body()!!.string())
+                                        val isSuccess = json.getBoolean("success")
+
+                                        if (!isSuccess) {
+                                            return@apply
+                                        }
+                                    }
+                                }
+
+                                luvButton.onClick {
+                                    LuvDonateDialog(this@MainActivity).show()
                                 }
                             }
                             it.itemView.onClick { _ ->
                                 startActivity<DetailFeedActivity>("_id" to board._id)
-                            }
-                            it.binding.luvButton.onClick {
-                                LuvDonateDialog(this@MainActivity)
-                                        .show()
                             }
                         }
                         onRecycle {

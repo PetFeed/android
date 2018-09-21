@@ -12,6 +12,7 @@ import com.petfeed.petfeed.model.Board
 import com.petfeed.petfeed.model.Comment
 import com.petfeed.petfeed.util.ActivityUtils
 import com.petfeed.petfeed.util.DataHelper
+import com.petfeed.petfeed.util.KeyboardHelper
 import com.petfeed.petfeed.util.UIUtils
 import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.activity_detail_feed.*
@@ -33,12 +34,14 @@ class DetailFeedActivity : AppCompatActivity() {
     var board: Board? = null
     val dateFormat = SimpleDateFormat("MMM d일 a KK시 mm분", Locale.KOREAN)
     var sendCommentId = ""
+    lateinit var keyboardHelper: KeyboardHelper
     lateinit var requestManager: GlideRequests
     override fun onCreate(savedInstanceState: Bundle?) {
         ActivityUtils.statusBarSetting(window, this, R.color.white1, false)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_feed)
 
+        keyboardHelper = KeyboardHelper(this)
         requestManager = GlideApp.with(this)
         feedGridView.requestManager = requestManager
         setRecyclerView()
@@ -77,8 +80,38 @@ class DetailFeedActivity : AppCompatActivity() {
                     async(UI) { initBoard() }
                 }
                 commentEditText.setText("")
+                keyboardHelper.hideKeyboard()
             } else {
                 LuvDonateDialog(this@DetailFeedActivity).show()
+            }
+        }
+
+        likeButton.onClick { _ ->
+            board?.apply {
+                val isLike = likes.any { it == DataHelper.datas!!.user._id }
+                if (isLike) {
+                    likes.remove(DataHelper.datas!!.user._id)
+                } else {
+                    likes.add(DataHelper.datas!!.user._id)
+                }
+                likeCountText.text = "${likes.size}+"
+            }
+            likeButton.imageResource =
+                    if (board != null && board!!.likes.filter { it == DataHelper.datas?.user?._id }.isNotEmpty()) R.drawable.ic_favorite
+                    else R.drawable.ic_favorite_empty
+
+            val userToken = DataHelper.datas?.token!!
+            async(CommonPool) { NetworkHelper.retrofitInstance.likeBoard(userToken, board!!._id).execute() }.await().apply {
+
+                if (!isSuccessful)
+                    return@onClick
+
+                val json: JSONObject = JSONObject(body()!!.string())
+                val isSuccess = json.getBoolean("success")
+
+                if (!isSuccess) {
+                    return@apply
+                }
             }
         }
     }
@@ -114,14 +147,28 @@ class DetailFeedActivity : AppCompatActivity() {
         sendCommentId = board!!._id
         commentRecyclerView?.adapter?.notifyDataSetChanged()
 
-        feedGridView.imageUrls.clear()
-        feedGridView.imageUrls.addAll(board!!.pictures)
-        feedGridView.viewUpdate()
+        feedGridView.run {
+            imageUrls.clear()
+            imageUrls.addAll(board!!.pictures)
+            viewUpdate()
+        }
+
+        var commentCount = 0
+        board!!.comments.forEach { commentCount += 1 + it.reComment.size }
+        commentCountText.text = "$commentCount+"
+        likeCountText.text = "${board!!.likes.size}+"
+
+        likeButton.imageResource =
+                if (board != null && board!!.likes.any { it == DataHelper.datas?.user?._id }) R.drawable.ic_favorite
+                else R.drawable.ic_favorite_empty
+
         writeDate.text = dateFormat.format(board!!.createDate)
         contents.text = board!!.contents
+
         requestManager
                 .load(NetworkHelper.url + board!!.writer.profile)
                 .into(writerProfileImage)
+
         writerName.text = board!!.writer.nickname
         topContainer.scrollTo(0, 0)
     }
@@ -132,13 +179,15 @@ class DetailFeedActivity : AppCompatActivity() {
                     .map<Comment, ItemCommentBinding>(R.layout.item_comment) {
                         onBind {
                             val comment = (comments[it.adapterPosition] as Comment)
-                            it.binding.writerName.text = comment.writer?.nickname
-                            it.binding.content.text = comment.content
-//                            it.binding.writeTime.text =
-                            requestManager
-                                    .load(NetworkHelper.url + comment.writer!!.profile)
-                                    .into(it.binding.writerImage)
-                            it.binding.writeTime.text = UIUtils.getLaterText(comment.createDate!!)
+                            it.binding.run {
+                                writerName.text = comment.writer?.nickname
+                                content.text = comment.content
+                                writeTime.text = UIUtils.getLaterText(comment.createDate!!)
+
+                                requestManager
+                                        .load(NetworkHelper.url + comment.writer!!.profile)
+                                        .into(writerImage)
+                            }
                         }
                         onClick {
                             val comment = (comments[it.adapterPosition] as Comment)
@@ -148,13 +197,15 @@ class DetailFeedActivity : AppCompatActivity() {
                     .map<Pair<Comment, String>, ItemCommentCommentBinding>(R.layout.item_comment_comment) {
                         onBind {
                             val comment = (comments[it.adapterPosition] as Pair<Comment, String>).first
-                            it.binding.writerName.text = comment.writer?.nickname
-                            it.binding.content.text = comment.content
-//                            it.binding.writeTime.text =
-                            requestManager
-                                    .load(NetworkHelper.url + comment.writer!!.profile)
-                                    .into(it.binding.writerImage)
-                            it.binding.writeDate.text = UIUtils.getLaterText(comment.createDate!!)
+                            it.binding.run {
+                                writerName.text = comment.writer?.nickname
+                                content.text = comment.content
+                                writeDate.text = UIUtils.getLaterText(comment.createDate!!)
+
+                                requestManager
+                                        .load(NetworkHelper.url + comment.writer!!.profile)
+                                        .into(writerImage)
+                            }
                         }
                         onClick {
                             val comment = (comments[it.adapterPosition] as Pair<Comment, String>).first
