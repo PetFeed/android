@@ -21,7 +21,7 @@ class Board(
         var likes: ArrayList<String> = ArrayList(),
 
         @SerializedName("_id")
-        var boardId: String = "",
+        var _id: String = "",
 
         @SerializedName("contents")
         var contents: String = "",

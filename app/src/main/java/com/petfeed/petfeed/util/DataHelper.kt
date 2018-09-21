@@ -10,6 +10,7 @@ class DataHelper private constructor() {
     var token = ""
     var user = User()
     var mainBoards = ArrayList<Board>()
+    var searchBoards = ArrayList<Board>()
     var myBoards: ArrayList<Board>? = null
 
     companion object {

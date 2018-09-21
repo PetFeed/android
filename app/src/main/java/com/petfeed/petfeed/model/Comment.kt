@@ -9,7 +9,7 @@ class Comment(
         var parentId: String? = "",
 
         @SerializedName("_id")
-        var commentId: String = "",
+        var _id: String = "",
 
         @SerializedName("writer")
         var writer: User? = User(),

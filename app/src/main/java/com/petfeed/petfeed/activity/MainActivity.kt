@@ -5,7 +5,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewTreeObserver
@@ -26,6 +25,7 @@ import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.imageResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.support.v4.onPageChangeListener
@@ -68,9 +68,6 @@ class MainActivity : AppCompatActivity() {
             async(UI) {
                 getBoards()
             }
-        }
-        async(UI) {
-            getBoards()
         }
     }
 
@@ -136,9 +133,11 @@ class MainActivity : AppCompatActivity() {
                         onBind {
                             val board = boards[it.adapterPosition]
 
-                            it.itemView.feedGridView.imageUrls.clear()
-                            it.itemView.feedGridView.imageUrls.addAll(board.pictures)
-                            it.itemView.feedGridView.viewUpdate()
+                            it.binding.feedGridView.run {
+                                imageUrls.clear()
+                                imageUrls.addAll(board.pictures)
+                                viewUpdate()
+                            }
 
                             requestManager
                                     .load(NetworkHelper.url + board.writer.profile)
@@ -146,18 +145,55 @@ class MainActivity : AppCompatActivity() {
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .into(it.itemView.writerImage)
 
-                            it.itemView.writeDate.text = dateFormat.format(board.createDate)
-                            it.itemView.writerName.text = board.writer.nickname
-                            it.itemView.onClick { _ ->
-                                startActivity<DetailFeedActivity>("boardId" to board.boardId)
+                            it.binding.writeDate.text = dateFormat.format(board.createDate)
+                            it.binding.writerName.text = board.writer.nickname//
+
+                            var commentCount = 0
+                            board.comments.forEach { commentCount += 1 + it.reComment.size }
+                            it.binding.commentCountText.text = "$commentCount+"
+                            it.binding.likeCountText.text = "${board.likes.size}+"
+
+                            it.binding.likeButton.imageResource =
+                                    if (board.likes.any { it == DataHelper.datas?.user?._id }) R.drawable.ic_favorite
+                                    else R.drawable.ic_favorite_empty
+
+                            it.binding.likeButton.onClick { _ ->
+                                DataHelper.datas!!.mainBoards[it.adapterPosition] = boards[it.adapterPosition].apply {
+                                    val isLike = likes.any { it == DataHelper.datas!!.user._id }
+                                    if (isLike) {
+                                        likes.remove(DataHelper.datas!!.user._id)
+                                    } else {
+                                        likes.add(DataHelper.datas!!.user._id)
+                                    }
+                                    it.binding.likeCountText.text = "${likes.size}+"
+                                }
+                                it.binding.likeButton.imageResource =
+                                        if (board.likes.filter { it == DataHelper.datas?.user?._id }.isNotEmpty()) R.drawable.ic_favorite
+                                        else R.drawable.ic_favorite_empty
+                                val userToken = DataHelper.datas?.token!!
+                                async(CommonPool) { NetworkHelper.retrofitInstance.likeBoard(userToken, board._id).execute() }.await().apply {
+
+                                    if (!isSuccessful)
+                                        return@onClick
+
+                                    val json: JSONObject = JSONObject(body()!!.string())
+                                    val isSuccess = json.getBoolean("success")
+
+                                    if (!isSuccess) {
+                                        return@apply
+                                    }
+                                }
                             }
-                            it.itemView.luvButton.onClick {
+                            it.itemView.onClick { _ ->
+                                startActivity<DetailFeedActivity>("_id" to board._id)
+                            }
+                            it.binding.luvButton.onClick {
                                 LuvDonateDialog(this@MainActivity)
                                         .show()
                             }
                         }
                         onRecycle {
-                            it.itemView.feedGridView.imageViews.clear()
+                            it.binding.feedGridView.imageViews.clear()
                         }
 
                         onCreate {
@@ -165,7 +201,8 @@ class MainActivity : AppCompatActivity() {
                                     .load(NetworkHelper.url + DataHelper.datas?.user?.profile)
                                     .into(it.itemView.profileImage)
 
-                            it.itemView.feedGridView.requestManager = this@MainActivity.requestManager
+                            it.binding.commentEditText.isEnabled = false
+                            it.binding.feedGridView.requestManager = this@MainActivity.requestManager
                         }
                     }
                     .into(this)
@@ -226,16 +263,5 @@ class MainActivity : AppCompatActivity() {
             drawerLayout.closeDrawer(Gravity.START)
         } else
             super.onBackPressed()
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        Log.e("adsfasdf", "asdfasdf")
-//        Glide.get(this).clearMemory()
-    }
-
-    override fun onTrimMemory(level: Int) {
-        super.onTrimMemory(level)
-//        Glide.get(this).trimMemory(level)
     }
 }

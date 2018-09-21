@@ -9,6 +9,7 @@ import com.petfeed.petfeed.R
 import com.petfeed.petfeed.model.User
 import com.petfeed.petfeed.util.ActivityUtils
 import com.petfeed.petfeed.util.DataHelper
+import com.petfeed.petfeed.util.PrefManager
 import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.experimental.CommonPool
@@ -21,10 +22,13 @@ import org.json.JSONObject
 
 class LoginActivity : AppCompatActivity() {
 
+    lateinit var prefManager: PrefManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ActivityUtils.statusBarSetting(window, this, R.color.white2)
         setContentView(R.layout.activity_login)
+
+        prefManager = PrefManager(this@LoginActivity)
 
         loginButton.onClick {
             if (!NetworkHelper.checkNetworkConnected(this@LoginActivity)) {
@@ -53,6 +57,9 @@ class LoginActivity : AppCompatActivity() {
 
                 DataHelper.datas?.token = json.getString("token")
             }
+
+            prefManager.userId = id
+            prefManager.userPassword = pw
 
             async(CommonPool) { NetworkHelper.retrofitInstance.getUser(DataHelper.datas!!.token).execute() }.await().apply {
                 if (!isSuccessful)

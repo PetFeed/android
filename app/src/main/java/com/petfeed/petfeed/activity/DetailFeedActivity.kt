@@ -68,7 +68,7 @@ class DetailFeedActivity : AppCompatActivity() {
                     NetworkHelper.retrofitInstance.postComment(DataHelper.datas!!.token,
                             sendCommentId,
                             commentEditText.text.toString(),
-                            if (sendCommentId == board!!.boardId) "" else "re").execute()
+                            if (sendCommentId == board!!._id) "" else "re").execute()
 
 
                 }.await().apply {
@@ -86,7 +86,7 @@ class DetailFeedActivity : AppCompatActivity() {
     private suspend fun initBoard() {
         board = Board()
         val userToken = DataHelper.datas!!.token
-        val boardId = intent.getStringExtra("boardId")
+        val boardId = intent.getStringExtra("_id")
         async(CommonPool) { NetworkHelper.retrofitInstance.getBoardById(userToken, boardId).execute() }.await().apply {
             if (!isSuccessful)
                 return
@@ -111,7 +111,7 @@ class DetailFeedActivity : AppCompatActivity() {
         board!!.pictures.forEachIndexed { index, s ->
             board!!.pictures[index] = NetworkHelper.url + s
         }
-        sendCommentId = board!!.boardId
+        sendCommentId = board!!._id
         commentRecyclerView?.adapter?.notifyDataSetChanged()
 
         feedGridView.imageUrls.clear()
@@ -142,7 +142,7 @@ class DetailFeedActivity : AppCompatActivity() {
                         }
                         onClick {
                             val comment = (comments[it.adapterPosition] as Comment)
-                            sendCommentId = comment.commentId
+                            sendCommentId = comment._id
                         }
                     }
                     .map<Pair<Comment, String>, ItemCommentCommentBinding>(R.layout.item_comment_comment) {

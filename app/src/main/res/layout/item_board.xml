@@ -95,12 +95,14 @@
             android:paddingStart="16dp">
 
             <ImageView
+                android:id="@+id/likeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_favorite"
                 android:tint="@color/brown1" />
 
             <TextView
+                android:id="@+id/likeCountText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -119,6 +121,7 @@
                 android:tint="@color/brown1" />
 
             <TextView
+                android:id="@+id/commentCountText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -147,7 +150,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/commitEditText"
+                android:id="@+id/commentEditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -169,9 +172,9 @@
                 android:layout_marginEnd="14dp"
                 android:alpha="0.3"
                 android:src="@drawable/ic_luv"
-                app:layout_constraintBottom_toBottomOf="@id/commitEditText"
-                app:layout_constraintEnd_toEndOf="@id/commitEditText"
-                app:layout_constraintTop_toTopOf="@id/commitEditText" />
+                app:layout_constraintBottom_toBottomOf="@id/commentEditText"
+                app:layout_constraintEnd_toEndOf="@id/commentEditText"
+                app:layout_constraintTop_toTopOf="@id/commentEditText" />
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 </layout>

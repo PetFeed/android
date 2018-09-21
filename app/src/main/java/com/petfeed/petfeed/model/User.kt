@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 class User(
+        @SerializedName("_id")
+        var _id: String = "",
+
         @SerializedName("user_id")
         var id: String = "",
 
@@ -32,8 +35,8 @@ class User(
         var followers: Array<User> = Array(0) { User() },
 
         @SerializedName("cards")
-        var cards: Array<Any> = Array(0){""}, // 나중에,,
+        var cards: Array<Any> = Array(0) { "" }, // 나중에,,
 
         @SerializedName("logs")
-        var logs: Array<Any> = Array(0){""} //TODO:// Log 클래스
+        var logs: Array<Any> = Array(0) { "" } //TODO:// Log 클래스
 )

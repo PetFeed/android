@@ -91,7 +91,7 @@ class ProfileFragment : Fragment() {
                             it.itemView.writeDate.text = dateFormat.format(board.createDate)
                             it.itemView.writerName.text = board.writer.nickname
                             it.itemView.onClick { _ ->
-                                startActivity<DetailFeedActivity>("boardId" to board.boardId)
+                                startActivity<DetailFeedActivity>("_id" to board._id)
                             }
                         }
                         onRecycle {
