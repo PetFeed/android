@@ -26,6 +26,7 @@ import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.childrenRecursiveSequence
+import org.jetbrains.anko.imageResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.startActivity
 import org.json.JSONObject
@@ -105,19 +106,21 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun setRecyclerView() {
+    private fun setRecyclerView() {// TODO: Board
 
         boardRecyclerView.run {
             layoutManager = LinearLayoutManager(context)
             LastAdapter(boards, BR.item)
                     .map<Board, ItemBoardBinding>(R.layout.item_board) {
 
-                        onBind {
+                        onBind { it ->
                             val board = boards[it.adapterPosition]
 
-                            it.itemView.feedGridView.imageUrls.clear()
-                            it.itemView.feedGridView.imageUrls.addAll(board.pictures)
-                            it.itemView.feedGridView.viewUpdate()
+                            it.binding.feedGridView.run {
+                                imageUrls.clear()
+                                imageUrls.addAll(board.pictures)
+                                viewUpdate()
+                            }
 
                             requestManager
                                     .load(NetworkHelper.url + board.writer.profile)
@@ -125,18 +128,58 @@ class SearchFragment : Fragment() {
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .into(it.itemView.writerImage)
 
-                            it.itemView.writeDate.text = dateFormat.format(board.createDate)
-                            it.itemView.writerName.text = board.writer.nickname
+                            it.binding.run {
+                                writeDate.text = dateFormat.format(board.createDate)
+
+                                var commentCount = 0
+                                board.comments.forEach { commentCount += 1 + it.reComment.size }
+                                commentCountText.text = "$commentCount+"
+                                likeCountText.text = "${board.likes.size}+"
+
+                                likeButton.imageResource =
+                                        if (board.likes.any { it == DataHelper.datas?.user?._id }) R.drawable.ic_favorite
+                                        else R.drawable.ic_favorite_empty
+
+                                likeButton.onClick { _ ->
+                                    DataHelper.datas!!.mainBoards[it.adapterPosition] = boards[it.adapterPosition].apply {
+                                        val isLike = likes.any { it == DataHelper.datas!!.user._id }
+                                        if (isLike) {
+                                            likes.remove(DataHelper.datas!!.user._id)
+                                        } else {
+                                            likes.add(DataHelper.datas!!.user._id)
+                                        }
+                                        likeCountText.text = "${likes.size}+"
+                                    }
+
+                                    likeButton.imageResource =
+                                            if (board.likes.any { it == DataHelper.datas?.user?._id }) R.drawable.ic_favorite
+                                            else R.drawable.ic_favorite_empty
+
+                                    val userToken = DataHelper.datas?.token!!
+                                    async(CommonPool) { NetworkHelper.retrofitInstance.likeBoard(userToken, board._id).execute() }.await().apply {
+
+                                        if (!isSuccessful)
+                                            return@onClick
+
+                                        val json: JSONObject = JSONObject(body()!!.string())
+                                        val isSuccess = json.getBoolean("success")
+
+                                        if (!isSuccess) {
+                                            return@apply
+                                        }
+                                    }
+                                }
+
+                                luvButton.onClick {
+                                    LuvDonateDialog(this@SearchFragment.context!!).show()
+                                }
+                            }
                             it.itemView.onClick { _ ->
                                 startActivity<DetailFeedActivity>("_id" to board._id)
                             }
-                            it.itemView.luvButton.onClick {
-                                LuvDonateDialog(this@SearchFragment.context!!)
-                                        .show()
-                            }
                         }
                         onRecycle {
-                            it.itemView.feedGridView.imageViews.clear()
+                            it.binding.feedGridView.imageViews.clear()
                         }
 
                         onCreate {
@@ -144,7 +187,8 @@ class SearchFragment : Fragment() {
                                     .load(NetworkHelper.url + DataHelper.datas?.user?.profile)
                                     .into(it.itemView.profileImage)
 
-                            it.itemView.feedGridView.requestManager = this@SearchFragment.requestManager
+                            it.binding.commentEditText.isEnabled = false
+                            it.binding.feedGridView.requestManager = this@SearchFragment.requestManager
                         }
                     }
                     .into(this)

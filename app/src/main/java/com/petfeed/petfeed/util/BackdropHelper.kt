@@ -39,7 +39,7 @@ class BackdropHelper(val mContext: Context,
     var onMarginChangeListener: (margin: Int, ratio: Float) -> Unit = { _, _ -> }
 
     private val statusBarSize = makeDP(mContext, 24f) // statusBarSize
-    private val swipeMinHeight = makeDP(mContext, 12f) // 짧고 빠른 스와이프 기준 //TODO:// 이거 값 확인해서 바꾸기
+    private val swipeMinHeight = makeDP(mContext, 12f) // 짧고 빠른 스와이프 기준
     private val maxMarginSize = contentViewHeight - topHeight - contentView.paddingBottom
 
     val dp16 = makeDP(mContext, 16f)

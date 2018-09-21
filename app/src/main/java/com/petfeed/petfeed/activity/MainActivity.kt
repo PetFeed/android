@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity() {
         swipeRefreshLayout.isRefreshing = false
     }
 
-    private fun setRecyclerView() {
+    private fun setRecyclerView() { // TODO: Board
         val statusBarSize = UIUtils.makeDP(this, 24f)
         boardRecyclerView.run {
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -147,7 +147,6 @@ class MainActivity : AppCompatActivity() {
 
                             it.binding.run {
                                 writeDate.text = dateFormat.format(board.createDate)
-                                writerName.text = board.writer.nickname//
 
                                 var commentCount = 0
                                 board.comments.forEach { commentCount += 1 + it.reComment.size }

@@ -9,14 +9,11 @@ import android.graphics.drawable.BitmapDrawable
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.res.ResourcesCompat
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity.CENTER
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.RequestManager
-import com.bumptech.glide.load.Key
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
@@ -92,9 +89,7 @@ class FeedGridView : ConstraintLayout {
             VERTICAL3 -> setViewVertical3()
             VERTICAL4 -> setViewVertical4()
         }
-        if (mImages.isEmpty())
-            addImageViews()
-        else addImageViews(mImages)
+        addImageViews()
         lastOverlay()
     }
 
@@ -111,17 +106,6 @@ class FeedGridView : ConstraintLayout {
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .signature(ObjectKey(imageUrls[i]))
                     .thumbnail(0.1f)
-                    .into(it)
-        }
-    }
-
-    private fun addImageViews(images: ArrayList<Bitmap>) {
-        imageViews.forEachIndexed { i, it ->
-            it.setBackgroundColor(Color.TRANSPARENT)
-            removeView(it)
-            addView(it)
-            requestManager!!
-                    .load(images[i])
                     .into(it)
         }
     }
