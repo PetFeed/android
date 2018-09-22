@@ -328,7 +328,7 @@ class FeedGridView : ConstraintLayout {
                         bottomToTop = imageViews[1].id
                     }
                     1 -> {
-                        topMargin = distance.toInt()
+                        topMargin = distance.toInt() * 2
                         bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
                         topToBottom = imageViews[0].id
                     }
@@ -364,7 +364,7 @@ class FeedGridView : ConstraintLayout {
                 }
                 if (i != 0) {
                     bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
-                    topMargin = distance.toInt()
+                    topMargin = distance.toInt() * 2
                     topToBottom = imageViews[0].id
                 }
             }
@@ -400,7 +400,7 @@ class FeedGridView : ConstraintLayout {
                     }
                 }
                 if (i != 0) {
-                    topMargin = distance.toInt()
+                    topMargin = distance.toInt() * 2
                     topToBottom = imageViews[0].id
                     bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
                 }
