@@ -8,13 +8,12 @@ import com.google.gson.Gson
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.model.User
 import com.petfeed.petfeed.util.ActivityUtils
-import com.petfeed.petfeed.util.DataHelper
+import com.petfeed.petfeed.model.DataHelper
 import com.petfeed.petfeed.util.PrefManager
 import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.toast
 import org.json.JSONObject
 
 class SplashActivity : AppCompatActivity() {
@@ -80,6 +79,7 @@ class SplashActivity : AppCompatActivity() {
 
         startActivity<MainActivity>()
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        finish()
     }
 
     override fun finish() {

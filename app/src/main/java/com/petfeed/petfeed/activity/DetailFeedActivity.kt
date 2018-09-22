@@ -11,7 +11,7 @@ import com.petfeed.petfeed.databinding.ItemCommentCommentBinding
 import com.petfeed.petfeed.model.Board
 import com.petfeed.petfeed.model.Comment
 import com.petfeed.petfeed.util.ActivityUtils
-import com.petfeed.petfeed.util.DataHelper
+import com.petfeed.petfeed.model.DataHelper
 import com.petfeed.petfeed.util.KeyboardHelper
 import com.petfeed.petfeed.util.UIUtils
 import com.petfeed.petfeed.util.network.NetworkHelper

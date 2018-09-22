@@ -20,7 +20,7 @@ import com.petfeed.petfeed.R
 import com.petfeed.petfeed.databinding.ItemWriteAddBinding
 import com.petfeed.petfeed.databinding.ItemWriteCardBinding
 import com.petfeed.petfeed.util.ActivityUtils
-import com.petfeed.petfeed.util.DataHelper
+import com.petfeed.petfeed.model.DataHelper
 import com.petfeed.petfeed.util.UIUtils
 import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.activity_write.*

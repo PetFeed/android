@@ -9,9 +9,10 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.bumptech.glide.Glide
 import com.github.nitrico.lastadapter.LastAdapter
 import com.petfeed.petfeed.BR
+import com.petfeed.petfeed.GlideApp
+import com.petfeed.petfeed.GlideRequests
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.adapter.GridItemDecoration
 import com.petfeed.petfeed.databinding.ItemGalleryBinding
@@ -27,11 +28,20 @@ class GalleryActivity : AppCompatActivity() {
     private val items = ArrayList<String>()
     private val selectedArray = ArrayList<Int>()
 
+    var max = 0
+    lateinit var requestManager: GlideRequests
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ActivityUtils.statusBarSetting(window, this, R.color.brown1, true)
         setContentView(R.layout.activity_gallery)
 
+        requestManager = GlideApp.with(this)
+        val type = intent.getIntExtra("type", MANY)
+        max = when (type) {
+            ONLYONE -> 1
+            MANY -> 30
+            else -> 30
+        }
         setToolbar()
         setRecyclerView()
     }
@@ -53,7 +63,7 @@ class GalleryActivity : AppCompatActivity() {
                     .map<String, ItemGalleryBinding>(R.layout.item_gallery) {
                         onBind {
                             it.itemView.run {
-                                Glide.with(context)
+                                requestManager
                                         .load(items[it.adapterPosition])
                                         .thumbnail(0.2f)
                                         .into(imageView)
@@ -65,7 +75,6 @@ class GalleryActivity : AppCompatActivity() {
                                     overlayView.visibility = View.GONE
                                     textView.text = ""
                                 }
-
                             }
                         }
                         onClick {
@@ -73,6 +82,8 @@ class GalleryActivity : AppCompatActivity() {
                                 selectedArray.remove(it.adapterPosition)
                                 adapter?.notifyDataSetChanged()
                             } else {
+                                if (selectedArray.size >= max)
+                                    selectedArray.removeAt(0)
                                 selectedArray.add(it.adapterPosition)
                                 adapter?.notifyDataSetChanged()
                             }
@@ -90,10 +101,13 @@ class GalleryActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.finish_menu -> {
-                setResult(Activity.RESULT_OK, Intent().putExtra("paths",
-                        items
-                                .filterIndexed { index, s -> index in selectedArray }
-                                .toTypedArray()))
+                if (selectedArray.size == 0)
+                    setResult(Activity.RESULT_CANCELED)
+                else
+                    setResult(Activity.RESULT_OK, Intent().putExtra("paths",
+                            items
+                                    .filterIndexed { index, s -> index in selectedArray }
+                                    .toTypedArray()))
                 finish()
             }
             android.R.id.home -> {

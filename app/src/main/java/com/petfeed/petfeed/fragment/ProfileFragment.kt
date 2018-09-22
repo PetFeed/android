@@ -1,39 +1,55 @@
 package com.petfeed.petfeed.fragment
 
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.signature.ObjectKey
 import com.github.nitrico.lastadapter.LastAdapter
-import com.petfeed.petfeed.*
+import com.petfeed.petfeed.BR
+import com.petfeed.petfeed.GlideApp
+import com.petfeed.petfeed.GlideRequests
+import com.petfeed.petfeed.R
 import com.petfeed.petfeed.activity.DetailFeedActivity
+import com.petfeed.petfeed.activity.GalleryActivity
 import com.petfeed.petfeed.activity.LogActivity
 import com.petfeed.petfeed.activity.SettingActivity
-import com.petfeed.petfeed.databinding.ItemBoardBinding
 import com.petfeed.petfeed.databinding.ItemProfileBoardBinding
 import com.petfeed.petfeed.model.Board
-import com.petfeed.petfeed.util.DataHelper
+import com.petfeed.petfeed.model.DataHelper
 import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.item_profile_board.view.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import org.jetbrains.anko.imageResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.startActivity
+import org.jetbrains.anko.support.v4.startActivityForResult
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class ProfileFragment : Fragment() {
 
+    val requestCode = 1
     var boards = ArrayList<Board>()
     var user = DataHelper.datas!!.user
     lateinit var requestManager: GlideRequests
@@ -51,7 +67,7 @@ class ProfileFragment : Fragment() {
 
         setRecyclerView()
         val imageUrl = NetworkHelper.url + DataHelper.datas?.user?.profile
-        Glide.with(context!!)
+        requestManager
                 .load(imageUrl)
                 .into(profileImage)
         userName.text = user.nickname
@@ -61,7 +77,9 @@ class ProfileFragment : Fragment() {
         settingButton.onClick {
             startActivity<SettingActivity>()
         }
-
+        profileImage.onClick {
+            startActivityForResult<GalleryActivity>(requestCode, "type" to GalleryActivity.ONLYONE)
+        }
         if (DataHelper.datas?.myBoards == null) {
             DataHelper.datas?.myBoards = ArrayList()
             DataHelper.datas?.myBoards!!.addAll(DataHelper.datas?.mainBoards?.filter { it.writer.id == DataHelper.datas?.user?.id }!!)
@@ -70,7 +88,6 @@ class ProfileFragment : Fragment() {
         boards.clear()
         boards.addAll(DataHelper.datas?.myBoards!!)
         boardRecyclerView.adapter!!.notifyDataSetChanged()
-
     }
 
     private fun setRecyclerView() {// TODO: Board
@@ -151,6 +168,65 @@ class ProfileFragment : Fragment() {
                     }
                     .into(this)
             layoutManager = LinearLayoutManager(context)
+        }
+    }
+
+    private fun changeProfile(file: File) {
+        val body = RequestBody.create(MediaType.parse("image/*"), file)
+        val picture = MultipartBody.Part.createFormData("profile", file.name, body)
+
+        Log.e("profile", "asdf")
+
+        NetworkHelper.retrofitInstance.updateUser(DataHelper.datas!!.token, picture, HashMap<String, String>().toMap()).enqueue(object: Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("Asdf", "failed")
+                t.printStackTrace()
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                Log.e("Asdfaf", "Asfd")
+            }
+        })
+        Log.e("profile", "a2sdf")
+
+//        async(CommonPool) { NetworkHelper.retrofitInstance.updateUser(DataHelper.datas!!.token, picture, HashMap<String, String>().toMap()).execute() }.await().apply {
+//            Log.e("profile", "asdfadsf")
+//
+//            if (!isSuccessful)
+//                return
+//
+//            val json: JSONObject = JSONObject(body()!!.string())
+//            val isSuccess = json.getBoolean("success")
+//
+//            Log.e("profile", "asdfasdfasdfaf")
+//
+//            if (!isSuccess) {
+//                return
+//            }
+//            Log.e("profile", "성공")
+//        }
+//
+//        async(CommonPool) { NetworkHelper.retrofitInstance.getUser(DataHelper.datas!!.token).execute() }.await().apply {
+//            if (!isSuccessful)
+//                return
+//
+//            val json: JSONObject = JSONObject(body()!!.string())
+//            val isSuccess = json.getBoolean("success")
+//
+//            if (!isSuccess)
+//                return
+//
+//            val user = Gson().fromJson(json.getString("user"), User::class.java)
+//            DataHelper.datas?.user = user
+//        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GalleryActivity.ONLYONE && resultCode == RESULT_OK) {
+            val path = data!!.getStringArrayExtra("paths").first()
+            val file = File(path)
+            changeProfile(file)
         }
     }
 

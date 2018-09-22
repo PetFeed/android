@@ -17,6 +17,7 @@ import com.petfeed.petfeed.*
 import com.petfeed.petfeed.adapter.MainPagerAdapter
 import com.petfeed.petfeed.databinding.ItemBoardBinding
 import com.petfeed.petfeed.model.Board
+import com.petfeed.petfeed.model.DataHelper
 import com.petfeed.petfeed.util.*
 import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.activity_main.*

@@ -18,7 +18,7 @@ import com.petfeed.petfeed.activity.DetailFeedActivity
 import com.petfeed.petfeed.activity.MainActivity
 import com.petfeed.petfeed.databinding.ItemBoardBinding
 import com.petfeed.petfeed.model.Board
-import com.petfeed.petfeed.util.DataHelper
+import com.petfeed.petfeed.model.DataHelper
 import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.item_board.view.*
