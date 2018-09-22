@@ -31,7 +31,7 @@ class CustomAnimator {
 
     private fun animate() {
         isRunning = true
-        val max = duration / 16
+        val max = duration / 12
         val diff = endValue - startValue
         (1..max).forEach {
             handler.postDelayed({
