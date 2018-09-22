@@ -16,6 +16,7 @@ import android.widget.ImageView
 import com.android.databinding.library.baseAdapters.BR
 import com.bumptech.glide.Glide
 import com.github.nitrico.lastadapter.LastAdapter
+import com.petfeed.petfeed.GlideApp
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.databinding.ItemWriteAddBinding
 import com.petfeed.petfeed.databinding.ItemWriteCardBinding
@@ -48,6 +49,11 @@ class WriteActivity : AppCompatActivity() {
         setToolbar()
         setRecyclerView()
 
+        GlideApp.with(this)
+                .load(NetworkHelper.url + DataHelper.datas!!.user.profile)
+                .into(profileImage)
+
+        userName.text = DataHelper.datas!!.user.nickname
         writeButton.onClick {
             if (isWriting)
                 return@onClick
