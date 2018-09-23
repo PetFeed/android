@@ -2,6 +2,7 @@ package com.petfeed.petfeed.model
 
 import com.google.gson.annotations.SerializedName
 import java.util.*
+import kotlin.collections.ArrayList
 
 class User(
         @SerializedName("_id")
@@ -29,14 +30,14 @@ class User(
         var profile: String = "",
 
         @SerializedName("following")
-        var following: Array<User> = Array(0) { User() },
+        var following: ArrayList<String> = ArrayList(),
 
         @SerializedName("followers")
-        var followers: Array<User> = Array(0) { User() },
+        var followers: ArrayList<String> = ArrayList(),
 
         @SerializedName("cards")
-        var cards: Array<Any> = Array(0) { "" }, // 나중에,,
+        var cards: ArrayList<Any> = ArrayList(), // 나중에,,
 
         @SerializedName("logs")
-        var logs: Array<Any> = Array(0) { "" } //TODO:// Log 클래스
+        var logs: ArrayList<Any> = ArrayList() //TODO:// Log 클래스
 )

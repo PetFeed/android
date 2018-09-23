@@ -5,6 +5,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewTreeObserver
@@ -158,6 +159,8 @@ class MainActivity : AppCompatActivity() {
                                         if (board.likes.any { it == DataHelper.datas?.user?._id }) R.drawable.ic_favorite
                                         else R.drawable.ic_favorite_empty
 
+                                subscribeButton.alpha = if (board.writer.followers.any { it == DataHelper.datas!!.user._id }) 1f else 0.3f
+
                                 likeButton.onClick { _ ->
                                     DataHelper.datas!!.mainBoards[it.adapterPosition] = boards[it.adapterPosition].apply {
                                         val isLike = likes.any { it == DataHelper.datas!!.user._id }
@@ -190,6 +193,40 @@ class MainActivity : AppCompatActivity() {
 
                                 luvButton.onClick {
                                     LuvDonateDialog(this@MainActivity).show()
+                                }
+
+                                subscribeButton.onClick { _ ->
+                                    DataHelper.datas!!.mainBoards[it.adapterPosition].writer = boards[it.adapterPosition].writer.apply {
+
+                                        val isSubscribe = followers.any { it == DataHelper.datas!!.user._id }
+                                        if (isSubscribe) {
+                                            followers.remove(DataHelper.datas!!.user._id)
+                                        } else {
+                                            followers.add(DataHelper.datas!!.user._id)
+                                        }
+                                    }
+
+                                    subscribeButton.alpha = if (board.writer.followers.any { it == DataHelper.datas!!.user._id }) 1f else 0.3f
+
+
+                                    val userToken = DataHelper.datas?.token!!
+                                    val toId = board.writer._id
+
+                                    async(CommonPool) {
+                                        if (board.writer.followers.any { it == DataHelper.datas!!.user._id })
+                                            NetworkHelper.retrofitInstance.followUser(userToken, toId).execute()
+                                        else
+                                            NetworkHelper.retrofitInstance.unFollowUser(userToken, toId).execute()
+                                    }.await().apply {
+                                        if (!isSuccessful)
+                                            return@onClick
+
+                                        val json: JSONObject = JSONObject(body()!!.string())
+                                        val isSuccess = json.getBoolean("success")
+                                        if (!isSuccess) {
+                                            return@apply
+                                        }
+                                    }
                                 }
                             }
                             it.itemView.onClick { _ ->

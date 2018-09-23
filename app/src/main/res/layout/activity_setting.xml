@@ -29,44 +29,44 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/personalButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="20dp"
-                android:paddingStart="24dp"
-                android:paddingTop="20dp">
+            <!--<LinearLayout-->
+                <!--android:id="@+id/personalButton"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:paddingBottom="20dp"-->
+                <!--android:paddingStart="24dp"-->
+                <!--android:paddingTop="20dp">-->
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_person"
-                    android:tint="@color/brown1" />
+                <!--<ImageView-->
+                    <!--android:layout_width="24dp"-->
+                    <!--android:layout_height="24dp"-->
+                    <!--android:layout_gravity="center_vertical"-->
+                    <!--android:src="@drawable/ic_person"-->
+                    <!--android:tint="@color/brown1" />-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:orientation="vertical">
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginStart="16dp"-->
+                    <!--android:orientation="vertical">-->
 
-                    <TextView
-                        style="@style/Bold"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="개인 정보" />
+                    <!--<TextView-->
+                        <!--style="@style/Bold"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="개인 정보" />-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/nanum_square_round_regular"
-                        android:paddingTop="4dp"
-                        android:text="이름, 이메일, 전화번호"
-                        android:textColor="@color/black1_30"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </LinearLayout>
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:fontFamily="@font/nanum_square_round_regular"-->
+                        <!--android:paddingTop="4dp"-->
+                        <!--android:text="이름, 이메일, 전화번호"-->
+                        <!--android:textColor="@color/black1_30"-->
+                        <!--android:textSize="12sp" />-->
+                <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
 
             <LinearLayout
                 android:id="@+id/accountButton"

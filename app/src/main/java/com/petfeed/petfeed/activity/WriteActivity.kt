@@ -20,8 +20,8 @@ import com.petfeed.petfeed.GlideApp
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.databinding.ItemWriteAddBinding
 import com.petfeed.petfeed.databinding.ItemWriteCardBinding
-import com.petfeed.petfeed.util.ActivityUtils
 import com.petfeed.petfeed.model.DataHelper
+import com.petfeed.petfeed.util.ActivityUtils
 import com.petfeed.petfeed.util.UIUtils
 import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.activity_write.*
@@ -55,6 +55,10 @@ class WriteActivity : AppCompatActivity() {
 
         userName.text = DataHelper.datas!!.user.nickname
         writeButton.onClick {
+            if(!checkData()){
+                toast("내용과 사진이 필요합니다.")
+                return@onClick
+            }
             if (isWriting)
                 return@onClick
             isWriting = true
@@ -73,7 +77,7 @@ class WriteActivity : AppCompatActivity() {
                             else
                                 toast("오류가 발생했습니다.")
                         }
-            } catch (e: SocketTimeoutException){
+            } catch (e: SocketTimeoutException) {
                 e.printStackTrace()
                 toast("네트워크 오류가 발생했습니다.")
             }
@@ -128,6 +132,10 @@ class WriteActivity : AppCompatActivity() {
             setHomeAsUpIndicator(R.drawable.ic_close)
         }
     }
+
+    private fun checkData(): Boolean =
+            contents.text.toString().isNotBlank() && imageArray.size > 1
+
 
     private fun getPictureOnGallery() {
         startActivityForResult<GalleryActivity>(GALLERY_CODE)

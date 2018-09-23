@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.res.ResourcesCompat
 import android.util.AttributeSet
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity.CENTER
 import android.view.View
@@ -74,7 +75,14 @@ class FeedGridView : ConstraintLayout {
             else -> 1
         }
         imageCount = min(imageUrls.size, 4)
-        layoutMode = LayoutMode.get(shape, imageCount)
+        try {
+
+            layoutMode = LayoutMode.get(shape, imageCount)
+        } catch (e: NoSuchElementException) {
+            e.printStackTrace()
+            Log.e("FeedGridView", "shape  ${shape} imageCount  ${imageCount}}")
+            return
+        }
         if (imageViews.size != 0)
             imageViews.clear()
         when (layoutMode) {
@@ -103,7 +111,8 @@ class FeedGridView : ConstraintLayout {
             addView(it)
             requestManager!!
                     .load(imageUrls[i])
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .signature(ObjectKey(imageUrls[i]))
                     .thumbnail(0.1f)
                     .into(it)

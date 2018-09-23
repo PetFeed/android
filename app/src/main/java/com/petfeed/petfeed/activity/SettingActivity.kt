@@ -16,9 +16,9 @@ class SettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
 
-        personalButton.onClick {
-            startActivity<PersonalSettingActivity>()
-        }
+//        personalButton.onClick {
+//            startActivity<PersonalSettingActivity>()
+//        }
         accountButton.onClick {
             startActivity<AccountSettingActivity>()
         }
