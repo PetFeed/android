@@ -5,7 +5,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewTreeObserver
@@ -113,6 +112,9 @@ class MainActivity : AppCompatActivity() {
                 it.pictures.forEachIndexed { index, s ->
                     it.pictures[index] = NetworkHelper.url + s
                 }
+                it.lowPictures.forEachIndexed { index, s ->
+                    it.lowPictures[index] = NetworkHelper.url + s
+                }
             }
 
             boards.run {
@@ -137,7 +139,7 @@ class MainActivity : AppCompatActivity() {
 
                             it.binding.feedGridView.run {
                                 imageUrls.clear()
-                                imageUrls.addAll(board.pictures)
+                                imageUrls.addAll(board.lowPictures)
                                 viewUpdate()
                             }
 
@@ -145,6 +147,7 @@ class MainActivity : AppCompatActivity() {
                                     .load(NetworkHelper.url + board.writer.profile)
                                     .signature(ObjectKey(NetworkHelper.url + board.writer.profile))
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .override(100, 100)
                                     .into(it.itemView.writerImage)
 
                             it.binding.run {
@@ -235,6 +238,9 @@ class MainActivity : AppCompatActivity() {
                         }
                         onRecycle {
                             it.binding.feedGridView.imageViews.clear()
+                            it.binding.feedGridView.imageViews.forEach {
+                                requestManager.clear(it)
+                            }
                         }
 
                         onCreate {
@@ -304,5 +310,15 @@ class MainActivity : AppCompatActivity() {
             drawerLayout.closeDrawer(Gravity.START)
         } else
             super.onBackPressed()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        GlideApp.get(this).onLowMemory()
+    }
+
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        GlideApp.get(this).onTrimMemory(level)
     }
 }

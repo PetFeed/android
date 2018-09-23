@@ -10,8 +10,8 @@ import com.petfeed.petfeed.databinding.ItemCommentBinding
 import com.petfeed.petfeed.databinding.ItemCommentCommentBinding
 import com.petfeed.petfeed.model.Board
 import com.petfeed.petfeed.model.Comment
-import com.petfeed.petfeed.util.ActivityUtils
 import com.petfeed.petfeed.model.DataHelper
+import com.petfeed.petfeed.util.ActivityUtils
 import com.petfeed.petfeed.util.KeyboardHelper
 import com.petfeed.petfeed.util.UIUtils
 import com.petfeed.petfeed.util.network.NetworkHelper
@@ -22,6 +22,7 @@ import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.imageResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.sdk25.coroutines.textChangedListener
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -114,6 +115,10 @@ class DetailFeedActivity : AppCompatActivity() {
                 }
             }
         }
+
+        feedGridView.onClick {
+            startActivity<DetailImageActivity>("images" to board!!.pictures.toTypedArray())
+        }
     }
 
     private suspend fun initBoard() {
@@ -144,12 +149,15 @@ class DetailFeedActivity : AppCompatActivity() {
         board!!.pictures.forEachIndexed { index, s ->
             board!!.pictures[index] = NetworkHelper.url + s
         }
+        board!!.lowPictures.forEachIndexed { index, s ->
+            board!!.lowPictures[index] = NetworkHelper.url + s
+        }
         sendCommentId = board!!._id
         commentRecyclerView?.adapter?.notifyDataSetChanged()
 
         feedGridView.run {
             imageUrls.clear()
-            imageUrls.addAll(board!!.pictures)
+            imageUrls.addAll(board!!.lowPictures)
             viewUpdate()
         }
 

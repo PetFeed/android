@@ -6,6 +6,7 @@ import android.content.res.TypedArray
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.res.ResourcesCompat
 import android.util.AttributeSet
@@ -15,8 +16,12 @@ import android.view.Gravity.CENTER
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.signature.ObjectKey
 import com.petfeed.petfeed.GlideRequests
@@ -25,6 +30,8 @@ import com.petfeed.petfeed.view.FeedGridView.LayoutMode.*
 import kotlin.math.min
 
 class FeedGridView : ConstraintLayout {
+
+
     var imageUrls = ArrayList<String>()
     var imageViews = ArrayList<ImageView>()
     var distance = 0f
@@ -102,21 +109,56 @@ class FeedGridView : ConstraintLayout {
     }
 
 
+    var loadedCount = 0
     private fun addImageViews() {
+        loadedCount = 0
         if (requestManager == null)
             return
         imageViews.forEachIndexed { i, it ->
             it.setBackgroundColor(Color.TRANSPARENT)
             removeView(it)
             addView(it)
-            requestManager!!
-                    .load(imageUrls[i])
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .signature(ObjectKey(imageUrls[i]))
-                    .thumbnail(0.1f)
-                    .into(it)
+            loadImage(it, imageUrls[i])
         }
+    }
+
+
+    private fun loadImage(imageView: ImageView, imageUrl: String) {
+        requestManager!!
+                .load(imageUrl)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                        requestManager!!
+                                .load(imageUrl)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .listener(this)
+                                .skipMemoryCache(true)
+                                .signature(ObjectKey(imageUrl))
+                                .thumbnail(0.1f)
+//                                .override(100)
+                                .centerInside()
+                                .into(imageView)
+                        return false
+                    }
+
+                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                        if (imageView.height < 50) {
+                            loadedCount++
+                            if (loadedCount >= imageViews.size) {
+                                initImages()
+                            }
+                            return true
+                        }
+                        return false
+                    }
+                })
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .signature(ObjectKey(imageUrl))
+                .thumbnail(0.1f)
+                .override(100)
+                .centerInside()
+                .into(imageView)
     }
 
     @SuppressLint("SetTextI18n")
@@ -144,7 +186,7 @@ class FeedGridView : ConstraintLayout {
 
     private fun setViewOne() {
         val ratio = firstImage.ratio()
-        (0 until imageCount).forEach {
+        (0 until imageCount).forEach { _ ->
             makeImageView(width, (width * ratio).toInt())
         }
         imageViews.forEachIndexed { i, it ->
@@ -157,7 +199,7 @@ class FeedGridView : ConstraintLayout {
     }
 
     private fun setViewSquare2() {
-        (0 until imageCount).forEach {
+        (0 until imageCount).forEach { _ ->
             makeImageView(((width - distance) / 2f).toInt(), ((width - distance) / 2f).toInt())
         }
         imageViews.forEachIndexed { i, it ->
@@ -177,7 +219,7 @@ class FeedGridView : ConstraintLayout {
     }
 
     private fun setViewSquare3() {
-        (0 until imageCount).forEach {
+        (0 until imageCount).forEach { _ ->
             makeImageView(((width - distance * 2) / 3f).toInt(), ((width - distance * 2) / 3f).toInt())
         }
         imageViews.forEachIndexed { i, it ->
@@ -203,7 +245,7 @@ class FeedGridView : ConstraintLayout {
     }
 
     private fun setViewSquare4() {
-        (0 until imageCount).forEach {
+        (0 until imageCount).forEach { _ ->
             makeImageView(((width - distance) / 2f).toInt(), ((width - distance) / 2f).toInt())
         }
         imageViews.forEachIndexed { i, it ->
@@ -235,7 +277,7 @@ class FeedGridView : ConstraintLayout {
     }
 
     private fun setViewHorizontal2() {
-        (0 until imageCount).forEachIndexed { i, _ ->
+        (0 until imageCount).forEachIndexed { _, _ ->
             makeImageView(((width - distance) / 2f).toInt(), width)
         }
 

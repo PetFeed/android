@@ -11,6 +11,9 @@ class Board(
         @SerializedName("pictures")
         var pictures: ArrayList<String> = ArrayList(),
 
+        @SerializedName("lowPictures")
+        var lowPictures: ArrayList<String> = ArrayList(),
+
         @SerializedName("comments")
         var comments: ArrayList<Comment> = ArrayList(),
 

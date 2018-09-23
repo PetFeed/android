@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.signature.ObjectKey
 import com.github.nitrico.lastadapter.LastAdapter
+import com.google.gson.Gson
 import com.petfeed.petfeed.BR
 import com.petfeed.petfeed.GlideApp
 import com.petfeed.petfeed.GlideRequests
@@ -24,6 +25,7 @@ import com.petfeed.petfeed.activity.SettingActivity
 import com.petfeed.petfeed.databinding.ItemProfileBoardBinding
 import com.petfeed.petfeed.model.Board
 import com.petfeed.petfeed.model.DataHelper
+import com.petfeed.petfeed.model.User
 import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.item_profile_board.view.*
@@ -32,15 +34,11 @@ import kotlinx.coroutines.experimental.async
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import org.jetbrains.anko.imageResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.startActivityForResult
 import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -100,7 +98,7 @@ class ProfileFragment : Fragment() {
 
                             it.binding.feedGridView.run {
                                 imageUrls.clear()
-                                imageUrls.addAll(board.pictures)
+                                imageUrls.addAll(board.lowPictures)
                                 viewUpdate()
                             }
 
@@ -171,54 +169,49 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun changeProfile(file: File) {
+    private suspend fun changeProfile(file: File) {
         val body = RequestBody.create(MediaType.parse("image/*"), file)
         val picture = MultipartBody.Part.createFormData("profile", file.name, body)
 
-        Log.e("profile", "asdf")
-
-        NetworkHelper.retrofitInstance.updateUser(DataHelper.datas!!.token, picture, HashMap<String, String>().toMap()).enqueue(object: Callback<ResponseBody> {
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e("Asdf", "failed")
-                t.printStackTrace()
-            }
-
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                Log.e("Asdfaf", "Asfd")
-            }
-        })
-        Log.e("profile", "a2sdf")
-
-//        async(CommonPool) { NetworkHelper.retrofitInstance.updateUser(DataHelper.datas!!.token, picture, HashMap<String, String>().toMap()).execute() }.await().apply {
-//            Log.e("profile", "asdfadsf")
-//
-//            if (!isSuccessful)
-//                return
-//
-//            val json: JSONObject = JSONObject(body()!!.string())
-//            val isSuccess = json.getBoolean("success")
-//
-//            Log.e("profile", "asdfasdfasdfaf")
-//
-//            if (!isSuccess) {
-//                return
+//        NetworkHelper.retrofitInstance.updateUser(DataHelper.datas!!.token, picture, HashMap<String, String>().toMap()).enqueue(object: Callback<ResponseBody> {
+//            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+//                t.printStackTrace()
 //            }
-//            Log.e("profile", "성공")
-//        }
 //
-//        async(CommonPool) { NetworkHelper.retrofitInstance.getUser(DataHelper.datas!!.token).execute() }.await().apply {
-//            if (!isSuccessful)
-//                return
-//
-//            val json: JSONObject = JSONObject(body()!!.string())
-//            val isSuccess = json.getBoolean("success")
-//
-//            if (!isSuccess)
-//                return
-//
-//            val user = Gson().fromJson(json.getString("user"), User::class.java)
-//            DataHelper.datas?.user = user
-//        }
+//            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+//            }
+//        })
+
+        async(CommonPool) { NetworkHelper.retrofitInstance.updateUser(DataHelper.datas!!.token, picture, HashMap<String, String>().toMap()).execute() }.await().apply {
+            Log.e("profile", "asdfadsf")
+
+            if (!isSuccessful)
+                return
+
+            val json: JSONObject = JSONObject(body()!!.string())
+            val isSuccess = json.getBoolean("success")
+
+            Log.e("profile", "asdfasdfasdfaf")
+
+            if (!isSuccess) {
+                return
+            }
+            Log.e("profile", "성공")
+        }
+
+        async(CommonPool) { NetworkHelper.retrofitInstance.getUser(DataHelper.datas!!.token).execute() }.await().apply {
+            if (!isSuccessful)
+                return
+
+            val json: JSONObject = JSONObject(body()!!.string())
+            val isSuccess = json.getBoolean("success")
+
+            if (!isSuccess)
+                return
+
+            val user = Gson().fromJson(json.getString("user"), User::class.java)
+            DataHelper.datas?.user = user
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -226,7 +219,7 @@ class ProfileFragment : Fragment() {
         if (requestCode == GalleryActivity.ONLYONE && resultCode == RESULT_OK) {
             val path = data!!.getStringArrayExtra("paths").first()
             val file = File(path)
-            changeProfile(file)
+            async(CommonPool) { changeProfile(file) }
         }
     }
 

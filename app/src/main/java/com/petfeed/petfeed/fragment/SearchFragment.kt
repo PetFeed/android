@@ -87,6 +87,9 @@ class SearchFragment : Fragment() {
                 it.pictures.forEachIndexed { index, s ->
                     it.pictures[index] = NetworkHelper.url + s
                 }
+                it.lowPictures.forEachIndexed { index, s ->
+                    it.lowPictures[index] = NetworkHelper.url + s
+                }
             }
 
             boards.run {
@@ -118,7 +121,7 @@ class SearchFragment : Fragment() {
 
                             it.binding.feedGridView.run {
                                 imageUrls.clear()
-                                imageUrls.addAll(board.pictures)
+                                imageUrls.addAll(board.lowPictures)
                                 viewUpdate()
                             }
 
