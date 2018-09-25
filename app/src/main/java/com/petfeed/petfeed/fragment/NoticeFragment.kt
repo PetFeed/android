@@ -33,14 +33,11 @@ import retrofit2.Response
 
 class NoticeFragment : Fragment() {
 
-    val notices = ArrayList<Log>()
-
     val items = ArrayList<Any>()
     lateinit var requestManager: RequestManager
     lateinit var prefManager: PrefManager
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_notification, container, false)
     }
 
@@ -68,11 +65,7 @@ class NoticeFragment : Fragment() {
                         json.getJSONObject("data").getString("logs"),
                         object : TypeToken<ArrayList<Log>>() {}.type)
 
-                this@NoticeFragment.notices.clear()
-                this@NoticeFragment.notices.addAll(notices.reversed())
-
                 val connTime = DataHelper.datas!!.connTime
-                android.util.Log.e("asdf", "${connTime}  ${notices[0].date.time}")
                 var b = true
                 if (notices.isNotEmpty() && notices[0].date.time > connTime)
                     items.add("새 알림")
@@ -82,8 +75,8 @@ class NoticeFragment : Fragment() {
                         b = false
                         items.add("이전 알림")
                     }
+                    items.add(it)
                 }
-                items.addAll(notices)
                 notificationRecyclerView.adapter?.notifyDataSetChanged()
             }
         })

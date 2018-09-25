@@ -3,15 +3,20 @@
 
     <data>
 
+        <variable
+            name="item"
+            type="com.petfeed.petfeed.model.Log" />
     </data>
 
     <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingEnd="24dp"
         android:paddingStart="24dp">
 
         <ImageView
+            android:id="@+id/activityImage"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_marginBottom="16dp"
@@ -22,6 +27,7 @@
             android:tint="@android:color/white" />
 
         <TextView
+            android:id="@+id/content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
