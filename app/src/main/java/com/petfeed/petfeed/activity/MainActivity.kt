@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    var selectedPage = 0
     private fun setViewPager() {
         bottomItems.run {
             add(bottomTabItem1)
@@ -81,14 +82,13 @@ class MainActivity : AppCompatActivity() {
             add(bottomTabItem5)
         }
         viewPager.adapter = MainPagerAdapter(supportFragmentManager)
-        viewPager.onPageChangeListener {
-            onPageSelected {
-                bottomItems.filterIndexed { i, _ -> i != 2 }.forEachIndexed { i, v ->
-                    v.alpha = if (i == it) 1.0f else 0.3f
-                }
-            }
-        }
         viewPager.currentItem = 0
+    }
+
+    private fun setBottomItemAlpha() {
+        bottomItems.filterIndexed { i, _ -> i != 2 }.forEachIndexed { i, v ->
+            v.alpha = if (i == selectedPage) 1.0f else 0.3f
+        }
     }
 
     private suspend fun getBoards() {
@@ -271,6 +271,7 @@ class MainActivity : AppCompatActivity() {
                 when (i) {
                     in 0..1 -> {
                         viewPager.currentItem = i
+                        selectedPage = i
                         backdropHelper.down()
                     }
                     2 -> {
@@ -279,6 +280,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     else -> {
                         viewPager.currentItem = i - 1
+                        selectedPage = i - 1
                         backdropHelper.down()
                     }
                 }
@@ -299,6 +301,12 @@ class MainActivity : AppCompatActivity() {
                     this,
                     iconWhite = ratio < 0.5f,
                     color = ColorUtils.blendARGB(brown, white, ratio))
+            if (ratio <= 0.5f)
+                bottomItems.filterIndexed { i, _ -> i != 2 }.forEach { v ->
+                    v.alpha = 0.3f
+                }
+            else
+                setBottomItemAlpha()
 
             viewPager.alpha = ratio
             contentContainer.backgroundColor = UIUtils.ratioARGB(brown, 1 - ratio)

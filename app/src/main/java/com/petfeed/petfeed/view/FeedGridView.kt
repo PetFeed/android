@@ -129,7 +129,6 @@ class FeedGridView : ConstraintLayout {
                 .skipMemoryCache(true)
                 .signature(ObjectKey(imageUrl))
                 .thumbnail(0.1f)
-                .override(100)
                 .centerInside()
                 .into(imageView)
     }
