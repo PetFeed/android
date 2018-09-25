@@ -5,13 +5,13 @@
 
         <variable
             name="item"
-            type="com.petfeed.petfeed.model.Notification" />
+            type="com.petfeed.petfeed.model.Log" />
     </data>
 
     <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@{item.checked? @color/brown1_10 : @android:color/transparent}"
         android:orientation="horizontal"
         android:paddingBottom="16dp"
         android:paddingEnd="12dp"
@@ -19,6 +19,7 @@
         android:paddingTop="16dp">
 
         <com.petfeed.petfeed.view.CircleImageView
+            android:id="@+id/profileImage"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_marginEnd="10dp"
@@ -31,6 +32,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nanum_square_round_regular"
@@ -39,12 +41,12 @@
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/nanum_square_round_regular"
                 android:text="12분 전"
-                android:textColor="@{item.checked? @color/brown1 : @color/black1_30}"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>

@@ -122,36 +122,9 @@ class FeedGridView : ConstraintLayout {
         }
     }
 
-
     private fun loadImage(imageView: ImageView, imageUrl: String) {
         requestManager!!
                 .load(imageUrl)
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                        requestManager!!
-                                .load(imageUrl)
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .listener(this)
-                                .skipMemoryCache(true)
-                                .signature(ObjectKey(imageUrl))
-                                .thumbnail(0.1f)
-//                                .override(100)
-                                .centerInside()
-                                .into(imageView)
-                        return false
-                    }
-
-                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                        if (imageView.height < 50) {
-                            loadedCount++
-                            if (loadedCount >= imageViews.size) {
-                                initImages()
-                            }
-                            return true
-                        }
-                        return false
-                    }
-                })
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .signature(ObjectKey(imageUrl))

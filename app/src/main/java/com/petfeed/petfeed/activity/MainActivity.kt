@@ -314,11 +314,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onLowMemory() {
         super.onLowMemory()
-        GlideApp.get(this).onLowMemory()
     }
 
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
-        GlideApp.get(this).onTrimMemory(level)
     }
 }

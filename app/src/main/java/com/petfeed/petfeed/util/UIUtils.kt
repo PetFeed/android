@@ -1,12 +1,12 @@
 package com.petfeed.petfeed.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
 import org.jetbrains.anko.displayMetrics
-import java.text.SimpleDateFormat
 import java.util.*
 
 object UIUtils {
@@ -26,17 +26,30 @@ object UIUtils {
                 setColorFilter(realColor, PorterDuff.Mode.SRC_ATOP)
             }
 
+
+    val times = arrayOf(60, 60, 24, 30, 12)
+
+    @SuppressLint("SimpleDateFormat")
     fun getLaterText(date: Date): String {
-        val diff = System.currentTimeMillis() - date.time
-        val pattern: String = when {
-            diff > 1000L * 60 * 60 * 24 * 30 * 365 -> "y년 전"
-            diff > 1000L * 60 * 60 * 24 * 30 -> "M월 전"
-            diff > 1000L * 60 * 60 * 24 -> "d일 전"
-            diff > 1000L * 60 * 60 -> "k시간 전"
-            diff > 1000L * 60 -> "m분 전"
-            diff > 1000L -> "s초 전"
-            else -> ""
+        var i = 0
+        var diff = (System.currentTimeMillis() - date.time) / 1000
+        val checkTime: () -> Boolean = {
+            diff /= times[i++]
+            diff < times[i]
         }
-        return SimpleDateFormat(pattern).format(diff)
+
+        return if (diff < 60) {
+            "방금 전"
+        } else if (checkTime.invoke()) {
+            "$diff 분 전"
+        } else if (checkTime.invoke()) {
+            "$diff 시간 전"
+        } else if (checkTime.invoke()) {
+            "$diff 일 전"
+        } else if (checkTime.invoke()) {
+            "$diff 달 전"
+        } else {
+            "$diff 년 전"
+        }
     }
 }

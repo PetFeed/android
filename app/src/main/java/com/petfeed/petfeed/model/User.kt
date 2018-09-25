@@ -39,5 +39,4 @@ class User(
         var cards: ArrayList<Any> = ArrayList(), // 나중에,,
 
         @SerializedName("logs")
-        var logs: ArrayList<Any> = ArrayList() //TODO:// Log 클래스
-)
+        var logs: ArrayList<Any> = ArrayList())
