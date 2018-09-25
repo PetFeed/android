@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
+import android.widget.Toast
 import org.jetbrains.anko.displayMetrics
 import java.util.*
 
@@ -51,5 +52,9 @@ object UIUtils {
         } else {
             "$diff 년 전"
         }
+    }
+
+    fun printNetworkCaution(context: Context) {
+        Toast.makeText(context,"네트워크 상태를 확인해주세요", Toast.LENGTH_SHORT).show()
     }
 }

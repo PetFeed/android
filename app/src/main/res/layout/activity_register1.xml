@@ -160,7 +160,7 @@
         android:layout_height="@dimen/bottomButtonSize"
         android:background="@color/brown1"
         android:fontFamily="@font/nanum_square_round_extra_bold"
-        android:text="다음"
+        android:text="완료"
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 </LinearLayout>

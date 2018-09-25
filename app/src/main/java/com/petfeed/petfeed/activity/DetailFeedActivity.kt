@@ -3,6 +3,7 @@ package com.petfeed.petfeed.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import com.github.nitrico.lastadapter.LastAdapter
 import com.google.gson.Gson
 import com.petfeed.petfeed.*
@@ -67,6 +68,10 @@ class DetailFeedActivity : AppCompatActivity() {
         }
 
         luvButton.onClick {
+            if(!NetworkHelper.checkNetworkConnected(this@DetailFeedActivity)){
+                UIUtils.printNetworkCaution(this@DetailFeedActivity)
+                return@onClick
+            }
             if (commentEditText.text.toString() != "") {
                 async(CommonPool) {
                     NetworkHelper.retrofitInstance.postComment(DataHelper.datas!!.token,
@@ -88,6 +93,10 @@ class DetailFeedActivity : AppCompatActivity() {
         }
 
         likeButton.onClick { _ ->
+            if(!NetworkHelper.checkNetworkConnected(this@DetailFeedActivity)){
+                UIUtils.printNetworkCaution(this@DetailFeedActivity)
+                return@onClick
+            }
             board?.apply {
                 val isLike = likes.any { it == DataHelper.datas!!.user._id }
                 if (isLike) {
@@ -122,6 +131,10 @@ class DetailFeedActivity : AppCompatActivity() {
     }
 
     private suspend fun initBoard() {
+        if(!NetworkHelper.checkNetworkConnected(this)){
+            UIUtils.printNetworkCaution(this)
+            return
+        }
         board = Board()
         val userToken = DataHelper.datas!!.token
         val boardId = intent.getStringExtra("_id")

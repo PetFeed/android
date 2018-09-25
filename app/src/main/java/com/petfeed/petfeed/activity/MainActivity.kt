@@ -31,6 +31,7 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.support.v4.onPageChangeListener
 import org.jetbrains.anko.support.v4.onRefresh
+import org.jetbrains.anko.toast
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
@@ -92,6 +93,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private suspend fun getBoards() {
+        if(!NetworkHelper.checkNetworkConnected(this)){
+            UIUtils.printNetworkCaution(this)
+            swipeRefreshLayout.isRefreshing = false
+            return
+        }
         async(CommonPool) { NetworkHelper.retrofitInstance.getAllBoards(DataHelper.datas!!.token).execute() }.await().apply {
 
             if (!isSuccessful) {
@@ -199,6 +205,10 @@ class MainActivity : AppCompatActivity() {
                                 }
 
                                 subscribeButton.onClick { _ ->
+                                    if(!NetworkHelper.checkNetworkConnected(this@MainActivity)){
+                                        UIUtils.printNetworkCaution(this@MainActivity)
+                                        return@onClick
+                                    }
                                     DataHelper.datas!!.mainBoards[it.adapterPosition].writer = boards[it.adapterPosition].writer.apply {
 
                                         val isSubscribe = followers.any { it == DataHelper.datas!!.user._id }

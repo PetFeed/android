@@ -51,6 +51,10 @@ class NoticeFragment : Fragment() {
     }
 
     private fun initNotification() {
+        if (!NetworkHelper.checkNetworkConnected(context!!)) {
+            UIUtils.printNetworkCaution(context!!)
+            return
+        }
         NetworkHelper.retrofitInstance.getNotice(DataHelper.datas!!.token).enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
             }

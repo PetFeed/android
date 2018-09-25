@@ -26,6 +26,7 @@ import com.petfeed.petfeed.databinding.ItemProfileBoardBinding
 import com.petfeed.petfeed.model.Board
 import com.petfeed.petfeed.model.DataHelper
 import com.petfeed.petfeed.model.User
+import com.petfeed.petfeed.util.UIUtils
 import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.item_profile_board.view.*
@@ -121,6 +122,10 @@ class ProfileFragment : Fragment() {
                                         else R.drawable.ic_favorite_empty
 
                                 likeButton.onClick { _ ->
+                                    if(!NetworkHelper.checkNetworkConnected(this@ProfileFragment.context!!)){
+                                        UIUtils.printNetworkCaution(this@ProfileFragment.context!!)
+                                        return@onClick
+                                    }
                                     DataHelper.datas!!.mainBoards[it.adapterPosition] = boards[it.adapterPosition].apply {
                                         val isLike = likes.any { it == DataHelper.datas!!.user._id }
                                         if (isLike) {
@@ -170,6 +175,7 @@ class ProfileFragment : Fragment() {
     }
 
     private suspend fun changeProfile(file: File) {
+
         val body = RequestBody.create(MediaType.parse("image/*"), file)
         val picture = MultipartBody.Part.createFormData("profile", file.name, body)
 
@@ -181,6 +187,11 @@ class ProfileFragment : Fragment() {
 //            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
 //            }
 //        })
+
+        if(!NetworkHelper.checkNetworkConnected(this@ProfileFragment.context!!)){
+            UIUtils.printNetworkCaution(this@ProfileFragment.context!!)
+            return
+        }
 
         async(CommonPool) { NetworkHelper.retrofitInstance.updateUser(DataHelper.datas!!.token, picture, HashMap<String, String>().toMap()).execute() }.await().apply {
             Log.e("profile", "asdfadsf")

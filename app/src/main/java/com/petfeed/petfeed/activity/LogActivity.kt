@@ -17,6 +17,7 @@ import com.petfeed.petfeed.model.DataHelper
 import com.petfeed.petfeed.model.Log
 import com.petfeed.petfeed.util.ActivityUtils
 import com.petfeed.petfeed.util.PrefManager
+import com.petfeed.petfeed.util.UIUtils
 import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.activity_log.*
 import okhttp3.ResponseBody
@@ -49,6 +50,10 @@ class LogActivity : AppCompatActivity() {
     }
 
     private fun initActivity() {
+        if (!NetworkHelper.checkNetworkConnected(this)) {
+            UIUtils.printNetworkCaution(this)
+            return
+        }
         NetworkHelper.retrofitInstance.getActivity(DataHelper.datas!!.token).enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
             }

@@ -10,6 +10,7 @@ import com.petfeed.petfeed.model.User
 import com.petfeed.petfeed.util.ActivityUtils
 import com.petfeed.petfeed.model.DataHelper
 import com.petfeed.petfeed.util.PrefManager
+import com.petfeed.petfeed.util.UIUtils
 import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.experimental.CommonPool
@@ -32,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
 
         loginButton.onClick {
             if (!NetworkHelper.checkNetworkConnected(this@LoginActivity)) {
-                Toast.makeText(this@LoginActivity, "네트워크를 확인해주세요", Toast.LENGTH_SHORT).show()
+                UIUtils.printNetworkCaution(this@LoginActivity)
                 return@onClick
             }
             if (!checkInput())

@@ -55,6 +55,10 @@ class WriteActivity : AppCompatActivity() {
 
         userName.text = DataHelper.datas!!.user.nickname
         writeButton.onClick {
+            if (!NetworkHelper.checkNetworkConnected(this@WriteActivity)) {
+                UIUtils.printNetworkCaution(this@WriteActivity)
+                return@onClick
+            }
             if(!checkData()){
                 toast("내용과 사진이 필요합니다.")
                 return@onClick

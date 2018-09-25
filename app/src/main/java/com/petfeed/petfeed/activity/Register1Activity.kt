@@ -6,6 +6,7 @@ import android.view.MenuItem
 import com.google.firebase.iid.FirebaseInstanceId
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.util.ActivityUtils
+import com.petfeed.petfeed.util.UIUtils
 import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.activity_register1.*
 import kotlinx.coroutines.experimental.CommonPool
@@ -22,6 +23,10 @@ class Register1Activity : AppCompatActivity() {
         setToolbar()
 
         nextButton.onClick {
+            if (!NetworkHelper.checkNetworkConnected(this@Register1Activity)) {
+                UIUtils.printNetworkCaution(this@Register1Activity)
+                return@onClick
+            }
             if (!checkInput())
                 return@onClick
 

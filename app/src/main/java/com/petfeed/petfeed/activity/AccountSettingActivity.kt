@@ -3,22 +3,9 @@ package com.petfeed.petfeed.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import com.google.gson.Gson
 import com.petfeed.petfeed.R
-import com.petfeed.petfeed.model.DataHelper
-import com.petfeed.petfeed.model.User
 import com.petfeed.petfeed.util.ActivityUtils
-import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.activity_account_setting.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import org.jetbrains.anko.sdk25.coroutines.onClick
-import org.jetbrains.anko.toast
-import org.json.JSONObject
-import java.io.File
 
 class AccountSettingActivity : AppCompatActivity() {
 

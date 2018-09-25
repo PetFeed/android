@@ -19,6 +19,7 @@ import com.petfeed.petfeed.activity.MainActivity
 import com.petfeed.petfeed.databinding.ItemBoardBinding
 import com.petfeed.petfeed.model.Board
 import com.petfeed.petfeed.model.DataHelper
+import com.petfeed.petfeed.util.UIUtils
 import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.item_board.view.*
@@ -69,6 +70,10 @@ class SearchFragment : Fragment() {
     }
 
     private suspend fun getBoards() {
+        if(!NetworkHelper.checkNetworkConnected(this@SearchFragment.context!!)){
+            UIUtils.printNetworkCaution(this@SearchFragment.context!!)
+            return
+        }
         async(CommonPool) { NetworkHelper.retrofitInstance.getAllBoards(DataHelper.datas!!.token).execute() }.await().apply {
 
             if (!isSuccessful) {
@@ -146,6 +151,10 @@ class SearchFragment : Fragment() {
                                 subscribeButton.alpha = if (board.writer.followers.any { it == DataHelper.datas!!.user._id }) 1f else 0.3f
 
                                 likeButton.onClick { _ ->
+                                    if(!NetworkHelper.checkNetworkConnected(this@SearchFragment.context!!)){
+                                        UIUtils.printNetworkCaution(this@SearchFragment.context!!)
+                                        return@onClick
+                                    }
                                     DataHelper.datas!!.mainBoards[it.adapterPosition] = boards[it.adapterPosition].apply {
                                         val isLike = likes.any { it == DataHelper.datas!!.user._id }
                                         if (isLike) {
@@ -176,6 +185,10 @@ class SearchFragment : Fragment() {
                                 }
 
                                 subscribeButton.onClick { _ ->
+                                    if(!NetworkHelper.checkNetworkConnected(this@SearchFragment.context!!)){
+                                        UIUtils.printNetworkCaution(this@SearchFragment.context!!)
+                                        return@onClick
+                                    }
                                     DataHelper.datas!!.mainBoards[it.adapterPosition].writer = boards[it.adapterPosition].writer.apply {
 
                                         val isSubscribe = followers.any { it == DataHelper.datas!!.user._id }
