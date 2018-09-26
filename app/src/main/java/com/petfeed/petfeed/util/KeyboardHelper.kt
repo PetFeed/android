@@ -25,7 +25,11 @@ class KeyboardHelper(val activity: Activity) {
     fun hideKeyboard() {
         val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(activity.window.decorView.windowToken, 0)
+    }
 
+    fun showKeyboard() {
+        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm!!.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
     }
 
     private fun getActivityRoot(activity: Activity): View {

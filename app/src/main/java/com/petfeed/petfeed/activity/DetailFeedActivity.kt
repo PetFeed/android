@@ -3,7 +3,7 @@ package com.petfeed.petfeed.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
+import android.view.View
 import com.github.nitrico.lastadapter.LastAdapter
 import com.google.gson.Gson
 import com.petfeed.petfeed.*
@@ -36,8 +36,22 @@ class DetailFeedActivity : AppCompatActivity() {
     var board: Board? = null
     val dateFormat = SimpleDateFormat("MMM d일 a KK시 mm분", Locale.KOREAN)
     var sendCommentId = ""
+    var sendCommentToUserName = ""
+    var isCommentInfoVisible = false
+        set(value) {
+            field = value
+            reCommentInfoContainer.visibility = if (value) View.VISIBLE else View.GONE
+            divLine.visibility = if (value) View.VISIBLE else View.GONE
+            reCommentToUserText.text = sendCommentToUserName + "님에게 댓글을 다는 중"
+            if (!value) sendCommentId = board!!._id
+            if (value) {
+                commentEditText.requestFocus()
+                keyboardHelper.showKeyboard()
+            }
+        }
     lateinit var keyboardHelper: KeyboardHelper
     lateinit var requestManager: GlideRequests
+
     override fun onCreate(savedInstanceState: Bundle?) {
         ActivityUtils.statusBarSetting(window, this, R.color.white1, false)
         super.onCreate(savedInstanceState)
@@ -57,6 +71,12 @@ class DetailFeedActivity : AppCompatActivity() {
                 .load(NetworkHelper.url + DataHelper.datas!!.user.profile)
                 .into(profileImage)
 
+        reCommentCloseButton.onClick {
+            isCommentInfoVisible = false
+            sendCommentId = ""
+            sendCommentToUserName = ""
+        }
+
         commentEditText.textChangedListener {
             onTextChanged { s, _, _, _ ->
                 if (s == null || s.isEmpty()) {
@@ -68,7 +88,7 @@ class DetailFeedActivity : AppCompatActivity() {
         }
 
         luvButton.onClick {
-            if(!NetworkHelper.checkNetworkConnected(this@DetailFeedActivity)){
+            if (!NetworkHelper.checkNetworkConnected(this@DetailFeedActivity)) {
                 UIUtils.printNetworkCaution(this@DetailFeedActivity)
                 return@onClick
             }
@@ -85,6 +105,7 @@ class DetailFeedActivity : AppCompatActivity() {
                         toast("네트워크 오류가 발생했습니다.")
                     async(UI) { initBoard() }
                 }
+                isCommentInfoVisible = false
                 commentEditText.setText("")
                 keyboardHelper.hideKeyboard()
             } else {
@@ -93,7 +114,7 @@ class DetailFeedActivity : AppCompatActivity() {
         }
 
         likeButton.onClick { _ ->
-            if(!NetworkHelper.checkNetworkConnected(this@DetailFeedActivity)){
+            if (!NetworkHelper.checkNetworkConnected(this@DetailFeedActivity)) {
                 UIUtils.printNetworkCaution(this@DetailFeedActivity)
                 return@onClick
             }
@@ -128,10 +149,49 @@ class DetailFeedActivity : AppCompatActivity() {
         feedGridView.onClick {
             startActivity<DetailImageActivity>("images" to board!!.pictures.toTypedArray())
         }
+        subscribeButton.onClick { _ ->
+            if (board == null)
+                return@onClick
+            if (!NetworkHelper.checkNetworkConnected(this@DetailFeedActivity)) {
+                UIUtils.printNetworkCaution(this@DetailFeedActivity)
+                return@onClick
+            }
+            val mainBoard = DataHelper.datas!!.mainBoards.first { it._id == board!!._id }
+            mainBoard.writer.run {
+                val isSubscribe = followers.any { it == DataHelper.datas!!.user._id }
+                if (isSubscribe) {
+                    followers.remove(DataHelper.datas!!.user._id)
+                } else {
+                    followers.add(DataHelper.datas!!.user._id)
+                }
+            }
+
+            subscribeButton.alpha = if (mainBoard.writer.followers.any { it == DataHelper.datas!!.user._id }) 1f else 0.3f
+
+
+            val userToken = DataHelper.datas?.token!!
+            val toId = board!!.writer._id
+
+            async(CommonPool) {
+                if (board!!.writer.followers.any { it == DataHelper.datas!!.user._id })
+                    NetworkHelper.retrofitInstance.followUser(userToken, toId).execute()
+                else
+                    NetworkHelper.retrofitInstance.unFollowUser(userToken, toId).execute()
+            }.await().apply {
+                if (!isSuccessful)
+                    return@onClick
+
+                val json: JSONObject = JSONObject(body()!!.string())
+                val isSuccess = json.getBoolean("success")
+                if (!isSuccess) {
+                    return@apply
+                }
+            }
+        }
     }
 
     private suspend fun initBoard() {
-        if(!NetworkHelper.checkNetworkConnected(this)){
+        if (!NetworkHelper.checkNetworkConnected(this)) {
             UIUtils.printNetworkCaution(this)
             return
         }
@@ -165,6 +225,7 @@ class DetailFeedActivity : AppCompatActivity() {
         board!!.lowPictures.forEachIndexed { index, s ->
             board!!.lowPictures[index] = NetworkHelper.url + s
         }
+        subscribeButton.alpha = if (board!!.writer.followers.any { it == DataHelper.datas!!.user._id }) 1f else 0.3f
         sendCommentId = board!!._id
         commentRecyclerView?.adapter?.notifyDataSetChanged()
 
@@ -213,6 +274,8 @@ class DetailFeedActivity : AppCompatActivity() {
                         onClick {
                             val comment = (comments[it.adapterPosition] as Comment)
                             sendCommentId = comment._id
+                            sendCommentToUserName = comment.writer!!.nickname
+                            isCommentInfoVisible = true
                         }
                     }
                     .map<Pair<Comment, String>, ItemCommentCommentBinding>(R.layout.item_comment_comment) {
@@ -230,7 +293,16 @@ class DetailFeedActivity : AppCompatActivity() {
                         }
                         onClick {
                             val comment = (comments[it.adapterPosition] as Pair<Comment, String>).first
-                            sendCommentId = comment.parentId!!
+                            var i = it.adapterPosition
+                            while (true) {
+                                if (comments[i] is Comment) {
+                                    sendCommentId = (comments[i] as Comment)._id
+                                    break
+                                }
+                                i--
+                            }
+                            sendCommentToUserName = comment.writer!!.nickname
+                            isCommentInfoVisible = true
                         }
                     }
                     .into(this)

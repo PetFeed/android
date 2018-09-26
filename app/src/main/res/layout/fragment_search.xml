@@ -9,8 +9,8 @@
     tools:context=".fragment.SearchFragment">
 
     <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
         android:id="@+id/scrollView"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
@@ -155,6 +155,9 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:hint="사람, 해시태그, 또는 사진을 검색해보세요."
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:textAlignment="center"
                     android:textColor="@color/black1"
                     android:textSize="12sp" />

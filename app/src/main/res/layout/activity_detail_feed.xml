@@ -31,7 +31,7 @@
             android:id="@+id/writerProfileImage"
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginEnd="16dp" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -58,6 +58,7 @@
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/subscribeButton"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
@@ -168,49 +169,93 @@
         app:shadowMarginTop="4dp"
         app:shadowRadius="4dp">
 
-        <android.support.constraint.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp">
+            android:orientation="vertical">
 
-            <com.petfeed.petfeed.view.CircleImageView
-                android:id="@+id/profileImage"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_marginTop="4dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/commentEditText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/white1_solid_grey3_stroke_rounded"
-                android:fontFamily="@font/nanum_square_round_regular"
-                android:hint="댓글을 입력해보세요."
+            <LinearLayout
+                android:id="@+id/reCommentInfoContainer"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:gravity="center"
+                android:orientation="horizontal"
                 android:paddingBottom="12dp"
-                android:paddingEnd="64dp"
+                android:paddingEnd="16dp"
                 android:paddingStart="16dp"
                 android:paddingTop="12dp"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/profileImage" />
+                android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/luvButton"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="14dp"
-                android:alpha="0.3"
-                android:src="@drawable/ic_luv"
-                android:tint="@color/brown1"
-                app:layout_constraintBottom_toBottomOf="@id/commentEditText"
-                app:layout_constraintEnd_toEndOf="@id/commentEditText"
-                app:layout_constraintTop_toTopOf="@id/commentEditText" />
-        </android.support.constraint.ConstraintLayout>
+                <TextView
+                    android:id="@+id/reCommentToUserText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/nanum_square_round_bold"
+                    android:textColor="@color/brown1"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/reCommentCloseButton"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_close" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divLine"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha="0.2"
+                android:background="@color/brown1"
+                android:visibility="gone" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/reCommentInputContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp">
+
+                <com.petfeed.petfeed.view.CircleImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginTop="4dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/commentEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/white1_solid_grey3_stroke_rounded"
+                    android:fontFamily="@font/nanum_square_round_regular"
+                    android:hint="댓글을 입력해보세요."
+                    android:paddingBottom="12dp"
+                    android:paddingEnd="64dp"
+                    android:paddingStart="16dp"
+                    android:paddingTop="12dp"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/profileImage" />
+
+                <ImageView
+                    android:id="@+id/luvButton"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="14dp"
+                    android:alpha="0.3"
+                    android:src="@drawable/ic_luv"
+                    android:tint="@color/brown1"
+                    app:layout_constraintBottom_toBottomOf="@id/commentEditText"
+                    app:layout_constraintEnd_toEndOf="@id/commentEditText"
+                    app:layout_constraintTop_toTopOf="@id/commentEditText" />
+            </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
     </com.loopeer.shadow.ShadowView>
 </RelativeLayout>
