@@ -1,17 +1,14 @@
 package com.petfeed.petfeed.activity
 
-import android.graphics.Paint
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.content.ContextCompat
-import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewTreeObserver
-import android.widget.TextView
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.signature.ObjectKey
 import com.github.nitrico.lastadapter.LastAdapter
@@ -34,6 +31,7 @@ import org.jetbrains.anko.imageResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.support.v4.onRefresh
+import org.jetbrains.anko.toast
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
@@ -337,11 +335,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private var isCloseBack = false
     override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(Gravity.START)) {
-            drawerLayout.closeDrawer(Gravity.START)
-        } else
-            super.onBackPressed()
+        when {
+            drawerLayout.isDrawerOpen(Gravity.START) -> drawerLayout.closeDrawer(Gravity.START)
+            isCloseBack -> super.onBackPressed()
+            else -> {
+                toast("한번 더 누르시면 종료 됩니다.")
+                isCloseBack = true
+                Handler().postDelayed({
+                    isCloseBack = false
+                }, 2000)
+            }
+        }
     }
 
     override fun onLowMemory() {
