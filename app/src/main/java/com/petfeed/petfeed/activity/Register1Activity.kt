@@ -12,6 +12,8 @@ import kotlinx.android.synthetic.main.activity_register1.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 import org.json.JSONObject
 
 class Register1Activity : AppCompatActivity() {
@@ -40,9 +42,13 @@ class Register1Activity : AppCompatActivity() {
 
                 val json: JSONObject = JSONObject(body()!!.string())
                 val isSuccess = json.getBoolean("success")
-                if (!isSuccess)
+                if (!isSuccess){
+                    toast("이미 존재하는 유저입니다")
                     return@onClick
+                }
             }
+            toast("회원 가입 성공")
+            startActivity<Register2Activity>()
             finish()
         }
     }

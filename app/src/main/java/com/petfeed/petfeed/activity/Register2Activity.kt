@@ -19,6 +19,9 @@ class Register2Activity : AppCompatActivity() {
         setToolbar()
 
         doneButton.onClick {
+            if (!checkInput())
+                return@onClick
+
             startMain()
         }
     }
@@ -26,9 +29,9 @@ class Register2Activity : AppCompatActivity() {
     private fun setToolbar() {
         setSupportActionBar(toolbar)
         supportActionBar?.run {
-            setDisplayHomeAsUpEnabled(true)
+            //                        setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(false)
-            setHomeAsUpIndicator(R.drawable.ic_back)
+//            setHomeAsUpIndicator(R.drawable.ic_back)
         }
     }
 
@@ -39,14 +42,17 @@ class Register2Activity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            android.R.id.home -> finish()
+//            android.R.id.home -> finish()
             R.id.skip -> startMain()
         }
         return super.onOptionsItemSelected(item)
     }
 
+    private fun checkInput(): Boolean =
+            numberEditText.text.toString().length == 15
+
     private fun startMain() {
-        startActivity<MainActivity>()
+        startActivity<LoginActivity>()
         finishAffinity()
     }
 }
