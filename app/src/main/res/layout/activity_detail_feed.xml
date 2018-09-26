@@ -45,7 +45,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nanum_square_round_bold"
-                android:text="까미"
                 android:textColor="@color/black1"
                 android:textSize="14sp" />
 
@@ -54,7 +53,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nanum_square_round_regular"
-                android:text="6월 20일 오후 3시 42분"
                 android:textColor="#4c202020"
                 android:textSize="10sp" />
         </LinearLayout>
@@ -93,8 +91,6 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="6dp"
-                android:text="그냥 찍어도 화보처럼 나오는 우리 다게
-이쁘게 봐주세요 ^_^"
                 android:textColor="@color/black1"
                 android:textSize="12sp" />
 
@@ -127,7 +123,6 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="4dp"
                     android:fontFamily="@font/nanum_square_round_bold"
-                    android:text="+8"
                     android:textColor="@color/brown1"
                     android:textSize="12sp" />
 
@@ -146,7 +141,6 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="4dp"
                     android:fontFamily="@font/nanum_square_round_bold"
-                    android:text="+8"
                     android:textColor="@color/brown1"
                     android:textSize="12sp" />
 

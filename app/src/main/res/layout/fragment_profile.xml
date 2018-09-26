@@ -39,7 +39,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nanum_square_round_extra_bold"
-                    android:text="12K"
                     android:textColor="@color/black1"
                     android:textSize="24sp" />
 
@@ -64,7 +63,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nanum_square_round_extra_bold"
-                    android:text="13K"
                     android:textColor="@color/black1"
                     android:textSize="24sp" />
 
@@ -88,7 +86,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nanum_square_round_extra_bold"
-                    android:text="11K"
                     android:textColor="@color/black1"
                     android:textSize="24sp" />
 
@@ -122,14 +119,12 @@
                     android:id="@+id/userName"
                     style="@style/BigTitle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="다게" />
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nanum_square_round_regular"
-                    android:text="제 나이는 9개월이고여! 말티즈에요!!"
                     android:textColor="@color/black1"
                     android:textSize="12sp"
                     android:visibility="gone" />

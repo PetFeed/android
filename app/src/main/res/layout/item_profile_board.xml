@@ -51,7 +51,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nanum_square_round_regular"
-                    android:text="6월 20일 오후 3시 42분"
                     android:textColor="#4c202020"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -109,7 +108,6 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/nanum_square_round_bold"
-                android:text="+8"
                 android:textColor="@color/brown1"
                 android:textSize="12sp" />
 
@@ -128,7 +126,6 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/nanum_square_round_bold"
-                android:text="+8"
                 android:textColor="@color/brown1"
                 android:textSize="12sp" />
         </LinearLayout>

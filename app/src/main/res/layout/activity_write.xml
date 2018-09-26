@@ -61,7 +61,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:fontFamily="@font/nanum_square_round_bold"
-            android:text="다게"
             android:textColor="@color/black1"
             android:textSize="14sp" />
     </LinearLayout>
@@ -83,7 +82,7 @@
         android:background="@android:color/transparent"
         android:fontFamily="@font/nanum_square_round_regular"
         android:gravity="top"
-        android:hint="해시태그와 함께 사진, 동영상에 대해 설명해주세요. (250자)"
+        android:hint="해시태그와 함께 사진, 동영상에 대해 설명해주세요."
         android:paddingEnd="16dp"
         android:paddingStart="16dp"
         android:textColor="@color/black1"
