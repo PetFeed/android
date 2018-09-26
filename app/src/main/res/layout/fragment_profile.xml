@@ -36,9 +36,11 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/feedCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nanum_square_round_extra_bold"
+                    android:textAlignment="center"
                     android:textColor="@color/black1"
                     android:textSize="24sp" />
 
@@ -60,9 +62,11 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/followingCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nanum_square_round_extra_bold"
+                    android:textAlignment="center"
                     android:textColor="@color/black1"
                     android:textSize="24sp" />
 
@@ -83,9 +87,11 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/followerCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nanum_square_round_extra_bold"
+                    android:textAlignment="center"
                     android:textColor="@color/black1"
                     android:textSize="24sp" />
 
@@ -119,7 +125,7 @@
                     android:id="@+id/userName"
                     style="@style/BigTitle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:layout_width="match_parent"

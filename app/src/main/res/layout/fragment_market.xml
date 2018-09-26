@@ -50,7 +50,7 @@
                     android:layout_marginStart="16dp"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/nanum_square_round_bold"
-                    android:hint="#캣트리하우스 특가세일!"
+                    android:hint="#마켓 오픈 준비 중!"
                     android:textColor="@color/black1"
                     android:textSize="12sp" />
 
@@ -63,5 +63,37 @@
                     android:tint="@color/brown1" />
             </com.petfeed.petfeed.view.RoundLayout>
         </com.loopeer.shadow.ShadowView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="193dp"
+            android:layout_height="94dp"
+            android:src="@drawable/pic_market_notopen" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:fontFamily="@font/nanum_square_round_extra_bold"
+            android:gravity="center_horizontal"
+            android:text="마켓 오픈 준비 중!"
+            android:textColor="@color/brown1"
+            android:textSize="28sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="3sp"
+            android:text="빠른 시일 내에 문을 열 수 있도록\n최선을 다하겠습니다."
+            android:textColor="@color/black1"
+            android:textSize="12sp" />
     </LinearLayout>
 </RelativeLayout>

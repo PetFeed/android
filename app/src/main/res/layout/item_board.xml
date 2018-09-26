@@ -79,6 +79,12 @@
             android:layout_marginTop="12dp"
             android:text="@{item.contents}" />
 
+        <LinearLayout
+            android:id="@+id/hashTagContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+
         <com.petfeed.petfeed.view.FeedGridView
             android:id="@+id/feedGridView"
             android:layout_width="match_parent"

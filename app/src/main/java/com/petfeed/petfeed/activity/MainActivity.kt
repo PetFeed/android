@@ -1,13 +1,17 @@
 package com.petfeed.petfeed.activity
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewTreeObserver
+import android.widget.TextView
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.signature.ObjectKey
 import com.github.nitrico.lastadapter.LastAdapter
@@ -29,9 +33,7 @@ import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.imageResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.support.v4.onPageChangeListener
 import org.jetbrains.anko.support.v4.onRefresh
-import org.jetbrains.anko.toast
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
@@ -93,7 +95,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private suspend fun getBoards() {
-        if(!NetworkHelper.checkNetworkConnected(this)){
+        if (!NetworkHelper.checkNetworkConnected(this)) {
             UIUtils.printNetworkCaution(this)
             swipeRefreshLayout.isRefreshing = false
             return
@@ -170,6 +172,18 @@ class MainActivity : AppCompatActivity() {
 
                                 subscribeButton.alpha = if (board.writer.followers.any { it == DataHelper.datas!!.user._id }) 1f else 0.3f
 
+//                                hashTagContainer.removeAllViews()
+//                                board.hashTags.forEach {
+//                                    val hashTag = TextView(this@MainActivity).apply {
+//                                        setTextSize(TypedValue.COMPLEX_UNIT_PX, UIUtils.makeDP(context, 12f))
+//                                        setLineSpacing(UIUtils.makeDP(context, 12f), 0f)
+//                                        text = it
+//                                        typeface = ResourcesCompat.getFont(this@MainActivity, R.font.nanum_square_round_bold)
+//                                        paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
+//                                    }
+//                                    hashTagContainer.addView(hashTag)
+//                                }
+
                                 likeButton.onClick { _ ->
                                     DataHelper.datas!!.mainBoards[it.adapterPosition] = boards[it.adapterPosition].apply {
                                         val isLike = likes.any { it == DataHelper.datas!!.user._id }
@@ -205,7 +219,7 @@ class MainActivity : AppCompatActivity() {
                                 }
 
                                 subscribeButton.onClick { _ ->
-                                    if(!NetworkHelper.checkNetworkConnected(this@MainActivity)){
+                                    if (!NetworkHelper.checkNetworkConnected(this@MainActivity)) {
                                         UIUtils.printNetworkCaution(this@MainActivity)
                                         return@onClick
                                     }

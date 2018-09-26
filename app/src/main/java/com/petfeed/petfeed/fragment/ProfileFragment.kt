@@ -87,6 +87,9 @@ class ProfileFragment : Fragment() {
         boards.clear()
         boards.addAll(DataHelper.datas?.myBoards!!)
         boardRecyclerView.adapter!!.notifyDataSetChanged()
+        feedCount.text = boards.size.toString()
+        followingCount.text = DataHelper.datas!!.user.following.size.toString()
+        followerCount.text = DataHelper.datas!!.user.followers.size.toString()
     }
 
     private fun setRecyclerView() {// TODO: Board
