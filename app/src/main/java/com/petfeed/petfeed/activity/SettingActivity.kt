@@ -7,6 +7,7 @@ import com.petfeed.petfeed.R
 import com.petfeed.petfeed.model.DataHelper
 import com.petfeed.petfeed.util.ActivityUtils
 import com.petfeed.petfeed.util.PrefManager
+import com.petfeed.petfeed.util.UIUtils
 import kotlinx.android.synthetic.main.activity_setting.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.startActivity
@@ -28,7 +29,8 @@ class SettingActivity : AppCompatActivity() {
             startActivity<AccountSettingActivity>()
         }
         paymentButton.onClick {
-            startActivity<PaymentSettingActivity>()
+            UIUtils.printServiceNotYet(this@SettingActivity)
+//            startActivity<PaymentSettingActivity>()
         }
         languageButton.onClick {
             startActivity<LanguageSettingActivity>()

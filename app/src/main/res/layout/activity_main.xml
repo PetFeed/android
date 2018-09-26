@@ -175,6 +175,7 @@
                 android:paddingStart="24dp">
 
                 <com.petfeed.petfeed.view.CircleImageView
+                    android:id="@+id/profileImage"
                     android:layout_width="72dp"
                     android:layout_height="72dp"
                     android:src="@drawable/pic_7" />
@@ -212,7 +213,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:text="2,400" />
+                            android:text="0" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -246,14 +247,15 @@
             <!--android:paddingTop="12dp"-->
             <!--android:text="장바구니" />-->
 
-            <!--<TextView-->
-            <!--style="@style/DrawerMenu"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:paddingBottom="12dp"-->
-            <!--android:paddingStart="24dp"-->
-            <!--android:paddingTop="12dp"-->
-            <!--android:text="거래 내역" />-->
+            <TextView
+                android:id="@+id/tradeLogButton"
+                style="@style/DrawerMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="12dp"
+                android:paddingStart="24dp"
+                android:paddingTop="12dp"
+                android:text="거래 내역" />
         </LinearLayout>
     </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>

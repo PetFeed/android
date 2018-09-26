@@ -55,6 +55,10 @@ object UIUtils {
     }
 
     fun printNetworkCaution(context: Context) {
-        Toast.makeText(context,"네트워크 상태를 확인해주세요", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "네트워크 상태를 확인해주세요", Toast.LENGTH_SHORT).show()
+    }
+
+    fun printServiceNotYet(context: Context) {
+        Toast.makeText(context, "준비중인 서비스 입니다", Toast.LENGTH_SHORT).show()
     }
 }

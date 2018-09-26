@@ -4,24 +4,25 @@ package com.petfeed.petfeed.fragment
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBarDrawerToggle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.petfeed.petfeed.GlideApp
+import com.petfeed.petfeed.GlideRequests
 import com.petfeed.petfeed.R
-import com.petfeed.petfeed.activity.DonatePayActivity
 import com.petfeed.petfeed.activity.MainActivity
-import com.petfeed.petfeed.activity.TermPayActivity
+import com.petfeed.petfeed.model.DataHelper
+import com.petfeed.petfeed.util.UIUtils
+import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_market.*
-import org.jetbrains.anko.childrenRecursiveSequence
 import org.jetbrains.anko.firstChild
 import org.jetbrains.anko.sdk25.coroutines.onClick
-import org.jetbrains.anko.sdk25.coroutines.onTouch
-import org.jetbrains.anko.support.v4.startActivity
 
 class MarketFragment : Fragment() {
+
+    lateinit var requestManager: GlideRequests
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -31,9 +32,8 @@ class MarketFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        requestManager = GlideApp.with(this)
         setDrawer()
-
-
     }
 
     private fun setDrawer() {
@@ -48,10 +48,16 @@ class MarketFragment : Fragment() {
             activity.drawerLayout.openDrawer(Gravity.START)
         }
         activity.chargeLuvButton.onClick {
-            startActivity<TermPayActivity>()
+            UIUtils.printServiceNotYet(this@MarketFragment.context!!)
+//            startActivity<TermPayActivity>()
         }
         activity.donateButton.onClick {
-            startActivity<DonatePayActivity>()
+            UIUtils.printServiceNotYet(this@MarketFragment.context!!)
+//            startActivity<DonatePayActivity>()
+        }
+        activity.tradeLogButton.onClick {
+            UIUtils.printServiceNotYet(this@MarketFragment.context!!)
+
         }
     }
 

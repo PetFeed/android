@@ -71,6 +71,9 @@ class MainActivity : AppCompatActivity() {
                 getBoards()
             }
         }
+        requestManager
+                .load(NetworkHelper.url + DataHelper.datas!!.user.profile)
+                .into(profileImage)
     }
 
     var selectedPage = 0
