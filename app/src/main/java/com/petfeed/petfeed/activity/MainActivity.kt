@@ -50,12 +50,10 @@ class MainActivity : AppCompatActivity() {
 
     var boards = ArrayList<Board>()
     val bottomItems = ArrayList<View>() // view
-    var isPause = false
     lateinit var backdropHelper: BackdropHelper
     lateinit var bottomBarClickHelper: BottomBarClickHelper
     lateinit var keyboardHelper: KeyboardHelper
     lateinit var requestManager: GlideRequests
-    val stateListeners = ArrayList<(Boolean) -> Unit>() // fragment에서 조작
     val dateFormat = SimpleDateFormat("MMM d일 a KK시 mm분", Locale.KOREAN)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,7 +95,6 @@ class MainActivity : AppCompatActivity() {
         }
         viewPager.adapter = MainPagerAdapter(supportFragmentManager)
         viewPager.currentItem = 0
-        stateListeners.forEach { it.invoke(true) }
     }
 
     private fun setBottomItemAlpha() {
@@ -227,7 +224,7 @@ class MainActivity : AppCompatActivity() {
                                 }
 
                                 luvButton.onClick {
-                                    LuvDonateDialog(this@MainActivity).show()
+//                                    LuvDonateDialog(this@MainActivity).show()
                                 }
 
                                 subscribeButton.onClick { _ ->
@@ -391,20 +388,6 @@ class MainActivity : AppCompatActivity() {
             viewPager.alpha = ratio
             contentContainer.backgroundColor = UIUtils.ratioARGB(brown, 1 - ratio)
         }
-        backdropHelper.onAnimationStateChangeListeners = {
-            if (it) {
-                stateListeners.forEach { it.invoke(true) }
-                onPause()
-            } else {
-                if (backdropHelper.mMargin == 0) {
-                    stateListeners.forEach { it.invoke(true) }
-                    onResume()
-                } else {
-                    stateListeners.forEach { it.invoke(false) }
-                    onPause()
-                }
-            }
-        }
     }
 
     private var isCloseBack = false
@@ -424,13 +407,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        isPause = true
         requestManager.pauseRequests()
     }
 
     override fun onResume() {
         super.onResume()
-        isPause = false
         requestManager.resumeRequests()
     }
 

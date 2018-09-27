@@ -93,29 +93,29 @@ class DetailFeedActivity : AppCompatActivity() {
         }
 
         luvButton.onClick {
-            if (!NetworkHelper.checkNetworkConnected(this@DetailFeedActivity)) {
-                UIUtils.printNetworkCaution(this@DetailFeedActivity)
-                return@onClick
-            }
-            if (commentEditText.text.toString() != "") {
-                async(CommonPool) {
-                    NetworkHelper.retrofitInstance.postComment(DataHelper.datas!!.token,
-                            sendCommentId,
-                            commentEditText.text.toString(),
-                            if (sendCommentId == board!!._id) "" else "re").execute()
-
-
-                }.await().apply {
-                    if (!isSuccessful)
-                        toast("네트워크 오류가 발생했습니다.")
-                    async(UI) { initBoard() }
-                }
-                isCommentInfoVisible = false
-                commentEditText.setText("")
-                keyboardHelper.hideKeyboard()
-            } else {
-                LuvDonateDialog(this@DetailFeedActivity).show()
-            }
+//            if (!NetworkHelper.checkNetworkConnected(this@DetailFeedActivity)) {
+//                UIUtils.printNetworkCaution(this@DetailFeedActivity)
+//                return@onClick
+//            }
+//            if (commentEditText.text.toString() != "") {
+//                async(CommonPool) {
+//                    NetworkHelper.retrofitInstance.postComment(DataHelper.datas!!.token,
+//                            sendCommentId,
+//                            commentEditText.text.toString(),
+//                            if (sendCommentId == board!!._id) "" else "re").execute()
+//
+//
+//                }.await().apply {
+//                    if (!isSuccessful)
+//                        toast("네트워크 오류가 발생했습니다.")
+//                    async(UI) { initBoard() }
+//                }
+//                isCommentInfoVisible = false
+//                commentEditText.setText("")
+//                keyboardHelper.hideKeyboard()
+//            } else {
+//                LuvDonateDialog(this@DetailFeedActivity).show()
+//            }
         }
 
         likeButton.onClick { _ ->
@@ -154,6 +154,8 @@ class DetailFeedActivity : AppCompatActivity() {
         feedGridView.onClick {
             startActivity<DetailImageActivity>("images" to board!!.pictures.toTypedArray())
         }
+
+
         subscribeButton.onClick { _ ->
             if (board == null)
                 return@onClick
@@ -170,7 +172,14 @@ class DetailFeedActivity : AppCompatActivity() {
                     followers.add(DataHelper.datas!!.user._id)
                 }
             }
-
+            board!!.writer.run {
+                val isSubscribe = followers.any { it == DataHelper.datas!!.user._id }
+                if (isSubscribe) {
+                    followers.remove(DataHelper.datas!!.user._id)
+                } else {
+                    followers.add(DataHelper.datas!!.user._id)
+                }
+            }
             subscribeButton.alpha = if (mainBoard.writer.followers.any { it == DataHelper.datas!!.user._id }) 1f else 0.3f
 
 
@@ -239,7 +248,7 @@ class DetailFeedActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun initBoard() {
+    private fun initBoard() {
         if (!NetworkHelper.checkNetworkConnected(this)) {
             UIUtils.printNetworkCaution(this)
             return

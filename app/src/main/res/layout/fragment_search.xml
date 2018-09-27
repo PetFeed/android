@@ -72,25 +72,26 @@
                 </HorizontalScrollView>
 
                 <com.petfeed.petfeed.view.TrendRankView
+                    android:id="@+id/trendRankView1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:count="4"
-                    app:rank="1"
-                    app:title="시베리안 허스키" />
+                    app:rank="1"/>
 
                 <com.petfeed.petfeed.view.TrendRankView
+                    android:id="@+id/trendRankView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:count="4"
+                    tools:count="4"
                     app:rank="2"
-                    app:title="시베리안 허스키" />
+                    tools:title="시베리안 허스키" />
 
                 <com.petfeed.petfeed.view.TrendRankView
+                    android:id="@+id/trendRankView3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:count="4"
+                    tools:count="4"
                     app:rank="3"
-                    app:title="시베리안 허스키" />
+                    tools:title="시베리안 허스키" />
             </LinearLayout>
 
             <TextView

@@ -52,9 +52,9 @@ class TrendRankView : LinearLayout {
 
     @SuppressLint("SetTextI18n")
     private fun setTypeArray(typedArray: TypedArray) {
-        countTextView.text = "새 게시물 ${typedArray.getString(R.styleable.TrendRankView_count)}개"
-        titleTextView.text = "#${typedArray.getString(R.styleable.TrendRankView_title)}"
-        rankTextView.text = typedArray.getString(R.styleable.TrendRankView_rank)
+        countTextView.text = "새 게시물 ${typedArray.getString(R.styleable.TrendRankView_count) ?: ""}개"
+        titleTextView.text = "#${typedArray.getString(R.styleable.TrendRankView_title) ?: ""}"
+        rankTextView.text = typedArray.getString(R.styleable.TrendRankView_rank) ?: ""
         typedArray.recycle()
     }
 }

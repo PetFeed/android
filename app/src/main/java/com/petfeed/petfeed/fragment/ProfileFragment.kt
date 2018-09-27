@@ -74,7 +74,6 @@ class ProfileFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         requestManager = GlideApp.with(this)
-        (context!! as MainActivity).stateListeners.add(stateListener)
 
         setRecyclerView()
         val imageUrl = NetworkHelper.url + DataHelper.datas?.user?.profile
@@ -355,21 +354,6 @@ class ProfileFragment : Fragment() {
 
     private fun startGalleyActivity() {
         startActivityForResult<GalleryActivity>(requestCode, "type" to GalleryActivity.ONLYONE)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        requestManager.pauseAllRequests()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        requestManager.resumeRequests()
-    }
-
-    override fun onDestroy() {
-        (context!! as MainActivity).stateListeners.remove(this.stateListener)
-        super.onDestroy()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

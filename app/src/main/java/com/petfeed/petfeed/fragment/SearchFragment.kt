@@ -48,7 +48,6 @@ class SearchFragment : Fragment() {
     lateinit var requestManager: GlideRequests
     val dateFormat = SimpleDateFormat("MMM d일 a KK시 mm분", Locale.KOREAN)
     val stateListener: (Boolean) -> Unit = { if (it) onPause() else onResume() }
-    var isPause = false
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -59,7 +58,6 @@ class SearchFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         requestManager = GlideApp.with(context!!)
-        (context!! as MainActivity).stateListeners.add(stateListener)
         setRecyclerView()
         scrollView.childrenRecursiveSequence().forEach {
             if (it.id == R.id.boardRecyclerView) {
@@ -75,6 +73,7 @@ class SearchFragment : Fragment() {
 
         async(UI) {
             getBoards()
+            getTrendHashTag()
         }
     }
 
@@ -83,8 +82,7 @@ class SearchFragment : Fragment() {
             UIUtils.printNetworkCaution(this@SearchFragment.context!!)
             return
         }
-        async(CommonPool) { NetworkHelper.retrofitInstance.getAllBoards(DataHelper.datas!!.token).execute() }.await().apply {
-
+        async(CommonPool) { NetworkHelper.retrofitInstance.getTrendBoard().execute() }.await().apply {
             if (!isSuccessful) {
                 return@apply
             }
@@ -110,7 +108,6 @@ class SearchFragment : Fragment() {
                 clear()
                 addAll(DataHelper.datas!!.trendBoards)
             }
-
             boardRecyclerView.adapter!!.notifyDataSetChanged()
         }
     }
@@ -119,6 +116,28 @@ class SearchFragment : Fragment() {
         KeyboardHelper(activity!!).run {
             if (isKeyboardVisible()) {
                 hideKeyboard()
+            }
+        }
+    }
+
+    private suspend fun getTrendHashTag() {
+        if (!NetworkHelper.checkNetworkConnected(this@SearchFragment.context!!)) {
+            UIUtils.printNetworkCaution(this@SearchFragment.context!!)
+            return
+        }
+        async(CommonPool) { NetworkHelper.retrofitInstance.getTrendHashTag().execute() }.await().apply {
+            val json: JSONObject = JSONObject(body()!!.string())
+            val isSuccess = json.getBoolean("success")
+
+            if (!isSuccess) {
+                return@apply
+            }
+
+            val rankViews = arrayOf(trendRankView1, trendRankView2, trendRankView3)
+            val tags = json.getJSONObject("data").getJSONArray("tags")
+            (0 until tags.length()).forEach {
+                rankViews[it].titleTextView.text = tags.getJSONObject(it).getString("tag")
+                rankViews[it].countTextView.text = "새 게시글 " + tags.getJSONObject(it).getString("new") + "개"
             }
         }
     }
@@ -143,8 +162,6 @@ class SearchFragment : Fragment() {
                                     .signature(ObjectKey(NetworkHelper.url + board.writer.profile))
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .into(it.itemView.writerImage)
-                            if (isPause)
-                                requestManager.pauseRequests()
                             it.binding.run {
                                 writeDate.text = dateFormat.format(board.createDate)
 
@@ -232,7 +249,7 @@ class SearchFragment : Fragment() {
                                 }
 
                                 luvButton.onClick {
-                                    LuvDonateDialog(this@SearchFragment.context!!).show()
+//                                    LuvDonateDialog(this@SearchFragment.context!!).show()
                                 }
 
                                 menuButton.onClick {
@@ -299,23 +316,6 @@ class SearchFragment : Fragment() {
                     }
                     .into(this)
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        isPause = true
-        requestManager.pauseAllRequests()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        isPause = false
-        requestManager.resumeRequests()
-    }
-
-    override fun onDestroy() {
-        (context!! as MainActivity).stateListeners.remove(this.stateListener)
-        super.onDestroy()
     }
 
     companion object {
