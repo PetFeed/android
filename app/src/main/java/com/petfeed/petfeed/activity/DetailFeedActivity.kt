@@ -3,6 +3,7 @@ package com.petfeed.petfeed.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.PopupMenu
 import android.view.View
 import com.github.nitrico.lastadapter.LastAdapter
 import com.google.gson.Gson
@@ -20,12 +21,16 @@ import kotlinx.android.synthetic.main.activity_detail_feed.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
+import okhttp3.ResponseBody
 import org.jetbrains.anko.imageResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.sdk25.coroutines.textChangedListener
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -187,6 +192,50 @@ class DetailFeedActivity : AppCompatActivity() {
                     return@apply
                 }
             }
+        }
+        menuButton.onClick {
+            val popup = PopupMenu(this@DetailFeedActivity, it!!)
+            popup.inflate(R.menu.board)
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.delete -> {
+                        if (board == null)
+                            return@setOnMenuItemClickListener true
+                        if (board!!.writer._id != DataHelper.datas!!.user._id) {
+                            toast("권한이 없습니다.")
+                            return@setOnMenuItemClickListener true
+                        }
+                        if (!NetworkHelper.checkNetworkConnected(this@DetailFeedActivity)) {
+                            UIUtils.printNetworkCaution(this@DetailFeedActivity)
+                            return@setOnMenuItemClickListener true
+                        }
+                        val userToken = DataHelper.datas!!.token
+                        NetworkHelper.retrofitInstance.deleteBoard(userToken, board!!._id).enqueue(object : Callback<ResponseBody> {
+                            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                            }
+
+                            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                                if (!response.isSuccessful)
+                                    return
+
+                                val json: JSONObject = JSONObject(response.body()!!.string())
+                                val isSuccess = json.getBoolean("success")
+                                if (!isSuccess)
+                                    return
+                                val mainBoard = DataHelper.datas!!.mainBoards.first { it._id == board!!._id }
+                                DataHelper.datas!!.mainBoards.remove(mainBoard)
+                                finish()
+                            }
+                        })
+                        true
+                    }
+                    R.id.report -> {
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popup.show()
         }
     }
 

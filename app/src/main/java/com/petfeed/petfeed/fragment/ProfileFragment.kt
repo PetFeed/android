@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.PopupMenu
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -35,11 +36,16 @@ import kotlinx.coroutines.experimental.async
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import org.jetbrains.anko.imageResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.startActivityForResult
+import org.jetbrains.anko.support.v4.toast
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -88,8 +94,8 @@ class ProfileFragment : Fragment() {
         boards.addAll(DataHelper.datas?.myBoards!!)
         boardRecyclerView.adapter!!.notifyDataSetChanged()
         feedCount.text = boards.size.toString()
-        followingCount.text = DataHelper.datas!!.user.following.size.toString()
-        followerCount.text = DataHelper.datas!!.user.followers.size.toString()
+        followingCount.text = DataHelper.datas?.user?.following?.size?.toString()
+        followerCount.text = DataHelper.datas?.user?.followers?.size?.toString()
     }
 
     private fun setRecyclerView() {// TODO: Board
@@ -98,7 +104,8 @@ class ProfileFragment : Fragment() {
                     .map<Board, ItemProfileBoardBinding>(R.layout.item_profile_board) {
 
                         onBind {
-                            val board = boards[it.adapterPosition]
+                            val position = it.adapterPosition
+                            val board = boards[position]
 
                             it.binding.feedGridView.run {
                                 imageUrls.clear()
@@ -125,11 +132,11 @@ class ProfileFragment : Fragment() {
                                         else R.drawable.ic_favorite_empty
 
                                 likeButton.onClick { _ ->
-                                    if(!NetworkHelper.checkNetworkConnected(this@ProfileFragment.context!!)){
+                                    if (!NetworkHelper.checkNetworkConnected(this@ProfileFragment.context!!)) {
                                         UIUtils.printNetworkCaution(this@ProfileFragment.context!!)
                                         return@onClick
                                     }
-                                    DataHelper.datas!!.mainBoards[it.adapterPosition] = boards[it.adapterPosition].apply {
+                                    DataHelper.datas!!.mainBoards[position] = boards[position].apply {
                                         val isLike = likes.any { it == DataHelper.datas!!.user._id }
                                         if (isLike) {
                                             likes.remove(DataHelper.datas!!.user._id)
@@ -157,7 +164,47 @@ class ProfileFragment : Fragment() {
                                         }
                                     }
                                 }
+                                menuButton.onClick {
+                                    val popup = PopupMenu(this@ProfileFragment.context!!, it!!)
+                                    popup.inflate(R.menu.board)
+                                    popup.setOnMenuItemClickListener { item ->
+                                        when (item.itemId) {
+                                            R.id.delete -> {
+                                                if (board.writer._id != DataHelper.datas!!.user._id) {
+                                                    toast("권한이 없습니다.")
+                                                    return@setOnMenuItemClickListener true
+                                                }
+                                                if (!NetworkHelper.checkNetworkConnected(this@ProfileFragment.context!!)) {
+                                                    UIUtils.printNetworkCaution(this@ProfileFragment.context!!)
+                                                    return@setOnMenuItemClickListener true
+                                                }
+                                                val userToken = DataHelper.datas!!.token
+                                                NetworkHelper.retrofitInstance.deleteBoard(userToken, board._id).enqueue(object : Callback<ResponseBody> {
+                                                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                                                    }
 
+                                                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                                                        if (!response.isSuccessful)
+                                                            return
+
+                                                        val json: JSONObject = JSONObject(response.body()!!.string())
+                                                        val isSuccess = json.getBoolean("success")
+                                                        if (!isSuccess)
+                                                            return
+                                                        DataHelper.datas!!.mainBoards.removeAt(position)
+                                                        boardRecyclerView.adapter?.notifyItemRemoved(position)
+                                                    }
+                                                })
+                                                true
+                                            }
+                                            R.id.report -> {
+                                                true
+                                            }
+                                            else -> false
+                                        }
+                                    }
+                                    popup.show()
+                                }
                             }
                             it.itemView.onClick { _ ->
                                 startActivity<DetailFeedActivity>("_id" to board._id)
@@ -191,7 +238,7 @@ class ProfileFragment : Fragment() {
 //            }
 //        })
 
-        if(!NetworkHelper.checkNetworkConnected(this@ProfileFragment.context!!)){
+        if (!NetworkHelper.checkNetworkConnected(this@ProfileFragment.context!!)) {
             UIUtils.printNetworkCaution(this@ProfileFragment.context!!)
             return
         }

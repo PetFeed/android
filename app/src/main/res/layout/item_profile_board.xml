@@ -56,6 +56,7 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/subscribeButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
@@ -63,6 +64,7 @@
                 android:src="@drawable/ic_subscribe" />
 
             <ImageView
+                android:id="@+id/menuButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"

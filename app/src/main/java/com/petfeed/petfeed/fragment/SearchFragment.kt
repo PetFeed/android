@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.PopupMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,11 +27,17 @@ import kotlinx.android.synthetic.main.item_board.view.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
+import okhttp3.ResponseBody
 import org.jetbrains.anko.childrenRecursiveSequence
 import org.jetbrains.anko.imageResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.startActivity
+import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.toast
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -122,7 +129,8 @@ class SearchFragment : Fragment() {
                     .map<Board, ItemBoardBinding>(R.layout.item_board) {
 
                         onBind { it ->
-                            val board = boards[it.adapterPosition]
+                            val position = it.adapterPosition
+                            val board = boards[position]
 
                             it.binding.feedGridView.run {
                                 imageUrls.clear()
@@ -155,7 +163,7 @@ class SearchFragment : Fragment() {
                                         UIUtils.printNetworkCaution(this@SearchFragment.context!!)
                                         return@onClick
                                     }
-                                    DataHelper.datas!!.mainBoards[it.adapterPosition] = boards[it.adapterPosition].apply {
+                                    DataHelper.datas!!.mainBoards[position] = boards[position].apply {
                                         val isLike = likes.any { it == DataHelper.datas!!.user._id }
                                         if (isLike) {
                                             likes.remove(DataHelper.datas!!.user._id)
@@ -189,7 +197,7 @@ class SearchFragment : Fragment() {
                                         UIUtils.printNetworkCaution(this@SearchFragment.context!!)
                                         return@onClick
                                     }
-                                    DataHelper.datas!!.mainBoards[it.adapterPosition].writer = boards[it.adapterPosition].writer.apply {
+                                    DataHelper.datas!!.mainBoards[position].writer = boards[position].writer.apply {
 
                                         val isSubscribe = followers.any { it == DataHelper.datas!!.user._id }
                                         if (isSubscribe) {
@@ -224,6 +232,48 @@ class SearchFragment : Fragment() {
 
                                 luvButton.onClick {
                                     LuvDonateDialog(this@SearchFragment.context!!).show()
+                                }
+
+                                menuButton.onClick {
+                                    val popup = PopupMenu(this@SearchFragment.context!!, it!!)
+                                    popup.inflate(R.menu.board)
+                                    popup.setOnMenuItemClickListener { item ->
+                                        when (item.itemId) {
+                                            R.id.delete -> {
+                                                if (board.writer._id != DataHelper.datas!!.user._id) {
+                                                    toast("권한이 없습니다.")
+                                                    return@setOnMenuItemClickListener true
+                                                }
+                                                if (!NetworkHelper.checkNetworkConnected(this@SearchFragment.context!!)) {
+                                                    UIUtils.printNetworkCaution(this@SearchFragment.context!!)
+                                                    return@setOnMenuItemClickListener true
+                                                }
+                                                val userToken = DataHelper.datas!!.token
+                                                NetworkHelper.retrofitInstance.deleteBoard(userToken, board._id).enqueue(object : Callback<ResponseBody> {
+                                                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                                                    }
+
+                                                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                                                        if (!response.isSuccessful)
+                                                            return
+
+                                                        val json: JSONObject = JSONObject(response.body()!!.string())
+                                                        val isSuccess = json.getBoolean("success")
+                                                        if (!isSuccess)
+                                                            return
+                                                        DataHelper.datas!!.mainBoards.removeAt(position)
+                                                        boardRecyclerView.adapter?.notifyItemRemoved(position)
+                                                    }
+                                                })
+                                                true
+                                            }
+                                            R.id.report -> {
+                                                true
+                                            }
+                                            else -> false
+                                        }
+                                    }
+                                    popup.show()
                                 }
                             }
                             it.itemView.onClick { _ ->
