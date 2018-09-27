@@ -2,6 +2,7 @@ package com.petfeed.petfeed.activity
 
 import android.Manifest
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -42,6 +43,7 @@ class WriteActivity : AppCompatActivity() {
     val GALLERY_CODE = 1
     val PERMISSION_CODE = 2
     var isWriting = false
+    lateinit var progressDialog: ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ActivityUtils.statusBarSetting(window, this, R.color.white2, false)
@@ -63,9 +65,7 @@ class WriteActivity : AppCompatActivity() {
                 toast("내용과 사진이 필요합니다.")
                 return@onClick
             }
-            if (isWriting)
-                return@onClick
-            isWriting = true
+            setProgressDialog()
             val pictures = ArrayList<MultipartBody.Part>()
             imageArray.filter { it is String }.forEach {
                 val file = File(it as String)
@@ -77,6 +77,7 @@ class WriteActivity : AppCompatActivity() {
             val regex = Regex("#[a-zA-z_가-힣ㄱ-ㅎㅏ-ㅣ]+")
             regex.findAll(this@WriteActivity.contents.text.toString()).forEach {
                 hashTags.add(RequestBody.create(MediaType.parse("text/plain"), it.value))
+//                hashTags.add(it.value)
             }
             try {
                 async(CommonPool) { NetworkHelper.retrofitInstance.postBoard(DataHelper.datas!!.token, pictures.toTypedArray(), contents, hashTags.toTypedArray()).execute() }
@@ -88,10 +89,11 @@ class WriteActivity : AppCompatActivity() {
                             }
                         }
             } catch (e: SocketTimeoutException) {
+                progressDialog.dismiss()
                 e.printStackTrace()
                 toast("네트워크 오류가 발생했습니다.")
             }
-
+            progressDialog.dismiss()
             isWriting = false
         }
     }
@@ -141,6 +143,12 @@ class WriteActivity : AppCompatActivity() {
             setDisplayShowTitleEnabled(false)
             setHomeAsUpIndicator(R.drawable.ic_close)
         }
+    }
+
+    private fun setProgressDialog() {
+        progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("게시 중 입니다.")
+        progressDialog.show()
     }
 
     private fun checkData(): Boolean =

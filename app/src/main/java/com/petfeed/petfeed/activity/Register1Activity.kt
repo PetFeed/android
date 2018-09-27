@@ -1,5 +1,6 @@
 package com.petfeed.petfeed.activity
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
@@ -18,6 +19,7 @@ import org.json.JSONObject
 
 class Register1Activity : AppCompatActivity() {
 
+    lateinit var progressDialog: ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ActivityUtils.statusBarSetting(window, this, R.color.white2)
@@ -25,20 +27,26 @@ class Register1Activity : AppCompatActivity() {
         setToolbar()
 
         nextButton.onClick {
+            setProgressDialog()
             if (!NetworkHelper.checkNetworkConnected(this@Register1Activity)) {
+                progressDialog.dismiss()
                 UIUtils.printNetworkCaution(this@Register1Activity)
                 return@onClick
             }
-            if (!checkInput())
+            if (!checkInput()) {
+                progressDialog.dismiss()
                 return@onClick
+            }
 
             val id = idEditText.text.toString()
             val pw = pwEditText.text.toString()
             val nickname = nameEditText.text.toString()
 
             async(CommonPool) { NetworkHelper.retrofitInstance.postRegister(id, pw, nickname, FirebaseInstanceId.getInstance().token!!).execute() }.await().apply {
-                if (!isSuccessful)
+                progressDialog.dismiss()
+                if (!isSuccessful) {
                     return@onClick
+                }
 
                 val json: JSONObject = JSONObject(body()!!.string())
                 val isSuccess = json.getBoolean("success")
@@ -54,24 +62,25 @@ class Register1Activity : AppCompatActivity() {
     }
 
     private fun checkInput(): Boolean {
-        if (idEditText.text.isBlank() || pwEditText.text.isBlank()
-                || idEditText.text.toString().length < 8 || pwEditText.text.length < 8) {
-            toast("아이디와 비밀번호는 8자리 이상이어야 합니다")
+        val idRegex = Regex("[a-zA-z0-9.]+@[a-zA-z0-9]+\\.[a-zA-z0-9.]+")
+        if (!idRegex.matches(idEditText.text.toString())) {
+            toast("아이디는 이메일 형식으로 입력해주세요")
+            return false
+        }
+        if (pwEditText.text.length > 16 || pwEditText.text.length < 8) {
+            toast("비밀번호는 8자리 이상 16자리 이하이어야 합니다.")
             return false
         }
         if (pwEditText.text.toString() != repwEditText.text.toString()) {
             toast("비밀번호 재입력을 확인해 주세요")
             return false
         }
-        if (nameEditText.text.isEmpty()) {
+        val nameRegex = Regex("[a-zA-Z가-힣ㅏ-ㅣㄱ-ㅎ0-9_.@]+")
+        if (nameEditText.text.isBlank() || !nameRegex.matches(nameEditText.text.toString())) {
             toast("별명을 입력해 주세요")
             return false
         }
-        val idRegex = Regex("[a-zA-z0-9]+")
-        if (!idRegex.matches(idEditText.text.toString())) {
-            toast("아이디는 영대소문자 숫자만 가능합니다")
-            return false
-        }
+
         return true
     }
 
@@ -82,6 +91,12 @@ class Register1Activity : AppCompatActivity() {
             setDisplayShowTitleEnabled(false)
             setHomeAsUpIndicator(R.drawable.ic_close)
         }
+    }
+
+    private fun setProgressDialog() {
+        progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("회원가입중...")
+        progressDialog.show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

@@ -52,8 +52,7 @@
         <com.petfeed.petfeed.view.CircleImageView
             android:id="@+id/profileImage"
             android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:src="@drawable/pic_7" />
+            android:layout_height="42dp"/>
 
         <TextView
             android:id="@+id/userName"

@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:hint="아이디 입력"
-            android:inputType="text" />
+            android:inputType="textEmailAddress" />
 
         <View
             android:layout_width="match_parent"

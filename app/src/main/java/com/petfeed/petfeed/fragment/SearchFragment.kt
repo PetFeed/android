@@ -16,10 +16,10 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.petfeed.petfeed.*
 import com.petfeed.petfeed.activity.DetailFeedActivity
-import com.petfeed.petfeed.activity.MainActivity
 import com.petfeed.petfeed.databinding.ItemBoardBinding
 import com.petfeed.petfeed.model.Board
 import com.petfeed.petfeed.model.DataHelper
+import com.petfeed.petfeed.util.KeyboardHelper
 import com.petfeed.petfeed.util.UIUtils
 import com.petfeed.petfeed.util.network.NetworkHelper
 import kotlinx.android.synthetic.main.fragment_search.*
@@ -33,7 +33,6 @@ import org.jetbrains.anko.imageResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
-import org.jetbrains.anko.toast
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -77,7 +76,7 @@ class SearchFragment : Fragment() {
     }
 
     private suspend fun getBoards() {
-        if(!NetworkHelper.checkNetworkConnected(this@SearchFragment.context!!)){
+        if (!NetworkHelper.checkNetworkConnected(this@SearchFragment.context!!)) {
             UIUtils.printNetworkCaution(this@SearchFragment.context!!)
             return
         }
@@ -114,7 +113,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun hideKeyBoard() {
-        (this@SearchFragment.context as MainActivity).keyboardHelper.run {
+        KeyboardHelper(activity!!).run {
             if (isKeyboardVisible()) {
                 hideKeyboard()
             }
@@ -137,7 +136,6 @@ class SearchFragment : Fragment() {
                                 imageUrls.addAll(board.lowPictures)
                                 viewUpdate()
                             }
-
                             requestManager
                                     .load(NetworkHelper.url + board.writer.profile)
                                     .signature(ObjectKey(NetworkHelper.url + board.writer.profile))
@@ -159,7 +157,7 @@ class SearchFragment : Fragment() {
                                 subscribeButton.alpha = if (board.writer.followers.any { it == DataHelper.datas!!.user._id }) 1f else 0.3f
 
                                 likeButton.onClick { _ ->
-                                    if(!NetworkHelper.checkNetworkConnected(this@SearchFragment.context!!)){
+                                    if (!NetworkHelper.checkNetworkConnected(this@SearchFragment.context!!)) {
                                         UIUtils.printNetworkCaution(this@SearchFragment.context!!)
                                         return@onClick
                                     }
@@ -193,11 +191,11 @@ class SearchFragment : Fragment() {
                                 }
 
                                 subscribeButton.onClick { _ ->
-                                    if(!NetworkHelper.checkNetworkConnected(this@SearchFragment.context!!)){
+                                    if (!NetworkHelper.checkNetworkConnected(this@SearchFragment.context!!)) {
                                         UIUtils.printNetworkCaution(this@SearchFragment.context!!)
                                         return@onClick
                                     }
-                                    DataHelper.datas!!.mainBoards[position].writer = boards[position].writer.apply {
+                                    DataHelper.datas!!.mainBoards[position].writer = boards[it.adapterPosition].writer.apply {
 
                                         val isSubscribe = followers.any { it == DataHelper.datas!!.user._id }
                                         if (isSubscribe) {

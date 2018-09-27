@@ -1,14 +1,14 @@
 package com.petfeed.petfeed.activity
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.Toast
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import com.petfeed.petfeed.R
+import com.petfeed.petfeed.model.DataHelper
 import com.petfeed.petfeed.model.User
 import com.petfeed.petfeed.util.ActivityUtils
-import com.petfeed.petfeed.model.DataHelper
 import com.petfeed.petfeed.util.PrefManager
 import com.petfeed.petfeed.util.UIUtils
 import com.petfeed.petfeed.util.network.NetworkHelper
@@ -24,6 +24,7 @@ import org.json.JSONObject
 class LoginActivity : AppCompatActivity() {
 
     lateinit var prefManager: PrefManager
+    lateinit var progressDialog: ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ActivityUtils.statusBarSetting(window, this, R.color.white2)
@@ -39,11 +40,13 @@ class LoginActivity : AppCompatActivity() {
             if (!checkInput())
                 return@onClick
 
+            setProgressDialog()
             val id = idEditText.text.toString()
             val pw = pwEditText.text.toString()
             val fcmToken = FirebaseInstanceId.getInstance().token!!
             async(CommonPool) { NetworkHelper.retrofitInstance.postLogin(id, pw, fcmToken).execute() }.await().apply {
                 if (!isSuccessful) {
+                    progressDialog.dismiss()
                     return@onClick
                 }
 
@@ -53,6 +56,7 @@ class LoginActivity : AppCompatActivity() {
                 if (!isSuccess) {
                     val message = json.getString("message")
                     toast(message)
+                    progressDialog.dismiss()
                     return@onClick
                 }
 
@@ -63,6 +67,7 @@ class LoginActivity : AppCompatActivity() {
             prefManager.userPassword = pw
 
             async(CommonPool) { NetworkHelper.retrofitInstance.getUser(DataHelper.datas!!.token).execute() }.await().apply {
+                progressDialog.dismiss()
                 if (!isSuccessful)
                     return@onClick
 
@@ -81,6 +86,12 @@ class LoginActivity : AppCompatActivity() {
         containerRegister.onClick {
             startActivity<Register1Activity>()
         }
+    }
+
+    private fun setProgressDialog() {
+        progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("로그인 중")
+        progressDialog.show()
     }
 
     private fun checkInput(): Boolean {
