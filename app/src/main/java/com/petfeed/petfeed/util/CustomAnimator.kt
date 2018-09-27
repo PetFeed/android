@@ -12,6 +12,7 @@ class CustomAnimator {
     var onAnimationUpdate: (Int) -> Unit = {}
     var onAnimationEnd: () -> Unit = {}
     var onAnimationCancel: () -> Unit = {}
+    var onAnimationStart: () -> Unit = {}
     var isRunning = false
 
     fun start() {
@@ -19,6 +20,7 @@ class CustomAnimator {
             stop()
         animate()
         isRunning = true
+        onAnimationStart.invoke()
     }
 
     fun stop() {

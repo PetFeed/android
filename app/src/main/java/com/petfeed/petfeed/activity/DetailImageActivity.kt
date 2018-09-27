@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_detail_image.*
 class DetailImageActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        ActivityUtils.statusBarSetting(window, this, R.color.white2, false)
+        ActivityUtils.statusBarSetting(window, this, android.R.color.black, true)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_image)
 

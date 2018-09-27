@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.petfeed.petfeed.*
 import com.petfeed.petfeed.activity.DetailFeedActivity
+import com.petfeed.petfeed.activity.MainActivity
 import com.petfeed.petfeed.databinding.ItemBoardBinding
 import com.petfeed.petfeed.model.Board
 import com.petfeed.petfeed.model.DataHelper
@@ -45,7 +47,8 @@ class SearchFragment : Fragment() {
 
     lateinit var requestManager: GlideRequests
     val dateFormat = SimpleDateFormat("MMM d일 a KK시 mm분", Locale.KOREAN)
-
+    val stateListener: (Boolean) -> Unit = { if (it) onPause() else onResume() }
+    var isPause = false
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -56,7 +59,7 @@ class SearchFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         requestManager = GlideApp.with(context!!)
-
+        (context!! as MainActivity).stateListeners.add(stateListener)
         setRecyclerView()
         scrollView.childrenRecursiveSequence().forEach {
             if (it.id == R.id.boardRecyclerView) {
@@ -92,9 +95,9 @@ class SearchFragment : Fragment() {
             if (!isSuccess) {
                 return@apply
             }
-            DataHelper.datas?.mainBoards = Gson().fromJson(json.getString("data"), object : TypeToken<ArrayList<Board>>() {}.type)
+            DataHelper.datas?.trendBoards = Gson().fromJson(json.getString("data"), object : TypeToken<ArrayList<Board>>() {}.type)
 
-            DataHelper.datas?.mainBoards?.forEach {
+            DataHelper.datas?.trendBoards?.forEach {
                 it.pictures.forEachIndexed { index, s ->
                     it.pictures[index] = NetworkHelper.url + s
                 }
@@ -105,7 +108,7 @@ class SearchFragment : Fragment() {
 
             boards.run {
                 clear()
-                addAll(DataHelper.datas!!.mainBoards)
+                addAll(DataHelper.datas!!.trendBoards)
             }
 
             boardRecyclerView.adapter!!.notifyDataSetChanged()
@@ -121,7 +124,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun setRecyclerView() {// TODO: Board
-
         boardRecyclerView.run {
             layoutManager = LinearLayoutManager(context)
             LastAdapter(boards, BR.item)
@@ -141,7 +143,8 @@ class SearchFragment : Fragment() {
                                     .signature(ObjectKey(NetworkHelper.url + board.writer.profile))
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .into(it.itemView.writerImage)
-
+                            if (isPause)
+                                requestManager.pauseRequests()
                             it.binding.run {
                                 writeDate.text = dateFormat.format(board.createDate)
 
@@ -161,7 +164,7 @@ class SearchFragment : Fragment() {
                                         UIUtils.printNetworkCaution(this@SearchFragment.context!!)
                                         return@onClick
                                     }
-                                    DataHelper.datas!!.mainBoards[position] = boards[position].apply {
+                                    DataHelper.datas!!.trendBoards[position] = boards[position].apply {
                                         val isLike = likes.any { it == DataHelper.datas!!.user._id }
                                         if (isLike) {
                                             likes.remove(DataHelper.datas!!.user._id)
@@ -195,7 +198,7 @@ class SearchFragment : Fragment() {
                                         UIUtils.printNetworkCaution(this@SearchFragment.context!!)
                                         return@onClick
                                     }
-                                    DataHelper.datas!!.mainBoards[position].writer = boards[it.adapterPosition].writer.apply {
+                                    DataHelper.datas!!.trendBoards[position].writer = boards[it.adapterPosition].writer.apply {
 
                                         val isSubscribe = followers.any { it == DataHelper.datas!!.user._id }
                                         if (isSubscribe) {
@@ -259,7 +262,7 @@ class SearchFragment : Fragment() {
                                                         val isSuccess = json.getBoolean("success")
                                                         if (!isSuccess)
                                                             return
-                                                        DataHelper.datas!!.mainBoards.removeAt(position)
+                                                        DataHelper.datas!!.trendBoards.removeAt(position)
                                                         boardRecyclerView.adapter?.notifyItemRemoved(position)
                                                     }
                                                 })
@@ -272,6 +275,9 @@ class SearchFragment : Fragment() {
                                         }
                                     }
                                     popup.show()
+                                }
+                                commentEditText.onClick {
+                                    startActivity<DetailFeedActivity>("_id" to board._id)
                                 }
                             }
                             it.itemView.onClick { _ ->
@@ -293,6 +299,23 @@ class SearchFragment : Fragment() {
                     }
                     .into(this)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isPause = true
+        requestManager.pauseAllRequests()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        isPause = false
+        requestManager.resumeRequests()
+    }
+
+    override fun onDestroy() {
+        (context!! as MainActivity).stateListeners.remove(this.stateListener)
+        super.onDestroy()
     }
 
     companion object {

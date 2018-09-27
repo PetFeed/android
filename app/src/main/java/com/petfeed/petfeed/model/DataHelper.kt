@@ -13,6 +13,7 @@ class DataHelper private constructor() {
     var mainBoards = ArrayList<Board>()
     var searchBoards = ArrayList<Board>()
     var myBoards = ArrayList<Board>()
+    var trendBoards = ArrayList<Board>()
     var connTime = System.currentTimeMillis()
 
     companion object {

@@ -67,7 +67,7 @@ class LogActivity : AppCompatActivity() {
                 val notices = Gson().fromJson<ArrayList<Log>>(
                         json.getJSONObject("data").getString("logs"),
                         object : TypeToken<ArrayList<Log>>() {}.type)
-
+                notices.reverse()
                 val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일", Locale.KOREAN)
                 var lastDate = ""
                 val myId = DataHelper.datas!!.user._id

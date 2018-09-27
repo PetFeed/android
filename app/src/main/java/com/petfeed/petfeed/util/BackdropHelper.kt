@@ -18,17 +18,24 @@ class BackdropHelper(val mContext: Context,
     val contentViewHeight = contentView.height
     val contentParams = contentView.layoutParams as RelativeLayout.LayoutParams
     val topHeight = contentView.topHeight
-
     var isScroll = false
         set(value) {
             field = value
             swipeRefreshLayout.isEnabled = !field && mMargin == 0
         }
+    var onAnimationStateChangeListeners: (Boolean) -> Unit = {}
     val animator: CustomAnimator = CustomAnimator().apply {
         duration = 150
         onAnimationUpdate = { mMargin = it }
-        onAnimationEnd = { isScroll = false }
-        onAnimationCancel = { isScroll = false }
+        onAnimationEnd = {
+            isScroll = false
+            onAnimationStateChangeListeners.invoke(false)
+        }
+        onAnimationCancel = {
+            isScroll = false
+            onAnimationStateChangeListeners.invoke(false)
+        }
+        onAnimationStart = { onAnimationStateChangeListeners.invoke(true) }
     }
 
     var mMargin = 0

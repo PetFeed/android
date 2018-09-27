@@ -15,6 +15,7 @@ import com.petfeed.petfeed.BR
 import com.petfeed.petfeed.GlideApp
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.activity.DetailFeedActivity
+import com.petfeed.petfeed.activity.MainActivity
 import com.petfeed.petfeed.databinding.ItemNotificationContentBinding
 import com.petfeed.petfeed.model.DataHelper
 import com.petfeed.petfeed.model.Log
@@ -68,7 +69,7 @@ class NoticeFragment : Fragment() {
                 val notices = Gson().fromJson<ArrayList<Log>>(
                         json.getJSONObject("data").getString("logs"),
                         object : TypeToken<ArrayList<Log>>() {}.type)
-
+                notices.reverse()
                 val connTime = DataHelper.datas!!.connTime
                 var b = true
                 if (notices.isNotEmpty() && notices[0].date.time > connTime)
@@ -113,6 +114,8 @@ class NoticeFragment : Fragment() {
                 }
                 .into(notificationRecyclerView)
     }
+
+
 
     companion object {
         fun newInstance() = NoticeFragment()

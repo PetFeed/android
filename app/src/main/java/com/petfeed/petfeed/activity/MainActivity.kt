@@ -10,7 +10,9 @@ import android.support.v7.widget.PopupMenu
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewTreeObserver
+import android.widget.LinearLayout
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.signature.ObjectKey
 import com.github.nitrico.lastadapter.LastAdapter
@@ -41,17 +43,19 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
 
     var boards = ArrayList<Board>()
     val bottomItems = ArrayList<View>() // view
+    var isPause = false
     lateinit var backdropHelper: BackdropHelper
     lateinit var bottomBarClickHelper: BottomBarClickHelper
     lateinit var keyboardHelper: KeyboardHelper
     lateinit var requestManager: GlideRequests
-
+    val stateListeners = ArrayList<(Boolean) -> Unit>() // fragment에서 조작
     val dateFormat = SimpleDateFormat("MMM d일 a KK시 mm분", Locale.KOREAN)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +97,7 @@ class MainActivity : AppCompatActivity() {
         }
         viewPager.adapter = MainPagerAdapter(supportFragmentManager)
         viewPager.currentItem = 0
+        stateListeners.forEach { it.invoke(true) }
     }
 
     private fun setBottomItemAlpha() {
@@ -151,8 +156,8 @@ class MainActivity : AppCompatActivity() {
                         onBind { it ->
                             val position = it.adapterPosition
                             val board = boards[position]
-
                             it.binding.feedGridView.run {
+                                layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, UIUtils.makeDP(this@MainActivity, 200f).toInt())
                                 imageUrls.clear()
                                 imageUrls.addAll(board.lowPictures)
                                 viewUpdate()
@@ -162,7 +167,7 @@ class MainActivity : AppCompatActivity() {
                                     .load(NetworkHelper.url + board.writer.profile)
                                     .signature(ObjectKey(NetworkHelper.url + board.writer.profile))
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                    .override(100, 100)
+                                    .override(50)
                                     .into(it.itemView.writerImage)
 
                             it.binding.run {
@@ -304,24 +309,26 @@ class MainActivity : AppCompatActivity() {
                                     }
                                     popup.show()
                                 }
+                                commentEditText.onClick {
+                                    startActivity<DetailFeedActivity>("_id" to board._id)
+                                }
+                                commentEditText.isFocusable = false
                             }
                             it.itemView.onClick { _ ->
                                 startActivity<DetailFeedActivity>("_id" to board._id)
                             }
                         }
                         onRecycle {
-                            it.binding.feedGridView.imageViews.clear()
                             it.binding.feedGridView.imageViews.forEach {
                                 requestManager.clear(it)
                             }
+                            it.binding.feedGridView.imageViews.clear()
                         }
 
                         onCreate {
                             requestManager
                                     .load(NetworkHelper.url + DataHelper.datas?.user?.profile)
                                     .into(it.itemView.profileImage)
-
-                            it.binding.commentEditText.isEnabled = false
                             it.binding.feedGridView.requestManager = this@MainActivity.requestManager
                         }
                     }
@@ -384,6 +391,20 @@ class MainActivity : AppCompatActivity() {
             viewPager.alpha = ratio
             contentContainer.backgroundColor = UIUtils.ratioARGB(brown, 1 - ratio)
         }
+        backdropHelper.onAnimationStateChangeListeners = {
+            if (it) {
+                stateListeners.forEach { it.invoke(true) }
+                onPause()
+            } else {
+                if (backdropHelper.mMargin == 0) {
+                    stateListeners.forEach { it.invoke(true) }
+                    onResume()
+                } else {
+                    stateListeners.forEach { it.invoke(false) }
+                    onPause()
+                }
+            }
+        }
     }
 
     private var isCloseBack = false
@@ -399,6 +420,18 @@ class MainActivity : AppCompatActivity() {
                 }, 2000)
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isPause = true
+        requestManager.pauseRequests()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        isPause = false
+        requestManager.resumeRequests()
     }
 
     override fun onLowMemory() {

@@ -247,61 +247,72 @@ class DetailFeedActivity : AppCompatActivity() {
         board = Board()
         val userToken = DataHelper.datas!!.token
         val boardId = intent.getStringExtra("_id")
-        async(CommonPool) { NetworkHelper.retrofitInstance.getBoardById(userToken, boardId).execute() }.await().apply {
-            if (!isSuccessful)
-                return
-            val json: JSONObject = JSONObject(body()!!.string())
-            val isSuccess = json.getBoolean("success")
+        NetworkHelper.retrofitInstance.getBoardById(userToken, boardId).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                toast("존재하지 않는 게시물 입니다.")
+                finish()
+            }
 
-            if (!isSuccess)
-                return
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (!response.isSuccessful)
+                    return
+                val json: JSONObject = JSONObject(response.body()!!.string())
+                val isSuccess = json.getBoolean("success")
 
-            val board = Gson().fromJson(json.getString("data"), Board::class.java)
-            this@DetailFeedActivity.board = board
-        }
+                if (!isSuccess)
+                    return
 
-        comments.clear()
-        board!!.comments.forEach {
-            comments.add(it)
-            if (it.reComment.isNotEmpty())
-                it.reComment.forEach {
-                    comments.add(Pair<Comment, String>(it, ""))
+                val board = Gson().fromJson(json.getString("data"), Board::class.java)
+                this@DetailFeedActivity.board = board
+                if (board == null) {
+                    toast("존재하지 않는 게시물 입니다.")
+                    finish()
+                    return
                 }
-        }
-        board!!.pictures.forEachIndexed { index, s ->
-            board!!.pictures[index] = NetworkHelper.url + s
-        }
-        board!!.lowPictures.forEachIndexed { index, s ->
-            board!!.lowPictures[index] = NetworkHelper.url + s
-        }
-        subscribeButton.alpha = if (board!!.writer.followers.any { it == DataHelper.datas!!.user._id }) 1f else 0.3f
-        sendCommentId = board!!._id
-        commentRecyclerView?.adapter?.notifyDataSetChanged()
+                comments.clear()
+                board!!.comments.forEach {
+                    comments.add(it)
+                    if (it.reComment.isNotEmpty())
+                        it.reComment.forEach {
+                            comments.add(Pair<Comment, String>(it, ""))
+                        }
+                }
+                board.pictures.forEachIndexed { index, s ->
+                    board.pictures[index] = NetworkHelper.url + s
+                }
+                board.lowPictures.forEachIndexed { index, s ->
+                    board.lowPictures[index] = NetworkHelper.url + s
+                }
+                subscribeButton.alpha = if (board.writer.followers.any { it == DataHelper.datas!!.user._id }) 1f else 0.3f
+                sendCommentId = board._id
+                commentRecyclerView?.adapter?.notifyDataSetChanged()
 
-        feedGridView.run {
-            imageUrls.clear()
-            imageUrls.addAll(board!!.lowPictures)
-            viewUpdate()
-        }
+                feedGridView.run {
+                    imageUrls.clear()
+                    imageUrls.addAll(board.lowPictures)
+                    viewUpdate()
+                }
 
-        var commentCount = 0
-        board!!.comments.forEach { commentCount += 1 + it.reComment.size }
-        commentCountText.text = "$commentCount+"
-        likeCountText.text = "${board!!.likes.size}+"
+                var commentCount = 0
+                board.comments.forEach { commentCount += 1 + it.reComment.size }
+                commentCountText.text = "$commentCount+"
+                likeCountText.text = "${board.likes.size}+"
 
-        likeButton.imageResource =
-                if (board != null && board!!.likes.any { it == DataHelper.datas?.user?._id }) R.drawable.ic_favorite
-                else R.drawable.ic_favorite_empty
+                likeButton.imageResource =
+                        if (board.likes.any { it == DataHelper.datas?.user?._id }) R.drawable.ic_favorite
+                        else R.drawable.ic_favorite_empty
 
-        writeDate.text = dateFormat.format(board!!.createDate)
-        contents.text = board!!.contents
+                writeDate.text = dateFormat.format(board.createDate)
+                contents.text = board.contents
 
-        requestManager
-                .load(NetworkHelper.url + board!!.writer.profile)
-                .into(writerProfileImage)
+                requestManager
+                        .load(NetworkHelper.url + board.writer.profile)
+                        .into(writerProfileImage)
 
-        writerName.text = board!!.writer.nickname
-        topContainer.scrollTo(0, 0)
+                writerName.text = board.writer.nickname
+                topContainer.scrollTo(0, 0)
+            }
+        })
     }
 
     private fun setRecyclerView() {

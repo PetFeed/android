@@ -1,12 +1,17 @@
 package com.petfeed.petfeed.fragment
 
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,10 +24,7 @@ import com.petfeed.petfeed.BR
 import com.petfeed.petfeed.GlideApp
 import com.petfeed.petfeed.GlideRequests
 import com.petfeed.petfeed.R
-import com.petfeed.petfeed.activity.DetailFeedActivity
-import com.petfeed.petfeed.activity.GalleryActivity
-import com.petfeed.petfeed.activity.LogActivity
-import com.petfeed.petfeed.activity.SettingActivity
+import com.petfeed.petfeed.activity.*
 import com.petfeed.petfeed.databinding.ItemProfileBoardBinding
 import com.petfeed.petfeed.model.Board
 import com.petfeed.petfeed.model.DataHelper
@@ -54,10 +56,13 @@ import kotlin.collections.HashMap
 
 class ProfileFragment : Fragment() {
 
+
+    val PERMISSION_CODE = 2
     val requestCode = 1
     var boards = ArrayList<Board>()
     var user = DataHelper.datas!!.user
     lateinit var requestManager: GlideRequests
+    val stateListener: (Boolean) -> Unit = { if (it) onPause() else onResume() }
 
     val dateFormat = SimpleDateFormat("MMM d일 a KK시 mm분", Locale.KOREAN)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -69,6 +74,7 @@ class ProfileFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         requestManager = GlideApp.with(this)
+        (context!! as MainActivity).stateListeners.add(stateListener)
 
         setRecyclerView()
         val imageUrl = NetworkHelper.url + DataHelper.datas?.user?.profile
@@ -83,7 +89,7 @@ class ProfileFragment : Fragment() {
             startActivity<SettingActivity>()
         }
         profileImage.onClick {
-            startActivityForResult<GalleryActivity>(requestCode, "type" to GalleryActivity.ONLYONE)
+            requestPermission()
         }
         if (DataHelper.datas?.myBoards == null) {
             DataHelper.datas?.myBoards = ArrayList()
@@ -98,15 +104,22 @@ class ProfileFragment : Fragment() {
         feedCount.text = boards.size.toString()
 
         async(CommonPool) { getBoards() }
+        swipeRefreshLayout.setOnRefreshListener {
+            async(CommonPool) {
+                getBoards()
+                getUser()
+            }
+        }
     }
 
     private suspend fun getBoards() {
         if (!NetworkHelper.checkNetworkConnected(context!!)) {
+            swipeRefreshLayout.isRefreshing = false
             UIUtils.printNetworkCaution(context!!)
             return
         }
         async(CommonPool) { NetworkHelper.retrofitInstance.getUserBoards(DataHelper.datas!!.token).execute() }.await().apply {
-
+            swipeRefreshLayout.isRefreshing = false
             if (!isSuccessful) {
                 return@apply
             }
@@ -157,7 +170,6 @@ class ProfileFragment : Fragment() {
                                     .signature(ObjectKey(NetworkHelper.url + board.writer.profile))
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .into(it.itemView.writerImage)
-
                             it.binding.run {
                                 writeDate.text = dateFormat.format(board.createDate)
 
@@ -296,7 +308,10 @@ class ProfileFragment : Fragment() {
                 return
             }
         }
+        getUser()
+    }
 
+    private suspend fun getUser() {
         async(CommonPool) { NetworkHelper.retrofitInstance.getUser(DataHelper.datas!!.token).execute() }.await().apply {
             if (!isSuccessful)
                 return
@@ -309,6 +324,9 @@ class ProfileFragment : Fragment() {
 
             val user = Gson().fromJson(json.getString("user"), User::class.java)
             DataHelper.datas?.user = user
+            requestManager
+                    .load(NetworkHelper.url + user.profile)
+                    .into(profileImage)
         }
     }
 
@@ -318,8 +336,48 @@ class ProfileFragment : Fragment() {
             val path = data!!.getStringArrayExtra("paths").first()
             val file = File(path)
             async(CommonPool) { changeProfile(file) }
-            async(CommonPool) { getBoards() }
+            async(CommonPool) {
+                getBoards()
+            }
         }
+    }
+
+    private fun requestPermission() {
+        if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(context!!, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity!!,
+                    arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
+                    PERMISSION_CODE)
+        } else {
+            startGalleyActivity()
+        }
+    }
+
+    private fun startGalleyActivity() {
+        startActivityForResult<GalleryActivity>(requestCode, "type" to GalleryActivity.ONLYONE)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        requestManager.pauseAllRequests()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requestManager.resumeRequests()
+    }
+
+    override fun onDestroy() {
+        (context!! as MainActivity).stateListeners.remove(this.stateListener)
+        super.onDestroy()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == PERMISSION_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     companion object {
