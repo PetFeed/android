@@ -93,29 +93,29 @@ class DetailFeedActivity : AppCompatActivity() {
         }
 
         luvButton.onClick {
-//            if (!NetworkHelper.checkNetworkConnected(this@DetailFeedActivity)) {
-//                UIUtils.printNetworkCaution(this@DetailFeedActivity)
-//                return@onClick
-//            }
-//            if (commentEditText.text.toString() != "") {
-//                async(CommonPool) {
-//                    NetworkHelper.retrofitInstance.postComment(DataHelper.datas!!.token,
-//                            sendCommentId,
-//                            commentEditText.text.toString(),
-//                            if (sendCommentId == board!!._id) "" else "re").execute()
-//
-//
-//                }.await().apply {
-//                    if (!isSuccessful)
-//                        toast("네트워크 오류가 발생했습니다.")
-//                    async(UI) { initBoard() }
-//                }
-//                isCommentInfoVisible = false
-//                commentEditText.setText("")
-//                keyboardHelper.hideKeyboard()
-//            } else {
+            if (!NetworkHelper.checkNetworkConnected(this@DetailFeedActivity)) {
+                UIUtils.printNetworkCaution(this@DetailFeedActivity)
+                return@onClick
+            }
+            if (commentEditText.text.toString() != "") {
+                async(CommonPool) {
+                    NetworkHelper.retrofitInstance.postComment(DataHelper.datas!!.token,
+                            sendCommentId,
+                            commentEditText.text.toString(),
+                            if (sendCommentId == board!!._id) "" else "re").execute()
+
+
+                }.await().apply {
+                    if (!isSuccessful)
+                        toast("네트워크 오류가 발생했습니다.")
+                    async(UI) { initBoard() }
+                }
+                isCommentInfoVisible = false
+                commentEditText.setText("")
+                keyboardHelper.hideKeyboard()
+            } else {
 //                LuvDonateDialog(this@DetailFeedActivity).show()
-//            }
+            }
         }
 
         likeButton.onClick { _ ->

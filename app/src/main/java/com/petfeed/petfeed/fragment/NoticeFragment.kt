@@ -15,7 +15,6 @@ import com.petfeed.petfeed.BR
 import com.petfeed.petfeed.GlideApp
 import com.petfeed.petfeed.R
 import com.petfeed.petfeed.activity.DetailFeedActivity
-import com.petfeed.petfeed.activity.MainActivity
 import com.petfeed.petfeed.databinding.ItemNotificationContentBinding
 import com.petfeed.petfeed.model.DataHelper
 import com.petfeed.petfeed.model.Log
@@ -35,6 +34,7 @@ import retrofit2.Response
 class NoticeFragment : Fragment() {
 
     val items = ArrayList<Any>()
+    var isLoading = false
     lateinit var requestManager: RequestManager
     lateinit var prefManager: PrefManager
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -103,19 +103,43 @@ class NoticeFragment : Fragment() {
                         it.binding.time.textColorResource = if (log.isChecked!!) R.color.brown1 else R.color.black1_30
                     }
                     onClick {
+                        if (isLoading)
+                            return@onClick
+                        isLoading = true
                         val log = items[it.adapterPosition] as Log
                         prefManager.addCheckedLogs(log._id)
                         (items[it.adapterPosition] as Log).isChecked = true
                         notificationRecyclerView.adapter?.notifyItemChanged(it.adapterPosition)
 
-                        if (log.type == "Board")
+                        if (log.type == "Board") {
+                            isLoading = false
                             startActivity<DetailFeedActivity>("_id" to log.dataId)
+                        } else if (log.type == "Comment")
+                            getCommentParent(log.dataId)
                     }
                 }
                 .into(notificationRecyclerView)
     }
 
+    private fun getCommentParent(commentId: String) {
+        NetworkHelper.retrofitInstance.getBoardByCommentId(DataHelper.datas!!.token, commentId).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
 
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                val json = JSONObject(response.body()!!.string())
+                val success = json.getBoolean("success")
+                if (!success)
+                    return
+
+                val boardId = json.getJSONObject("data").getString("_id")
+                startActivity<DetailFeedActivity>("_id" to boardId)
+                isLoading = false
+
+            }
+        })
+    }
 
     companion object {
         fun newInstance() = NoticeFragment()

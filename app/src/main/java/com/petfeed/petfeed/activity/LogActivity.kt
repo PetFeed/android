@@ -35,7 +35,7 @@ class LogActivity : AppCompatActivity() {
 
     lateinit var prefManager: PrefManager
     lateinit var requestManager: GlideRequests
-
+    var isLoading = false
     val items = ArrayList<Any>()
     override fun onCreate(savedInstanceState: Bundle?) {
         ActivityUtils.statusBarSetting(window, this, R.color.white2, false)
@@ -97,20 +97,50 @@ class LogActivity : AppCompatActivity() {
                         it.binding.content.text = log.text
                         it.binding.container.backgroundColorResource = if (log.isChecked!!) R.color.brown1_10 else android.R.color.white
 
-                        it.binding.activityImage.imageResource = if (log.text.contains(Regex("게시물을 좋아합니다.$")))
-                            R.drawable.ic_favorite else R.drawable.ic_subscribe
+                        it.binding.activityImage.imageResource = when {
+                            log.text.contains(Regex("게시물을 좋아합니다.$")) -> R.drawable.ic_favorite
+                            log.text.contains(Regex("팔로우했습니다.$")) -> R.drawable.ic_subscribe
+                            else -> R.drawable.ic_comment
+                        }
                     }
                     onClick {
+                        if (isLoading)
+                            return@onClick
+                        isLoading = true
+
                         val log = items[it.adapterPosition] as Log
                         prefManager.addCheckedLogs(log._id)
                         (items[it.adapterPosition] as Log).isChecked = true
                         logRecyclerView.adapter?.notifyItemChanged(it.adapterPosition)
 
-                        if (log.type == "Board")
+                        if (log.type == "Board") {
+                            isLoading = false
                             startActivity<DetailFeedActivity>("_id" to log.dataId)
+                        } else if (log.type == "Comment")
+                            getCommentParent(log.dataId)
                     }
                 }
                 .into(logRecyclerView)
+    }
+
+    private fun getCommentParent(commentId: String) {
+        NetworkHelper.retrofitInstance.getBoardByCommentId(DataHelper.datas!!.token, commentId).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                val json = JSONObject(response.body()!!.string())
+                val success = json.getBoolean("success")
+                if (!success)
+                    return
+
+                val boardId = json.getJSONObject("data").getString("_id")
+                startActivity<DetailFeedActivity>("_id" to boardId)
+                isLoading = false
+
+            }
+        })
     }
 
     private fun setToolbar() {
