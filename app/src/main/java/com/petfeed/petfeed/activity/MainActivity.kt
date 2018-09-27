@@ -7,6 +7,7 @@ import android.support.v4.graphics.ColorUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewTreeObserver
@@ -121,7 +122,6 @@ class MainActivity : AppCompatActivity() {
                 return@apply
             }
             DataHelper.datas?.mainBoards = Gson().fromJson(json.getString("data"), object : TypeToken<ArrayList<Board>>() {}.type)
-
             DataHelper.datas?.mainBoards?.forEach {
                 it.pictures.forEachIndexed { index, s ->
                     it.pictures[index] = NetworkHelper.url + s

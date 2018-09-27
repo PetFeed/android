@@ -59,7 +59,7 @@ class WriteActivity : AppCompatActivity() {
                 UIUtils.printNetworkCaution(this@WriteActivity)
                 return@onClick
             }
-            if(!checkData()){
+            if (!checkData()) {
                 toast("내용과 사진이 필요합니다.")
                 return@onClick
             }
@@ -73,13 +73,19 @@ class WriteActivity : AppCompatActivity() {
                 pictures.add(MultipartBody.Part.createFormData("pictures", file.name, body))
             }
             val contents = RequestBody.create(MediaType.parse("text/plain"), contents.text.toString())
+            val hashTags = ArrayList<RequestBody>()
+            val regex = Regex("#[a-zA-z_가-힣ㄱ-ㅎㅏ-ㅣ]+")
+            regex.findAll(this@WriteActivity.contents.text.toString()).forEach {
+                hashTags.add(RequestBody.create(MediaType.parse("text/plain"), it.value))
+            }
             try {
-                async(CommonPool) { NetworkHelper.retrofitInstance.postBoard(DataHelper.datas!!.token, pictures.toTypedArray(), contents, arrayOf()).execute() }
+                async(CommonPool) { NetworkHelper.retrofitInstance.postBoard(DataHelper.datas!!.token, pictures.toTypedArray(), contents, hashTags.toTypedArray()).execute() }
                         .await().apply {
                             if (isSuccessful)
                                 finish()
-                            else
+                            else {
                                 toast("오류가 발생했습니다.")
+                            }
                         }
             } catch (e: SocketTimeoutException) {
                 e.printStackTrace()

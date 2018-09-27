@@ -1,6 +1,7 @@
 package com.petfeed.petfeed.model
 
 import com.google.gson.annotations.SerializedName
+import org.json.JSONArray
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -18,7 +19,7 @@ class Board(
         var comments: ArrayList<Comment> = ArrayList(),
 
         @SerializedName("hash_tags")
-        var hashTags: ArrayList<String> = ArrayList(),
+        var hashTags: ArrayList<Any> = ArrayList(),
 
         @SerializedName("likes")
         var likes: ArrayList<String> = ArrayList(),

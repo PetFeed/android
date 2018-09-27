@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.signature.ObjectKey
 import com.github.nitrico.lastadapter.LastAdapter
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.petfeed.petfeed.BR
 import com.petfeed.petfeed.GlideApp
 import com.petfeed.petfeed.GlideRequests
@@ -93,9 +94,48 @@ class ProfileFragment : Fragment() {
         boards.clear()
         boards.addAll(DataHelper.datas?.myBoards!!)
         boardRecyclerView.adapter!!.notifyDataSetChanged()
-        feedCount.text = boards.size.toString()
         followingCount.text = DataHelper.datas?.user?.following?.size?.toString()
         followerCount.text = DataHelper.datas?.user?.followers?.size?.toString()
+
+        async(CommonPool) { getBoards() }
+    }
+
+    private suspend fun getBoards() {
+        if (!NetworkHelper.checkNetworkConnected(context!!)) {
+            UIUtils.printNetworkCaution(context!!)
+            return
+        }
+        async(CommonPool) { NetworkHelper.retrofitInstance.getUserBoards(DataHelper.datas!!.token).execute() }.await().apply {
+
+            if (!isSuccessful) {
+                return@apply
+            }
+
+            val json: JSONObject = JSONObject(body()!!.string())
+            val isSuccess = json.getBoolean("success")
+
+            if (!isSuccess) {
+                return@apply
+            }
+            DataHelper.datas?.myBoards = Gson().fromJson(json.getString("data"), object : TypeToken<java.util.ArrayList<Board>>() {}.type)
+            DataHelper.datas?.myBoards?.forEach {
+                it.pictures.forEachIndexed { index, s ->
+                    it.pictures[index] = NetworkHelper.url + s
+                }
+                it.lowPictures.forEachIndexed { index, s ->
+                    it.lowPictures[index] = NetworkHelper.url + s
+                }
+            }
+
+            boards.run {
+                clear()
+                addAll(DataHelper.datas!!.myBoards)
+            }
+
+            Log.e("asdf", "asdf${boards.size.toString()}")
+            boardRecyclerView.adapter!!.notifyDataSetChanged()
+            feedCount.text = boards.size.toString()
+        }
     }
 
     private fun setRecyclerView() {// TODO: Board
@@ -244,20 +284,16 @@ class ProfileFragment : Fragment() {
         }
 
         async(CommonPool) { NetworkHelper.retrofitInstance.updateUser(DataHelper.datas!!.token, picture, HashMap<String, String>().toMap()).execute() }.await().apply {
-            Log.e("profile", "asdfadsf")
-
             if (!isSuccessful)
                 return
 
             val json: JSONObject = JSONObject(body()!!.string())
             val isSuccess = json.getBoolean("success")
 
-            Log.e("profile", "asdfasdfasdfaf")
 
             if (!isSuccess) {
                 return
             }
-            Log.e("profile", "성공")
         }
 
         async(CommonPool) { NetworkHelper.retrofitInstance.getUser(DataHelper.datas!!.token).execute() }.await().apply {
