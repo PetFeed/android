@@ -290,6 +290,7 @@ class MainActivity : AppCompatActivity() {
                                                         if (!isSuccess)
                                                             return
                                                         DataHelper.datas!!.mainBoards.removeAt(position)
+                                                        boards.removeAt(position)
                                                         boardRecyclerView.adapter?.notifyItemRemoved(position)
                                                     }
                                                 })

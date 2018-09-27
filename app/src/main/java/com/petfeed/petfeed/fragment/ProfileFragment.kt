@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -96,6 +95,7 @@ class ProfileFragment : Fragment() {
         boardRecyclerView.adapter!!.notifyDataSetChanged()
         followingCount.text = DataHelper.datas?.user?.following?.size?.toString()
         followerCount.text = DataHelper.datas?.user?.followers?.size?.toString()
+        feedCount.text = boards.size.toString()
 
         async(CommonPool) { getBoards() }
     }
@@ -132,7 +132,6 @@ class ProfileFragment : Fragment() {
                 addAll(DataHelper.datas!!.myBoards)
             }
 
-            Log.e("asdf", "asdf${boards.size.toString()}")
             boardRecyclerView.adapter!!.notifyDataSetChanged()
             feedCount.text = boards.size.toString()
         }
@@ -231,8 +230,10 @@ class ProfileFragment : Fragment() {
                                                         val isSuccess = json.getBoolean("success")
                                                         if (!isSuccess)
                                                             return
-                                                        DataHelper.datas!!.mainBoards.removeAt(position)
+                                                        DataHelper.datas!!.myBoards.removeAt(position)
+                                                        boards.removeAt(position)
                                                         boardRecyclerView.adapter?.notifyItemRemoved(position)
+                                                        feedCount.text = boards.size.toString()
                                                     }
                                                 })
                                                 true
@@ -317,6 +318,7 @@ class ProfileFragment : Fragment() {
             val path = data!!.getStringArrayExtra("paths").first()
             val file = File(path)
             async(CommonPool) { changeProfile(file) }
+            async(CommonPool) { getBoards() }
         }
     }
 
